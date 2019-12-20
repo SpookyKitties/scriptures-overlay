@@ -170,8 +170,9 @@ export default ChapterParent;
 async function getChapterRemote(id: string, params: ChapterParams) {
   try {
     const data = await axios.get(
-      `https://files.oneinthinehand.org/so//scripture_files/${id}.json`,
+      // `https://files.oneinthinehand.org/so//scripture_files/${id}.json`,
       // { proxy: { port: port, host: '127.0.0.1' } },
+      `https://oithstore.file.core.windows.net/scripture-files/${id}.json?sv=2019-02-02&ss=bqtf&srt=sco&sp=rwdlacup&se=2019-12-20T16:12:42Z&sig=x8v5euWGi6MaCOGanBYLt9WlWIHMoKIzvmgt2Abz%2FJg%3D&_=1576829569650`,
     );
 
     const chapter = data.data as Chapter;
