@@ -16,7 +16,11 @@
       "disclaimer": true
     },
     {
-      "matches": ["localhost", "192.168.43.240", "192.168.1.113"],
+      "matches": [
+        "localhost",
+        "192.168.43.240",
+        "192.168.1.113"
+      ],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "settings": "",
@@ -39,7 +43,10 @@
       "disclaimer": false
     },
     {
-      "matches": ["a.scripturesproject.review", "a.oneinthinehand.org"],
+      "matches": [
+        "a.scripturesproject.review",
+        "a.oneinthinehand.org"
+      ],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "settings": "a",
@@ -57,10 +64,33 @@
       "settings": "",
       "beta": true,
       "disclaimer": false
+    },
+    {
+      "matches": [
+        "2021.oneinthinehand.org"
+      ],
+      "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
+      "storageURL": "https://oithstorage.blob.core.windows.net/2021test/",
+      "settings": "",
+      "beta": true,
+      "disclaimer": false
+    },
+    {
+      "matches": [
+        "soglo.oneinthinehand.org"
+      ],
+      "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
+      "storageURL": "https://oithstorage.blob.core.windows.net/soglo/",
+      "settings": "",
+      "beta": true,
+      "disclaimer": false
     }
   ],
   "backup": {
-    "matches": ["oneinthinehand.org", "scripturesproject.review"],
+    "matches": [
+      "oneinthinehand.org",
+      "scripturesproject.review"
+    ],
     "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
     "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
     "settings": "",
