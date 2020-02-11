@@ -16,11 +16,7 @@
       "disclaimer": true
     },
     {
-      "matches": [
-        "localhost",
-        "192.168.43.240",
-        "192.168.1.113"
-      ],
+      "matches": [],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "settings": "",
@@ -43,10 +39,7 @@
       "disclaimer": false
     },
     {
-      "matches": [
-        "a.scripturesproject.review",
-        "a.oneinthinehand.org"
-      ],
+      "matches": ["a.scripturesproject.review", "a.oneinthinehand.org"],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "settings": "a",
@@ -56,8 +49,7 @@
     {
       "matches": [
         "future.oneinthinehand.org",
-        "future.scripturesproject.review",
-        "localhost"
+        "future.scripturesproject.review"
       ],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
@@ -67,18 +59,19 @@
     },
     {
       "matches": [
-        "2021.oneinthinehand.org"
+        "2021.oneinthinehand.org",
+        "localhost",
+        "192.168.43.240",
+        "192.168.1.113"
       ],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/2021test/",
-      "settings": "",
+      "settings": "2021-",
       "beta": true,
       "disclaimer": false
     },
     {
-      "matches": [
-        "soglo.oneinthinehand.org"
-      ],
+      "matches": ["soglo.oneinthinehand.org"],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/soglo/",
       "settings": "",
@@ -87,10 +80,7 @@
     }
   ],
   "backup": {
-    "matches": [
-      "oneinthinehand.org",
-      "scripturesproject.review"
-    ],
+    "matches": ["oneinthinehand.org", "scripturesproject.review"],
     "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
     "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
     "settings": "",
