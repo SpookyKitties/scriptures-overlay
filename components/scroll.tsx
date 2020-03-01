@@ -34,7 +34,7 @@ syncScrolling
       if (chapterElement) {
         const y = chapterElement.getBoundingClientRect().top;
         const verse = verses.find(
-          e => e.getBoundingClientRect().bottom - 15 >= y === true,
+          e => e.getBoundingClientRect().bottom - 45 >= y === true,
         ) as Element;
 
         if (verse) {

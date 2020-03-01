@@ -39,7 +39,10 @@
       "disclaimer": false
     },
     {
-      "matches": ["a.scripturesproject.review", "a.oneinthinehand.org"],
+      "matches": [
+        "a.scripturesproject.review",
+        "a.oneinthinehand.org"
+      ],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "settings": "a",
@@ -48,6 +51,7 @@
     },
     {
       "matches": [
+        "localhost",
         "future.oneinthinehand.org",
         "future.scripturesproject.review"
       ],
@@ -60,7 +64,6 @@
     {
       "matches": [
         "2021.oneinthinehand.org",
-        "localhost",
         "192.168.43.240",
         "192.168.1.113"
       ],
@@ -71,7 +74,9 @@
       "disclaimer": false
     },
     {
-      "matches": ["soglo.oneinthinehand.org"],
+      "matches": [
+        "soglo.oneinthinehand.org"
+      ],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/soglo/",
       "settings": "",
@@ -80,7 +85,10 @@
     }
   ],
   "backup": {
-    "matches": ["oneinthinehand.org", "scripturesproject.review"],
+    "matches": [
+      "oneinthinehand.org",
+      "scripturesproject.review"
+    ],
     "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
     "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
     "settings": "",

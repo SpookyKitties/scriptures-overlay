@@ -65,23 +65,13 @@ class Index extends Component {
       );
     }
     return <></>;
-    return (
-      <div className="oith-content">
-        {/* <Layout title={chapter.title} shortTitle={chapter.shortTitle}></Layout> */}
-        {/* <Header t="1" /> */}
-        {/* <h1>Batman TV Shows</h1> */}
-        {/* <ul>{a}</ul> */}
-        {/* <ChapterComponent chapter={chapter} /> */}
-        <SearchBoxComponent />
-      </div>
-    );
   }
 }
 
 const IndexPage: NextPage<{}> = ({}) => <Index></Index>;
 
-IndexPage.getInitialProps = async () => {
-  return {};
-};
+// IndexPage.getInitialProps = async () => {
+//   return {};
+// };
 
 export default IndexPage;
