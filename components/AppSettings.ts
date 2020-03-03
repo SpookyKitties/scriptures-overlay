@@ -92,25 +92,25 @@ export class AppSettings {
           const o = flattenPrimaryManifest(navigation);
 
           this.flatNavigation$.next(o);
-          const hg = cloneDeep(o);
+          // const hg = cloneDeep(o);
 
-          const fuse = new Fuse(
-            hg.map(n => {
-              n.title = n.title.toLowerCase();
-              n.shortTitle = n.shortTitle.toLowerCase();
-              return n;
-            }),
-            {
-              keys: ['title', 'shortTitle', 'href'],
-              threshold: 0.35,
-              includeScore: true,
-              caseSensitive: false,
-              tokenize: true,
-              location: 0,
-            },
-          );
+          // const fuse = new Fuse(
+          //   hg.map(n => {
+          //     n.title = n.title.toLowerCase();
+          //     n.shortTitle = n.shortTitle.toLowerCase();
+          //     return n;
+          //   }),
+          //   {
+          //     keys: ['title', 'shortTitle', 'href'],
+          //     threshold: 0.35,
+          //     includeScore: true,
+          //     caseSensitive: false,
+          //     tokenize: true,
+          //     location: 0,
+          //   },
+          // );
 
-          this.fuse$ = new BehaviorSubject(fuse);
+          // this.fuse$ = new BehaviorSubject(fuse);
           // return of(flattenPrimaryManifest(navigation)).pipe(
           //   map(o => {
           //     this.flatNavigation$.next(o);

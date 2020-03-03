@@ -1,5 +1,5 @@
+import Router from 'next/router';
 import { Component } from 'react';
-import { NavigationItem } from '../navigation-item';
 
 const bookNames = [
   ['joseph smith—history', 'js-h/1'],
@@ -147,12 +147,6 @@ const bookNames = [
   ['bd', 'bible dictionary', 'bd'],
 ];
 
-import Router from 'next/router';
-import Fuse from 'fuse.js';
-import { store, appSettings } from '../SettingsComponent';
-import { take, map } from 'rxjs/operators';
-import { clone, cloneDeep } from 'lodash';
-
 export class SearchBoxComponent extends Component {
   public lookUp(txt: string) {
     // const textBox = document.getElementById('searchBox');
@@ -174,46 +168,6 @@ export class SearchBoxComponent extends Component {
         return;
       }
     }
-    if (appSettings) {
-      appSettings.fuse$
-        .pipe(
-          map(fuse => {
-            Router.push(
-              '/[book]/[chapter]',
-              `/${fuse.search(txt.toLowerCase())[0].item.href}`,
-            );
-          }),
-        )
-        .subscribe();
-      // appSettings.flatNavigation$
-      //   .pipe(
-      //     take(1),
-      //     map(ni => {
-      //       const hg = cloneDeep(ni);
-      //       const fuse = new Fuse(
-      //         hg.map(n => {
-      //           n.title = n.title.toLowerCase();
-      //           n.shortTitle = n.shortTitle.toLowerCase();
-      //           return n;
-      //         }),
-      //         {
-      //           keys: ['title', 'shortTitle', 'href'],
-      //           threshold: 0.35,
-      //           includeScore: true,
-      //           caseSensitive: false,
-      //           tokenize: true,
-      //           location: 0,
-      //         },
-      //       );
-      //       Router.push(
-      //         '/[book]/[chapter]',
-      //         `/${fuse.search(txt.toLowerCase())[0].item.href}`,
-      //       );
-      //     }),
-      //   )
-      //   .subscribe();
-    }
-    // console.log(regex);
   }
   public render() {
     // if (this.props.navigation) {
