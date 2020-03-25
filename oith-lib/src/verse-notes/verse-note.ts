@@ -73,6 +73,7 @@ export class VerseNoteGroup {
 
   public notes: Note[] = [];
   public offsets: string;
+  public num?: string;
 
   public constructor(notes: Note[], id: string) {
     // this.offsets =

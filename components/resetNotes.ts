@@ -50,8 +50,10 @@ function setSogloSup(
 ) {
   if (parseSubdomain().soglo) {
     const splitid = verseNote.id.split('-');
-    const sup = `${splitid[splitid.length - 3]}${String.fromCharCode(97 + i)}`;
+    const num = `${splitid[splitid.length - 3]}`;
+    const sup = `${String.fromCharCode(97 + i)}`;
     noteGroup.sup = sup;
+    noteGroup.num = num;
   }
 }
 

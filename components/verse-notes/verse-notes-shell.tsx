@@ -88,6 +88,7 @@ export class VerseNoteGroupComponent extends Component<{
           {this.props.noteGroup.notes[0].phrase}
         </span>
         <span style={this.displayOnSoglo(this.props.soglo)}>
+          {this.props.noteGroup.num}
           {this.props.noteGroup.sup}
         </span>
         <div
