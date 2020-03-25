@@ -168,13 +168,44 @@ body {
   display: grid !important;
   grid-template-columns: 24px 1fr;
 }
+.verse-note.soglo {
+  .short-title {
+    display: none !important;
+  }
+}
 .soglo {
   .note {
     display: inline !important;
     margin: 0px !important;
     .note-reference {
-      display: inline !important;
-      margin-top: 0px !important;
+      // display: inline !important;
+      // margin-top: 0px !important;
+      display: block !important;
+      margin-top: 0;
+      margin-bottom: 0;
+      .ref-label {
+        font-weight: initial !important;
+      }
+      &.TG {
+      }
+      &.CR,
+      &.CR,
+      &.QUO,
+      &.OR {
+        .ref-label {
+          display: none;
+        }
+      }
+
+      a,
+      &.TG,
+      &.GS {
+        color: #177c9c !important;
+        text-decoration: none;
+        &:hover {
+          color: #274472 !important;
+        }
+      }
     }
   }
 }

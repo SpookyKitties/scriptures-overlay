@@ -198,7 +198,7 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
         const shortTitle = generateShortTitle(verseNote);
         return (
           <div
-            className={`verse-note ${shortTitle
+            className={`verse-note ${sg ? 'soglo' : ''} ${shortTitle
               .replace(/\s/g, '')
               .toLowerCase()} ${verseNote.vis ? '' : 'none'}`}
             id={verseNote.id}
