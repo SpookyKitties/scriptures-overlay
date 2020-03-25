@@ -68,11 +68,12 @@ function clearOffsets(noteGroup: VerseNoteGroup) {
 }
 export class VerseNoteGroupComponent extends Component<{
   noteGroup: VerseNoteGroup;
+  soglo: boolean;
 }> {
   render() {
     return (
       <div
-        className={`verse-note-group ${
+        className={`verse-note-group ${this.props.soglo ? 'soglo' : ''} ${
           this.props.noteGroup.formatTag.visible ? '' : 'none'
         }   ${this.props.noteGroup.formatTag.highlight ? 'highlight' : ''}`}
       >
@@ -82,10 +83,13 @@ export class VerseNoteGroupComponent extends Component<{
             notePhraseClick(ee, this.props.noteGroup.formatTag);
           }}
           className="note-phrase"
+          style={this.displayOnSoglo(this.props.soglo == false)}
         >
           {this.props.noteGroup.notes[0].phrase}
         </span>
-
+        <span style={this.displayOnSoglo(this.props.soglo)}>
+          {this.props.noteGroup.sup}
+        </span>
         <div
           className={`note`}
           onClick={event => {
@@ -154,6 +158,10 @@ export class VerseNoteGroupComponent extends Component<{
       </div>
     );
   }
+
+  private displayOnSoglo(sg: boolean): CSSProperties {
+    return { display: `${sg ? 'initial' : 'none'}` };
+  }
 }
 
 function sortVerseNoteGroups(
@@ -184,6 +192,7 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
   }
   public render() {
     if (this.state && this.state.verseNote) {
+      const sg = parseSubdomain().soglo;
       const verseNote = this.state.verseNote;
       if (verseNote.noteGroups) {
         const shortTitle = generateShortTitle(verseNote);
@@ -198,7 +207,7 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
             {verseNote.noteGroups
               .sort((a, b) => sortVerseNoteGroups(a, b))
               .map(noteGroup => (
-                <VerseNoteGroupComponent noteGroup={noteGroup} />
+                <VerseNoteGroupComponent noteGroup={noteGroup} soglo={sg} />
               ))}
           </div>
         );

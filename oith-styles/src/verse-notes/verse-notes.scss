@@ -163,3 +163,18 @@ body {
 .note-whitespace {
   height: 10px;
 }
+
+.verse-note-group.soglo {
+  display: grid !important;
+  grid-template-columns: 24px 1fr;
+}
+.soglo {
+  .note {
+    display: inline !important;
+    margin: 0px !important;
+    .note-reference {
+      display: inline !important;
+      margin-top: 0px !important;
+    }
+  }
+}

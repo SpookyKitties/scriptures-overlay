@@ -23,6 +23,7 @@ export function parseSubdomain(
   settings: string;
   beta: boolean;
   audioURL: string;
+  soglo: boolean;
   disclaimer: boolean;
 } {
   try {

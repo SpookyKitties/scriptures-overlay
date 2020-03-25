@@ -13,7 +13,8 @@
       "storageURL": "https://oithstorage.blob.core.windows.net/junetest/",
       "settings": "june-",
       "beta": false,
-      "disclaimer": true
+      "disclaimer": true,
+      "soglo": false
     },
     {
       "matches": [],
@@ -21,7 +22,8 @@
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "settings": "",
       "beta": true,
-      "disclaimer": false
+      "disclaimer": false,
+      "soglo": false
     },
     {
       "matches": [
@@ -36,22 +38,20 @@
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "settings": "",
       "beta": false,
-      "disclaimer": false
+      "disclaimer": false,
+      "soglo": false
     },
     {
-      "matches": [
-        "a.scripturesproject.review",
-        "a.oneinthinehand.org"
-      ],
+      "matches": ["a.scripturesproject.review", "a.oneinthinehand.org"],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "settings": "a",
       "beta": false,
-      "disclaimer": true
+      "disclaimer": true,
+      "soglo": false
     },
     {
       "matches": [
-        "localhost",
         "future.oneinthinehand.org",
         "future.scripturesproject.review"
       ],
@@ -59,40 +59,35 @@
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "settings": "",
       "beta": true,
-      "disclaimer": false
+      "disclaimer": false,
+      "soglo": false
     },
     {
-      "matches": [
-        "2021.oneinthinehand.org",
-        "192.168.43.240",
-        "192.168.1.113"
-      ],
+      "matches": ["2021.oneinthinehand.org", "192.168.43.240", "192.168.1.113"],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/2021test/",
       "settings": "2021-",
       "beta": true,
-      "disclaimer": false
+      "disclaimer": false,
+      "soglo": false
     },
     {
-      "matches": [
-        "soglo.oneinthinehand.org"
-      ],
+      "matches": ["soglo.oneinthinehand.org", "localhost"],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/soglo/",
       "settings": "",
       "beta": true,
-      "disclaimer": false
+      "disclaimer": false,
+      "soglo": true
     }
   ],
   "backup": {
-    "matches": [
-      "oneinthinehand.org",
-      "scripturesproject.review"
-    ],
+    "matches": ["oneinthinehand.org", "scripturesproject.review"],
     "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
     "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
     "settings": "",
     "beta": false,
-    "disclaimer": true
+    "disclaimer": true,
+    "soglo": false
   }
 }

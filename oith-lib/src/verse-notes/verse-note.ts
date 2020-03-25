@@ -69,6 +69,7 @@ export class VerseNoteGroup {
   public formatTag: FormatTagNoteOffsets;
   public noteGroupID = cuid();
   public notePhrase: string;
+  public sup?: string;
 
   public notes: Note[] = [];
   public offsets: string;

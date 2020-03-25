@@ -146,6 +146,28 @@ export class VerseComponent extends Component<VerseProps> {
         }
       }
     }
-    return elem;
+    return (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 24px',
+          justifyContent: 'center',
+        }}
+      >
+        {elem}
+        {/* <span
+          className={'test-test-test'}
+          style={{
+            display: 'grid',
+            justifyContent: 'center',
+            alignContent: 'center',
+            transform: 'translateX(24px)',
+          }}
+        >
+          📽
+        </span> */}
+      </div>
+    );
+    // return elem;
   }
 }
