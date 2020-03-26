@@ -126,13 +126,14 @@ class OithParent extends Component<{ chapter?: Chapter; lang: string }> {
   }
 
   private getClasses() {
+    const soglo = parseSubdomain().soglo ? 'soglo-chapter' : 'regular-chapter';
     if (this.state) {
       return `${this.state['displayNav'] ? 'nav' : 'nav-off'}  ${
         this.state['notesMode']
-      }-notes`;
+      }-notes ${soglo}`;
     }
 
-    return `nav-off`;
+    return `nav-off ${soglo}`;
   }
 
   /**

@@ -1,75 +1,77 @@
-f-t,
-.f-t {
-  &.ref-double {
-    border-bottom: 1px solid grey;
-    text-decoration: underline;
-    text-decoration-skip-ink: none;
-    text-decoration-color: grey;
-    .off-notes & {
-      @media screen and (max-width: 500px) {
+.regular-chapter {
+  f-t,
+  .f-t {
+    &.ref-double {
+      border-bottom: 1px solid grey;
+      text-decoration: underline;
+      text-decoration-skip-ink: none;
+      text-decoration-color: grey;
+      .off-notes & {
+        @media screen and (max-width: 500px) {
+          border-bottom: none !important;
+          text-decoration: none !important;
+          text-decoration-skip-ink: none !important;
+          text-decoration-color: none !important;
+        }
+      }
+      .hide-underline & {
         border-bottom: none !important;
         text-decoration: none !important;
         text-decoration-skip-ink: none !important;
         text-decoration-color: none !important;
       }
-    }
-    .hide-underline & {
-      border-bottom: none !important;
-      text-decoration: none !important;
-      text-decoration-skip-ink: none !important;
-      text-decoration-color: none !important;
-    }
-    &.highlight {
-      text-decoration: underline !important;
-
-      // text-decoration-skip-ink: none !important;
-      // text-decoration-color: grey !important;
-      border-bottom: 1px solid #f68d2e !important;
-      text-decoration-color: #f68d2e !important;
-      &.pronunciation {
-        border-bottom: 1px solid #f68d2e !important;
-        text-decoration-color: #f68d2e !important;
-      }
-    }
-    &.all {
-      text-decoration-color: none;
-      text-decoration: none;
       &.highlight {
-        text-decoration-color: #f68d2e !important;
         text-decoration: underline !important;
+
+        // text-decoration-skip-ink: none !important;
+        // text-decoration-color: grey !important;
         border-bottom: 1px solid #f68d2e !important;
         text-decoration-color: #f68d2e !important;
+        &.pronunciation {
+          border-bottom: 1px solid #f68d2e !important;
+          text-decoration-color: #f68d2e !important;
+        }
+      }
+      &.all {
+        text-decoration-color: none;
+        text-decoration: none;
+        &.highlight {
+          text-decoration-color: #f68d2e !important;
+          text-decoration: underline !important;
+          border-bottom: 1px solid #f68d2e !important;
+          text-decoration-color: #f68d2e !important;
+        }
       }
     }
-  }
-  &.ref-single {
-    border-bottom: 1px solid grey;
-    .hide-underline & {
-      border-bottom: none !important;
-      text-decoration: none !important;
-      text-decoration-skip-ink: none !important;
-      text-decoration-color: none !important;
-    }
-    .off-notes & {
-      @media screen and (max-width: 500px) {
+    &.ref-single {
+      border-bottom: 1px solid grey;
+      .hide-underline & {
         border-bottom: none !important;
         text-decoration: none !important;
         text-decoration-skip-ink: none !important;
         text-decoration-color: none !important;
       }
-    }
-    &.highlight {
-      border-bottom: 1px solid #f68d2e !important;
-      &.pronunciation {
-        border-bottom: 1px solid #f68d2e !important !important;
+      .off-notes & {
+        @media screen and (max-width: 500px) {
+          border-bottom: none !important;
+          text-decoration: none !important;
+          text-decoration-skip-ink: none !important;
+          text-decoration-color: none !important;
+        }
       }
-    }
-    &.all {
-      border-bottom: unset;
       &.highlight {
         border-bottom: 1px solid #f68d2e !important;
         &.pronunciation {
+          border-bottom: 1px solid #f68d2e !important !important;
+        }
+      }
+      &.all {
+        border-bottom: unset;
+        &.highlight {
           border-bottom: 1px solid #f68d2e !important;
+          &.pronunciation {
+            border-bottom: 1px solid #f68d2e !important;
+          }
         }
       }
     }
@@ -81,4 +83,85 @@ f-t,
 }
 .all.highlight {
   border-bottom: 1px solid #f68d2e;
+}
+
+.soglo-chapter {
+  f-t,
+  .f-t {
+    &.ref-double {
+      border-bottom: 1px solid grey;
+      text-decoration: underline;
+      text-decoration-skip-ink: none;
+      text-decoration-color: grey;
+      .off-notes & {
+        @media screen and (max-width: 500px) {
+          border-bottom: none !important;
+          text-decoration: none !important;
+          text-decoration-skip-ink: none !important;
+          text-decoration-color: none !important;
+        }
+      }
+      .hide-underline & {
+        border-bottom: none !important;
+        text-decoration: none !important;
+        text-decoration-skip-ink: none !important;
+        text-decoration-color: none !important;
+      }
+      &.highlight {
+        text-decoration: underline !important;
+
+        // text-decoration-skip-ink: none !important;
+        // text-decoration-color: grey !important;
+        border-bottom: 1px solid #f68d2e !important;
+        text-decoration-color: #f68d2e !important;
+        &.pronunciation {
+          border-bottom: 1px solid #f68d2e !important;
+          text-decoration-color: #f68d2e !important;
+        }
+      }
+      &.all {
+        text-decoration-color: none;
+        text-decoration: none;
+        &.highlight {
+          text-decoration-color: #f68d2e !important;
+          text-decoration: underline !important;
+          border-bottom: 1px solid #f68d2e !important;
+          text-decoration-color: #f68d2e !important;
+        }
+      }
+    }
+    &.ref-single {
+      // border-bottom: 1px solid grey;
+      color: #0000e0 !important;
+      .hide-underline & {
+        border-bottom: none !important;
+        text-decoration: none !important;
+        text-decoration-skip-ink: none !important;
+        text-decoration-color: none !important;
+      }
+      .off-notes & {
+        @media screen and (max-width: 500px) {
+          border-bottom: none !important;
+          text-decoration: none !important;
+          text-decoration-skip-ink: none !important;
+          text-decoration-color: none !important;
+        }
+      }
+      &.highlight {
+        border-bottom: 1px solid #f68d2e !important;
+        &.pronunciation {
+          border-bottom: 1px solid #f68d2e !important !important;
+        }
+      }
+      &.all {
+        border-bottom: unset;
+        &.highlight {
+          border-bottom: 1px solid #f68d2e !important;
+          &.pronunciation {
+            border-bottom: 1px solid #f68d2e !important;
+          }
+        }
+      }
+    }
+  }
 }
