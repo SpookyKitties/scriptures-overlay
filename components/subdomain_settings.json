@@ -72,7 +72,11 @@
       "soglo": false
     },
     {
-      "matches": ["soglo.oneinthinehand.org", "localhost"],
+      "matches": [
+        "soglo.oneinthinehand.org",
+        "glo.oneinthinehand.org",
+        "localhost"
+      ],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/soglo/",
       "settings": "",
