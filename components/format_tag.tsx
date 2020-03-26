@@ -209,7 +209,7 @@ export class FormatTag extends Component<{
     return <></>;
   }
   renderLetters() {
-    if (this.state) {
+    if (this.state && parseSubdomain().soglo) {
       const hasLetters = () => {
         const hasVis = (note: Note[]) => {
           return note.filter(n => n.formatTag.visible);
