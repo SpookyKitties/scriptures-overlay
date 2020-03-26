@@ -40,6 +40,8 @@ export class Note extends Doc {
   public ref: NoteRef[];
   public speak?: string;
   public noteType: number;
+  public sup?: string;
+  public num?: string;
   // public docType: DocType = DocType.NOTE;
   public constructor(
     vid: string,

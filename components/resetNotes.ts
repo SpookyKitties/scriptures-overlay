@@ -54,6 +54,10 @@ function setSogloSup(
     const sup = `${String.fromCharCode(97 + i)}`;
     noteGroup.sup = sup;
     noteGroup.num = num;
+    noteGroup.notes.map(n => {
+      n.sup = sup;
+      n.num = num;
+    });
   }
 }
 

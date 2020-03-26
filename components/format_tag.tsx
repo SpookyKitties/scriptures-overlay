@@ -4,7 +4,11 @@ import { forkJoin, of } from 'rxjs';
 import { delay, filter, map, take } from 'rxjs/operators';
 import { FormatMerged } from '../oith-lib/src/models/Chapter';
 import { flatMap$ } from '../oith-lib/src/rx/flatMap$';
-import { FormatTagNoteOffsets } from '../oith-lib/src/verse-notes/verse-note';
+import {
+  FormatTagNoteOffsets,
+  VerseNote,
+  Note,
+} from '../oith-lib/src/verse-notes/verse-note';
 import { parseSubdomain } from './parseSubdomain';
 import {
   appSettings,
@@ -204,6 +208,25 @@ export class FormatTag extends Component<{
     }
     return <></>;
   }
+  renderLetters() {
+    if (this.state) {
+      const hasLetters = () => {
+        const hasVis = (note: Note[]) => {
+          return note.filter(n => n.formatTag.visible);
+        };
+        return flatten(
+          flatten(
+            (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
+              .filter(n => Array.isArray(n.notes))
+              .map(n => hasVis(n.notes)),
+          ).map(n => n.sup),
+        );
+      };
+      // return <span style={{ content: hasLetters().join('') }}></span>;
+      return <sup>{hasLetters().join('')}</sup>;
+    }
+    return <></>;
+  }
   public render() {
     return (
       <span
@@ -218,6 +241,7 @@ export class FormatTag extends Component<{
         }}
       >
         {this.renderSpeaker()}
+        {this.renderLetters()}
         {displayStateKey(this.state, 'text')}
       </span>
     );
