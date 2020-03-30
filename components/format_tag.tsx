@@ -1,4 +1,4 @@
-import { flatten } from 'lodash';
+import { flatten, uniq } from 'lodash';
 import { Component, CSSProperties } from 'react';
 import { forkJoin, of } from 'rxjs';
 import { delay, filter, map, take } from 'rxjs/operators';
@@ -223,7 +223,7 @@ export class FormatTag extends Component<{
         );
       };
       // return <span style={{ content: hasLetters().join('') }}></span>;
-      return <sup>{hasLetters().join('')}</sup>;
+      return <sup>{uniq(hasLetters()).join('')}</sup>;
     }
     return <></>;
   }
