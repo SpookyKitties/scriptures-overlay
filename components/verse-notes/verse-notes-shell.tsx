@@ -83,11 +83,16 @@ export class VerseNoteGroupComponent extends Component<{
             notePhraseClick(ee, this.props.noteGroup.formatTag);
           }}
           className="note-phrase"
-          style={this.displayOnSoglo(this.props.soglo == false)}
+          style={this.displayOnSoglo(
+            this.props.soglo == false,
+            this.props.noteGroup,
+          )}
         >
           {this.props.noteGroup.notes[0].phrase}
         </span>
-        <span style={this.displayOnSoglo(this.props.soglo)}>
+        <span
+          style={this.displayOnSoglo(this.props.soglo, this.props.noteGroup)}
+        >
           {this.props.noteGroup.num}
           {this.props.noteGroup.sup}
         </span>
@@ -160,8 +165,12 @@ export class VerseNoteGroupComponent extends Component<{
     );
   }
 
-  private displayOnSoglo(sg: boolean): CSSProperties {
-    return { display: `${sg ? 'initial' : 'none'}` };
+  private displayOnSoglo(
+    sg: boolean,
+    noteGroup: VerseNoteGroup,
+  ): CSSProperties {
+    const vis = noteGroup.formatTag.visible;
+    return { display: `${sg && vis ? 'initial' : 'none'}` };
   }
 }
 
