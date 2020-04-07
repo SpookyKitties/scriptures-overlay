@@ -10,8 +10,8 @@ import {
 function resetNotes(
   chapter: Chapter, //import("c:/users/jared/source/repos/scriptures-overlay/oith-lib/src/models/Chapter").Chapter
 ) {
-  let mediaCount = 0;
   chapter.verseNotes.map(verseNote => {
+    let mediaCount = 0;
     const v = verseNote.noteGroups.map((noteGroup, i) => {
       const refs = noteGroup.notes.filter(
         n => n.ref.find(r => r.text.includes('video')) !== undefined,
