@@ -166,7 +166,7 @@ body {
 
 .verse-note-group.soglo {
   display: grid !important;
-  grid-template-columns: 24px 1fr;
+  grid-template-columns: 30px 1fr;
 }
 .verse-note.soglo {
   .short-title {
@@ -180,7 +180,7 @@ body {
     .note-reference {
       // display: inline !important;
       // margin-top: 0px !important;
-      display: block !important;
+      display: inline !important;
       margin-top: 0;
       margin-bottom: 0;
       .ref-label {
