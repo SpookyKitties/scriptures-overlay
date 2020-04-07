@@ -200,9 +200,11 @@ body {
       &.CR,
       &.CR,
       &.QUO,
-      &.OR {
+      &.OR,
+      &.TRN,
+      &.JST {
         .ref-label {
-          display: none;
+          display: none !important;
         }
       }
 

@@ -88,6 +88,13 @@
 .soglo-chapter {
   f-t,
   .f-t {
+    sup {
+      border-bottom: none !important;
+      text-decoration: none !important;
+      text-decoration-skip-ink: none !important;
+      text-decoration-color: none !important;
+      border-bottom-color: unset;
+    }
     &.ref-double {
       border-bottom: 1px solid grey;
       text-decoration: underline;
