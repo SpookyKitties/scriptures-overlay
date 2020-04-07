@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { flatten, groupBy as _groupBy } from 'lodash';
+import { flatten, groupBy as _groupBy, Dictionary, sortBy } from 'lodash';
 import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { filter, find, flatMap, map, toArray } from 'rxjs/operators';
 import { parseSubdomain } from '../../../components/parseSubdomain';
@@ -8,7 +8,7 @@ import { VideoData } from '../../../components/VideoComponent';
 import { Chapter, FormatGroup, FormatText, Verse, VersePlaceholder } from '../models/Chapter';
 import { flatMap$ } from '../rx/flatMap$';
 import { NoteCategories } from '../verse-notes/settings/note-gorup-settings';
-import { VerseNote, VerseNoteGroup } from '../verse-notes/verse-note';
+import { VerseNote, VerseNoteGroup, Note } from '../verse-notes/verse-note';
 import { buildFMerged } from './buildFMerged';
 
 function findFormatGroupsWithVerseIDs(
@@ -148,25 +148,49 @@ export function highlightVerses(verses: Verse[], chapterParams: ChapterParams) {
 }
 
 function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
+  console.log(parseSubdomain().soglo);
+
+
   const s = verseNotea?.map(vN => {
     if (vN.notes) {
-      const sortedNotes = _groupBy(vN.notes, note => {
-        if (
-          note.formatTag.offsets === '' ||
-          note.formatTag.offsets === undefined
-        ) {
-          return note.id;
-        }
+      let sortedNotes: Dictionary<Note[]>;
+      if (parseSubdomain().soglo) {
+        sortedNotes = _groupBy(vN.notes, note => {
+          return note.sup
+        });
+        console.log(Object.keys(sortedNotes));
 
-        return note.formatTag.offsets;
-      });
 
-      vN.noteGroups = Array.from(Object.keys(sortedNotes)).map(key => {
-        const notes = sortedNotes[key].sort(
-          (a, b) => a.noteType - b.noteType,
-        );
-        return new VerseNoteGroup(notes, '');
-      });
+        vN.noteGroups = (Array.from(Object.keys(sortedNotes)).map(key => {
+          const notes = sortedNotes[key]
+          const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : ''
+          return new VerseNoteGroup(notes, '', sup);
+        }))
+        console.log(vN.noteGroups.map(n=> n.sup));
+console.log(vN.noteGroups);
+
+      }
+      else {
+
+        sortedNotes = _groupBy(vN.notes, note => {
+          if (
+            note.formatTag.offsets === '' ||
+            note.formatTag.offsets === undefined
+          ) {
+            return note.id;
+          }
+
+          return note.formatTag.offsets;
+        });
+
+        vN.noteGroups = Array.from(Object.keys(sortedNotes)).map(key => {
+          const notes = sortedNotes[key].sort(
+            (a, b) => a.noteType - b.noteType,
+          );
+          return new VerseNoteGroup(notes, '');
+        });
+      }
+
     }
   })
   return of(s)

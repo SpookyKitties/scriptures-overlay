@@ -78,12 +78,13 @@ export class VerseNoteGroup {
   public num?: string;
   public media?: boolean;
 
-  public constructor(notes: Note[], id: string) {
+  public constructor(notes: Note[], id: string, sup?: string) {
     // this.offsets =
     // note.formatTag.offsets && note.formatTag.offsets !== ''
     // ? note.formatTag.offsets
     // : '100000';
     this.id = id;
+    this.sup = sup;
     notes.filter(n => n.formatTag.url);
 
     // this.notePhrase = note.phrase ? note.phrase : '';

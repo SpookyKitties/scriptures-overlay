@@ -1,4 +1,4 @@
-import { flatten } from 'lodash';
+import { flatten, uniqBy } from 'lodash';
 import { Component, MouseEvent, CSSProperties } from 'react';
 import { Chapter } from '../../oith-lib/src/models/Chapter';
 import {
@@ -105,9 +105,10 @@ export class VerseNoteGroupComponent extends Component<{
           }}
         >
           {flatten(
-            this.props.noteGroup.notes
-              .filter(nt => nt.formatTag.visible)
-              .map(nt => nt.ref.filter(ref => ref.vis)),
+            uniqBy(
+              this.props.noteGroup.notes.filter(nt => nt.formatTag.visible),
+              n => n.id,
+            ).map(nt => nt.ref.filter(ref => ref.vis)),
           )
             .sort((a, b) => sortNoteRefs(a, b))
             .map(ref => {

@@ -11,7 +11,6 @@ function resetNotes(
   chapter: Chapter, //import("c:/users/jared/source/repos/scriptures-overlay/oith-lib/src/models/Chapter").Chapter
 ) {
   chapter.verseNotes.map(verseNote => {
-    let mediaCount = 0;
     const v = verseNote.noteGroups.map((noteGroup, i) => {
       const refs = noteGroup.notes.filter(
         n => n.ref.find(r => r.text.includes('video')) !== undefined,
@@ -19,12 +18,11 @@ function resetNotes(
       noteGroup.media = false;
 
       if (refs.length === 0) {
-        setSogloSup(verseNote, i - mediaCount, noteGroup);
+        setSogloSup(verseNote, i, noteGroup);
       } else {
         const splitid = verseNote.id.split('-');
         noteGroup.num = `${splitid[splitid.length - 3]}`;
         noteGroup.sup = '';
-        mediaCount = mediaCount + 1;
         noteGroup.media = true;
       }
       const v = noteGroup.notes.map(note => {
@@ -64,13 +62,14 @@ function setSogloSup(
   if (parseSubdomain().soglo) {
     const splitid = verseNote.id.split('-');
     const num = `${splitid[splitid.length - 3]}`;
-    const sup = `${String.fromCharCode(97 + i)}`;
-    noteGroup.sup = sup;
+    // const sup = noteGroup.notes[0].sup;
+
+    // noteGroup.sup = sup;
     noteGroup.num = num;
-    noteGroup.notes.map(n => {
-      n.sup = sup;
-      n.num = num;
-    });
+    // noteGroup.notes.map(n => {
+    //   n.sup = sup;
+    //   n.num = num;
+    // });
   }
 }
 
