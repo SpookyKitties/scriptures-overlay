@@ -10,10 +10,23 @@ import {
 function resetNotes(
   chapter: Chapter, //import("c:/users/jared/source/repos/scriptures-overlay/oith-lib/src/models/Chapter").Chapter
 ) {
+  let mediaCount = 0;
   chapter.verseNotes.map(verseNote => {
     const v = verseNote.noteGroups.map((noteGroup, i) => {
-      setSogloSup(verseNote, i, noteGroup);
+      const refs = noteGroup.notes.filter(
+        n => n.ref.find(r => r.text.includes('video')) !== undefined,
+      );
+      noteGroup.media = false;
 
+      if (refs.length === 0) {
+        setSogloSup(verseNote, i - mediaCount, noteGroup);
+      } else {
+        const splitid = verseNote.id.split('-');
+        noteGroup.num = `${splitid[splitid.length - 3]}`;
+        noteGroup.sup = '';
+        mediaCount = mediaCount + 1;
+        noteGroup.media = true;
+      }
       const v = noteGroup.notes.map(note => {
         note.formatTag.visible =
           appSettings.settings.vis[`nt-${note.noteType}`] === true;

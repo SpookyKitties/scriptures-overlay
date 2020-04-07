@@ -168,6 +168,15 @@ body {
   display: grid !important;
   grid-template-columns: 30px 1fr;
 }
+.soglo-media {
+  video,
+  img {
+    width: 90%;
+  }
+  .ref-label {
+    display: none;
+  }
+}
 .verse-note.soglo {
   .short-title {
     display: none !important;
