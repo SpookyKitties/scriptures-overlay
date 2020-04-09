@@ -80,6 +80,10 @@ format-group {
   .uppercase {
     letter-spacing: 0.025em;
     text-transform: uppercase;
+    sup {
+      text-transform: lowercase;
+      letter-spacing: initial;
+    }
   }
   .body {
     text-align: left;

@@ -208,6 +208,18 @@ export class FormatTag extends Component<{
     }
     return <></>;
   }
+  hasLetters() {
+    const hasVis = (note: Note[]) => {
+      return note.filter(n => n.formatTag.visible);
+    };
+    return flatten(
+      flatten(
+        (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
+          .filter(n => Array.isArray(n.notes))
+          .map(n => hasVis(n.notes)),
+      ).map(n => n.sup),
+    );
+  }
   renderLetters() {
     if (this.state && parseSubdomain().soglo) {
       const hasLetters = () => {

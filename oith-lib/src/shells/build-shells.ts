@@ -148,7 +148,6 @@ export function highlightVerses(verses: Verse[], chapterParams: ChapterParams) {
 }
 
 function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
-  console.log(parseSubdomain().soglo);
 
 
   const s = verseNotea?.map(vN => {
@@ -158,7 +157,6 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
         sortedNotes = _groupBy(vN.notes, note => {
           return note.sup
         });
-        console.log(Object.keys(sortedNotes));
 
 
         vN.noteGroups = (Array.from(Object.keys(sortedNotes)).map(key => {
@@ -166,8 +164,6 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
           const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : ''
           return new VerseNoteGroup(notes, '', sup);
         }))
-        console.log(vN.noteGroups.map(n=> n.sup));
-console.log(vN.noteGroups);
 
       }
       else {
