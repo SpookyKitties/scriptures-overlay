@@ -186,10 +186,24 @@ body {
   .note {
     display: inline !important;
     margin: 0px !important;
+    .note-reference.gs ~ .note-reference {
+
+        div {
+          strong
+          {
+            strong
+            {
+              display: block;
+              text-align: center;
+            }
+          }
+        }
+    }
     .note-reference {
       div {
         width: 90%;
         display: inline-block;
+
       }
       // display: inline !important;
       // margin-top: 0px !important;

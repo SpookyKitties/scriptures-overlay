@@ -182,6 +182,9 @@ function sortVerseNoteGroups(
   verseNoteGroupA: VerseNoteGroup,
   verseNoteGroupB: VerseNoteGroup,
 ) {
+  if (parseSubdomain().soglo) {
+    return ( verseNoteGroupA.sup.charCodeAt(0)-65) - (verseNoteGroupB.sup.charCodeAt(0) - 65);
+  }
   const getFirstOffset = (vng: VerseNoteGroup) => {
     if (vng.formatTag.offsets === 'all') {
       return -1;

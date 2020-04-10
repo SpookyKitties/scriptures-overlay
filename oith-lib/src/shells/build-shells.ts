@@ -155,12 +155,21 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
       let sortedNotes: Dictionary<Note[]>;
       if (parseSubdomain().soglo) {
         sortedNotes = _groupBy(vN.notes, note => {
-          return note.sup
+          if (
+            note.formatTag.offsets === '' ||
+            note.formatTag.offsets === undefined
+          ) {
+            return note.id;
+          }
+
+          return note.formatTag.offsets && note.sup;
         });
 
 
         vN.noteGroups = (Array.from(Object.keys(sortedNotes)).map(key => {
           const notes = sortedNotes[key]
+          console.log(notes.map(n=>n.sup));
+
           const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : ''
           return new VerseNoteGroup(notes, '', sup);
         }))
@@ -179,7 +188,7 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
           return note.formatTag.offsets;
         });
 
-        vN.noteGroups = Array.from(Object.keys(sortedNotes)).map(key => {
+        vN.noteGroups =  Array.from(Object.keys(sortedNotes)).map(key => {
           const notes = sortedNotes[key].sort(
             (a, b) => a.noteType - b.noteType,
           );
