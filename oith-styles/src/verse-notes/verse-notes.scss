@@ -187,24 +187,20 @@ body {
     display: inline !important;
     margin: 0px !important;
     .note-reference.gs ~ .note-reference {
-
-        div {
-          strong
-          {
-            strong
-            {
-              display: block;
-              text-align: center;
-            }
+      div {
+        strong {
+          strong {
+            display: block;
+            text-align: center;
           }
         }
+      }
     }
     .note-reference {
       div {
         margin-top: 6pt;
         width: 90%;
         display: inline-block;
-
       }
       // display: inline !important;
       // margin-top: 0px !important;
@@ -227,10 +223,12 @@ body {
           display: none !important;
         }
       }
-
-      a,
-      &.TG,
       &.GS {
+        color: black !important;
+        text-decoration: none;
+      }
+      a,
+      &.TG {
         color: #177c9c !important;
         text-decoration: none;
         &:hover {
