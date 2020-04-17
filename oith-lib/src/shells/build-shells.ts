@@ -162,17 +162,23 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
             return note.id;
           }
 
-          return note.formatTag.offsets && note.sup;
+          return `${note.sup}--${note.formatTag.offsets}`;
         });
 
 
         vN.noteGroups = (Array.from(Object.keys(sortedNotes)).map(key => {
           const notes = sortedNotes[key]
-          console.log(notes.map(n=>n.sup));
+
+          // console.log(notes.map(n => n.sup));
+
 
           const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : ''
+          // console.log(sup);
+
           return new VerseNoteGroup(notes, '', sup);
         }))
+        console.log(vN.noteGroups);
+
 
       }
       else {
@@ -188,16 +194,20 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
           return note.formatTag.offsets;
         });
 
-        vN.noteGroups =  Array.from(Object.keys(sortedNotes)).map(key => {
+        vN.noteGroups = Array.from(Object.keys(sortedNotes)).map(key => {
           const notes = sortedNotes[key].sort(
             (a, b) => a.noteType - b.noteType,
           );
-          return new VerseNoteGroup(notes, '');
+          const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : ''
+
+          return new VerseNoteGroup(notes, '', sup);
         });
       }
 
     }
   })
+  console.log(s);
+
   return of(s)
 }
 
