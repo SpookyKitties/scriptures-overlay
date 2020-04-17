@@ -110,7 +110,7 @@ export class VerseNoteGroupComponent extends Component<{
               n => n.id,
             ).map(nt => nt.ref.filter(ref => ref.vis)),
           )
-            .sort((a, b) => sortNoteRefs(a, b))
+            .sort((a, b) => (parseSubdomain().soglo ? 1 : sortNoteRefs(a, b)))
             .map(ref => {
               return (
                 <p
@@ -183,7 +183,11 @@ function sortVerseNoteGroups(
   verseNoteGroupB: VerseNoteGroup,
 ) {
   if (parseSubdomain().soglo) {
-    return ( verseNoteGroupA.sup.charCodeAt(0)-65) - (verseNoteGroupB.sup.charCodeAt(0) - 65);
+    return (
+      verseNoteGroupA.sup.charCodeAt(0) -
+      65 -
+      (verseNoteGroupB.sup.charCodeAt(0) - 65)
+    );
   }
   const getFirstOffset = (vng: VerseNoteGroup) => {
     if (vng.formatTag.offsets === 'all') {
