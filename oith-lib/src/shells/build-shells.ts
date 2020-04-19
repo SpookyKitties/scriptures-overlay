@@ -146,6 +146,16 @@ export function highlightVerses(verses: Verse[], chapterParams: ChapterParams) {
     highlightContext(verses, chapterParams, 'context');
   }
 }
+function getSup(note: Note) {
+  if (note.sup) {
+    return note.sup
+  }
+  if (note.lSup) {
+
+    return note.lSup
+  }
+  return 'undefined'
+}
 
 function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
 
@@ -162,7 +172,9 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
             return note.id;
           }
 
-          return `${note.sup}--${note.formatTag.offsets}`;
+          console.log(`${getSup(note)}-${note.formatTag.offsets}`);
+
+          return `${getSup(note)}-${note.formatTag.offsets}`;
         });
 
 
@@ -172,8 +184,10 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
 
 
           const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : ''
+          const lSup = notes.length > 0 && notes[0].lSup !== undefined ? notes[0].lSup : ''
 
-          return new VerseNoteGroup(notes, '', sup);
+
+          return new VerseNoteGroup(notes, '', sup, lSup);
         }))
 
 

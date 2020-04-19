@@ -179,6 +179,15 @@ export class VerseNoteGroupComponent extends Component<{
     return { display: `${sg && vis ? 'initial' : 'none'}` };
   }
 }
+function getSup(note: { lSup?: string; sup?: string }) {
+  if (note.sup) {
+    return note.sup;
+  }
+  if (note.lSup) {
+    return note.lSup;
+  }
+  return 'undefined';
+}
 
 function sortVerseNoteGroups(
   verseNoteGroupA: VerseNoteGroup,
@@ -186,9 +195,9 @@ function sortVerseNoteGroups(
 ) {
   if (parseSubdomain().soglo) {
     return (
-      verseNoteGroupA.sup.charCodeAt(0) -
+      getSup(verseNoteGroupA).charCodeAt(0) -
       65 -
-      (verseNoteGroupB.sup.charCodeAt(0) - 65)
+      (getSup(verseNoteGroupB).charCodeAt(0) - 65)
     );
   }
   const getFirstOffset = (vng: VerseNoteGroup) => {

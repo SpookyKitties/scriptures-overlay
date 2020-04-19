@@ -42,6 +42,7 @@ export class Note extends Doc {
   public noteType: number;
   public sup?: string;
   public num?: string;
+  public lSup?: string;
   // public docType: DocType = DocType.NOTE;
   public constructor(
     vid: string,
@@ -77,14 +78,16 @@ export class VerseNoteGroup {
   public offsets: string;
   public num?: string;
   public media?: boolean;
+  public lSup?: string;
 
-  public constructor(notes: Note[], id: string, sup?: string) {
+  public constructor(notes: Note[], id: string, sup?: string, lSup?: string) {
     // this.offsets =
     // note.formatTag.offsets && note.formatTag.offsets !== ''
     // ? note.formatTag.offsets
     // : '100000';
     this.id = id;
     this.sup = sup;
+    this.lSup = lSup;
     notes.filter(n => n.formatTag.url);
 
     // this.notePhrase = note.phrase ? note.phrase : '';

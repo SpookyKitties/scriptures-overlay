@@ -7,6 +7,7 @@ import {
   VerseNote,
   VerseNoteGroup,
 } from '../oith-lib/src/verse-notes/verse-note';
+
 function resetNotes(
   chapter: Chapter, //import("c:/users/jared/source/repos/scriptures-overlay/oith-lib/src/models/Chapter").Chapter
 ) {

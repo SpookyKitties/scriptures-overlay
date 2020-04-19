@@ -20,7 +20,11 @@ export function scrollIntoView(chapter?: Chapter) {
 
       if (c && c.params && c.params.highlight && !c.history) {
         return of(
-          document.querySelector(`.highlight,.context,#${c.params.highlight}`),
+          document.querySelector(
+            `.highlight,.context${
+              /^\d/.test(c.params.highlight) ? '' : `,#${c.params.highlight}`
+            }`,
+          ),
         ).pipe(
           filter(o => o !== null),
           map(o => o.scrollIntoView()),
