@@ -24,36 +24,40 @@ function resetNotes(
         noteGroup.num = `${splitid[splitid.length - 3]}`;
         noteGroup.sup = '';
         noteGroup.media = true;
+
       }
-      const v = noteGroup.notes.map(note => {
-        note.formatTag.visible =
-          appSettings.settings.vis[`nt-${note.noteType}`] === true;
+      noteGroup.id = `verse-note-group-${noteGroup.num}${noteGroup.sup}`
+      // console.log(`verse-note-group-${noteGroup.num}${noteGroup.sup}`);
 
-        if (note.formatTag.visible) {
-          const refVis = note.ref.map(ref => {
-            if (ref.label.includes('🔊')) {
-              const p = appSettings.noteSettings.addSettings.find(
-                ns => ns.additionalcontent === 'pronunciation',
-              );
-              if (p && p.enabled === false) {
-                return (ref.vis =
-                  appSettings.settings.vis[`nc-${ref.category}`] === true);
-              }
-              return (ref.vis = false);
-            }
-            return (ref.vis =
-              appSettings.settings.vis[`nc-${ref.category}`] === true);
-          });
-
-          note.formatTag.visible = refVis.includes(true);
-        }
-        return note.formatTag.visible;
-      });
+      const v = checkNoteVisiblity(noteGroup);
       return (noteGroup.formatTag.visible = v.includes(true));
     });
     verseNote.vis = v.includes(true);
   });
 }
+function checkNoteVisiblity(noteGroup: VerseNoteGroup) {
+  return noteGroup.notes.map(note => {
+    note.formatTag.visible =
+      appSettings.settings.vis[`nt-${note.noteType}`] === true;
+    if (note.formatTag.visible) {
+      const refVis = note.ref.map(ref => {
+        if (ref.label.includes('🔊')) {
+          const p = appSettings.noteSettings.addSettings.find(ns => ns.additionalcontent === 'pronunciation');
+          if (p && p.enabled === false) {
+            return (ref.vis =
+              appSettings.settings.vis[`nc-${ref.category}`] === true);
+          }
+          return (ref.vis = false);
+        }
+        return (ref.vis =
+          appSettings.settings.vis[`nc-${ref.category}`] === true);
+      });
+      note.formatTag.visible = refVis.includes(true);
+    }
+    return note.formatTag.visible;
+  });
+}
+
 function setSogloSup(
   verseNote: VerseNote,
   i: number,

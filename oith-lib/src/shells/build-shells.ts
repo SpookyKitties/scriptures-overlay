@@ -169,15 +169,12 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
         vN.noteGroups = (Array.from(Object.keys(sortedNotes)).map(key => {
           const notes = sortedNotes[key]
 
-          // console.log(notes.map(n => n.sup));
 
 
           const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : ''
-          // console.log(sup);
 
           return new VerseNoteGroup(notes, '', sup);
         }))
-        console.log(vN.noteGroups);
 
 
       }
@@ -206,7 +203,6 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
 
     }
   })
-  console.log(s);
 
   return of(s)
 }

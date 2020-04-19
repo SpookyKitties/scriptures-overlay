@@ -73,7 +73,7 @@ export class VerseNoteGroupComponent extends Component<{
   render() {
     return (
       <div
-        className={`verse-note-group ${
+        className={`verse-note-group ${this.props.noteGroup.id} ${
           this.props.noteGroup.media ? 'soglo-media' : ''
         } ${this.props.soglo ? 'soglo' : ''} ${
           this.props.noteGroup.formatTag.visible ? '' : 'none'
@@ -95,8 +95,10 @@ export class VerseNoteGroupComponent extends Component<{
         <span
           style={this.displayOnSoglo(this.props.soglo, this.props.noteGroup)}
         >
-          {this.props.noteGroup.num}
-          {this.props.noteGroup.sup}
+          <span className={`soglo-num`}>
+            {this.props.noteGroup.num}
+            {this.props.noteGroup.sup}
+          </span>
         </span>
         <div
           className={`note`}
