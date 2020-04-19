@@ -186,7 +186,7 @@ function getSup(note: { lSup?: string; sup?: string }) {
   if (note.lSup) {
     return note.lSup;
   }
-  return 'undefined';
+  return '-';
 }
 
 function sortVerseNoteGroups(
