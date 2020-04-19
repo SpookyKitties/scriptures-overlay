@@ -250,7 +250,11 @@ function renderFormatGroup(grp: FormatGroup | VersePlaceholder | FormatText) {
           return <li>{renderFormatGroups(formatGroup.grps)}</li>;
         }
         case 'section': {
-          return <section>{renderFormatGroups(formatGroup.grps)}</section>;
+          return (
+            <section {...(attrs ? attrs : {})}>
+              {renderFormatGroups(formatGroup.grps)}
+            </section>
+          );
         }
         case 'figcaption': {
           return (
