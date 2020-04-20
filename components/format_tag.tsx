@@ -220,6 +220,27 @@ export class FormatTag extends Component<{
       ).map(n => n.sup),
     );
   }
+
+  hasLSup() {
+    if (this.state && parseSubdomain().soglo) {
+      const hasVis = (note: Note[]) => {
+        return note.filter(n => n.formatTag.visible);
+      };
+      const l =
+        flatten(
+          flatten(
+            (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
+              .filter(n => Array.isArray(n.notes))
+              .map(n => hasVis(n.notes)),
+          )
+            .filter(n => n.lSup !== undefined)
+            .map(n => n.lSup),
+        ).length > 0;
+
+      return l ? 'has-lsup' : '';
+    }
+    return '';
+  }
   renderLetters() {
     if (this.state && parseSubdomain().soglo) {
       const hasLetters = () => {
@@ -242,7 +263,10 @@ export class FormatTag extends Component<{
   public render() {
     return (
       <span
-        className={`${displayStateKey(this.state, 'classList')} `}
+        className={`${displayStateKey(
+          this.state,
+          'classList',
+        )} ${this.hasLSup()}`}
         style={this.style}
         data-offset={`${this.state ? this.state['offset'] : ''}`}
         onClick={evt => {

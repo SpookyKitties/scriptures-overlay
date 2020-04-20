@@ -84,6 +84,8 @@
 .all.highlight {
   border-bottom: 1px solid #f68d2e;
 }
+.f-t {
+}
 
 .soglo-chapter {
   f-t,
@@ -96,6 +98,9 @@
       border-bottom-color: unset;
     }
     &.ref-double {
+      &.has-lsup {
+        color: maroon !important;
+      }
       color: #177c9c !important;
       border-bottom: none !important;
       text-decoration: none !important;
@@ -147,6 +152,9 @@
       }
     }
     &.ref-single {
+      &.has-lsup {
+        color: maroon !important;
+      }
       // border-bottom: 1px solid grey;
       color: #177c9c !important;
       .hide-underline & {
