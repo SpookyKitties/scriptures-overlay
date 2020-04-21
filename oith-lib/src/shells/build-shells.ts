@@ -148,11 +148,11 @@ export function highlightVerses(verses: Verse[], chapterParams: ChapterParams) {
 }
 function getSup(note: Note) {
   if (note.sup) {
-    return note.sup
+    return `sup-${note.sup}`
   }
   if (note.lSup) {
 
-    return note.lSup
+    return `lsup-${note.lSup}`
   }
   return 'undefined'
 }
