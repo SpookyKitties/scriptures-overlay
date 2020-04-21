@@ -172,7 +172,6 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
             return note.id;
           }
 
-          console.log(`${getSup(note)}-${note.formatTag.offsets}`);
 
           return `${getSup(note)}-${note.formatTag.offsets}`;
         });
@@ -182,8 +181,9 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
           const notes = sortedNotes[key]
 
 
+          const firstNoteWithASup = notes.length > 0 ? notes.find(n => n.sup !== undefined) : undefined
 
-          const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : ''
+          const sup = firstNoteWithASup ? firstNoteWithASup.sup : ''
           const lSup = notes.length > 0 && notes[0].lSup !== undefined ? notes[0].lSup : ''
 
 

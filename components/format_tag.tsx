@@ -245,7 +245,7 @@ export class FormatTag extends Component<{
     if (this.state && parseSubdomain().soglo) {
       const hasLetters = () => {
         const hasVis = (note: Note[]) => {
-          return note.filter(n => n.formatTag.visible);
+          return note.filter(n => n.formatTag.visible && n.sup !== undefined);
         };
         return flatten(
           flatten(
