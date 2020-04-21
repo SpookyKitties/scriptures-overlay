@@ -185,7 +185,9 @@ export class SearchBoxComponent extends Component {
             const elem = evt.target as HTMLInputElement;
             if (evt.key.toLowerCase() === 'enter') {
               console.log(evt.key);
-              this.lookUp(elem.value);
+              console.log(elem.value);
+
+              this.lookUp(elem.value.toLowerCase());
             }
           }}
         />
