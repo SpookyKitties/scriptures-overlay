@@ -95,7 +95,11 @@ export class VerseNoteGroupComponent extends Component<{
         <span
           style={this.displayOnSoglo(this.props.soglo, this.props.noteGroup)}
         >
-          <span className={`soglo-num`}>
+          <span
+            className={`soglo-num ${
+              this.props.noteGroup.numVisible ? '' : 'none'
+            }`}
+          >
             {this.props.noteGroup.num}
             {this.props.noteGroup.sup}
           </span>

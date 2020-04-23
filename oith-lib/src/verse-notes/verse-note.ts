@@ -79,6 +79,7 @@ export class VerseNoteGroup {
   public num?: string;
   public media?: boolean;
   public lSup?: string;
+  public numVisible?: boolean;
 
   public constructor(notes: Note[], id: string, sup?: string, lSup?: string) {
     // this.offsets =

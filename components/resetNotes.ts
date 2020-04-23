@@ -7,6 +7,21 @@ import {
   VerseNote,
   VerseNoteGroup,
 } from '../oith-lib/src/verse-notes/verse-note';
+import { groupBy as _groupBy } from 'lodash';
+
+
+function isNumVisible(verseNote: VerseNote) {
+  if (verseNote.vis) {
+    const groups = _groupBy(verseNote.noteGroups.filter(vng => vng.formatTag.visible), vng => vng.id)
+    console.log(groups);
+    Object.keys(groups).map(key => {
+      groups[key].map(g => g.numVisible = false)
+      groups[key][0].numVisible = true
+    })
+
+
+  }
+}
 
 function resetNotes(
   chapter: Chapter, //import("c:/users/jared/source/repos/scriptures-overlay/oith-lib/src/models/Chapter").Chapter
@@ -34,6 +49,7 @@ function resetNotes(
       return (noteGroup.formatTag.visible = v.includes(true));
     });
     verseNote.vis = v.includes(true);
+    isNumVisible(verseNote)
   });
 }
 function checkNoteVisiblity(noteGroup: VerseNoteGroup) {
