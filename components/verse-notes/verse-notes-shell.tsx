@@ -114,7 +114,15 @@ export class VerseNoteGroupComponent extends Component<{
             uniqBy(
               this.props.noteGroup.notes.filter(nt => nt.formatTag.visible),
               n => n.id,
-            ).map(nt => nt.ref.filter(ref => ref.vis)),
+            ).map(nt =>
+              nt.ref.filter(
+                ref =>
+                  ref.vis &&
+                  (ref.moreStill === undefined ||
+                    (ref.moreStill === true &&
+                      this.props.noteGroup.showMoreStill === true)),
+              ),
+            ),
           )
             .sort((a, b) => (parseSubdomain().soglo ? 1 : sortNoteRefs(a, b)))
             .map(ref => {
@@ -170,9 +178,54 @@ export class VerseNoteGroupComponent extends Component<{
               ></a>
             </span>
           </div>
+          <div
+            style={{
+              color: '#177c9c',
+              textDecoration: 'none',
+              textAlign: 'center',
+              marginRight: '10px',
+            }}
+            className={`${
+              this.props.noteGroup.hasMoreStill &&
+              this.props.noteGroup.formatTag.visible &&
+              !this.props.noteGroup.showMoreStill
+                ? ''
+                : 'none'
+            }`}
+            onClick={() => {
+              this.showMore(true);
+            }}
+          >
+            Show More
+          </div>
+          <div
+            onClick={() => {
+              this.showMore(false);
+            }}
+            style={{
+              color: '#177c9c',
+              textDecoration: 'none',
+              textAlign: 'center',
+              marginRight: '10px',
+            }}
+            className={`${
+              this.props.noteGroup.hasMoreStill &&
+              this.props.noteGroup.formatTag.visible &&
+              this.props.noteGroup.showMoreStill
+                ? ''
+                : 'none'
+            }`}
+          >
+            Hide More
+          </div>
         </div>
       </div>
     );
+  }
+
+  private showMore(showMore: boolean) {
+    this.props.noteGroup.showMoreStill = showMore;
+    store.updateNoteVisibility$.next(true);
   }
 
   private displayOnSoglo(

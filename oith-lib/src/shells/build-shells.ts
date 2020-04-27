@@ -39,9 +39,9 @@ function findFormatGroupsWithVerseIDs2(
       if ((grp as VersePlaceholder).v !== undefined) {
         return [(grp as VersePlaceholder)];
       }
-      return findFormatGroupsWithVerseIDs2(grp as FormatGroup)
+      return findFormatGroupsWithVerseIDs2(grp as FormatGroup);
 
-    }))
+    }));
   // return of(formatGroup.grps as (
   //   | FormatGroup
   //   | FormatText
@@ -86,7 +86,7 @@ export function addVersesToBody(chapter: Chapter) {
 
   }));
 
-  return of(addVerses())
+  return of(addVerses());
 
 
   // return findFormatGroupsWithVerseIDs(chapter.body).pipe(
@@ -148,14 +148,18 @@ export function highlightVerses(verses: Verse[], chapterParams: ChapterParams) {
 }
 function getSup(note: Note) {
   if (note.sup) {
-    return `sup-${note.sup}`
+    return `sup-${note.sup}`;
   }
   if (note.lSup) {
 
-    return `lsup-${note.lSup}`
+    return `lsup-${note.lSup}`;
   }
-  return 'undefined'
+  return 'undefined';
 }
+
+const hasMoreStillNotes = (notes: Note[]) => {
+  return notes.filter(note => note.ref.filter(ref => ref.moreStill === true).length > 0).length > 0;
+};
 
 function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
 
@@ -178,17 +182,20 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
 
 
         vN.noteGroups = (Array.from(Object.keys(sortedNotes)).map(key => {
-          const notes = sortedNotes[key]
+          const notes = sortedNotes[key];
 
 
-          const firstNoteWithASup = notes.length > 0 ? notes.find(n => n.sup !== undefined) : undefined
+          const firstNoteWithASup = notes.length > 0 ? notes.find(n => n.sup !== undefined) : undefined;
 
-          const sup = firstNoteWithASup ? firstNoteWithASup.sup : ''
-          const lSup = notes.length > 0 && notes[0].lSup !== undefined ? notes[0].lSup : ''
+          const sup = firstNoteWithASup ? firstNoteWithASup.sup : '';
+          const lSup = notes.length > 0 && notes[0].lSup !== undefined ? notes[0].lSup : '';
 
 
-          return new VerseNoteGroup(notes, '', sup, lSup);
-        }))
+          console.log(hasMoreStillNotes(notes));
+
+
+          return new VerseNoteGroup(notes, '', sup, lSup, hasMoreStillNotes(notes));
+        }));
 
 
       }
@@ -209,16 +216,16 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
           const notes = sortedNotes[key].sort(
             (a, b) => a.noteType - b.noteType,
           );
-          const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : ''
+          const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : '';
 
           return new VerseNoteGroup(notes, '', sup);
         });
       }
 
     }
-  })
+  });
 
-  return of(s)
+  return of(s);
 }
 
 function findAllGrpsWithName(
@@ -296,7 +303,7 @@ function addRefLabel(chapter: Chapter) {
               cat ? cat.label.replace('â˜º', '🔊').replace('DCT', '🔍') : 'ERR'
               }\u00a0`;
           });
-        })
+        });
       });
       // return of(chapter.verseNotes).pipe(
       //   filter(o => o !== undefined),
@@ -346,7 +353,7 @@ export interface ChapterParams {
   highlight?: string;
   context?: string;
   lang: string;
-  host: string
+  host: string;
 }
 
 export function parseChapterParams(

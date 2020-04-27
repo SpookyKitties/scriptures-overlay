@@ -25,7 +25,9 @@ export class NoteRef {
   public text?: string;
   public vis?: boolean;
   public label: string;
-  public constructor(noteC: number, text: string) {
+  public moreStill?: boolean;
+  public constructor(noteC: number, text: string, moreStill?: boolean) {
+    this.moreStill = moreStill;
     this.category = noteC;
     this.text = text;
   }
@@ -80,8 +82,11 @@ export class VerseNoteGroup {
   public media?: boolean;
   public lSup?: string;
   public numVisible?: boolean;
+  public hasMoreStill?: boolean;
+  public showMoreStill?: boolean;
 
-  public constructor(notes: Note[], id: string, sup?: string, lSup?: string) {
+  public constructor(notes: Note[], id: string, sup?: string, lSup?: string, hasMoreStill?: boolean
+  ) {
     // this.offsets =
     // note.formatTag.offsets && note.formatTag.offsets !== ''
     // ? note.formatTag.offsets
@@ -89,6 +94,8 @@ export class VerseNoteGroup {
     this.id = id;
     this.sup = sup;
     this.lSup = lSup;
+
+    this.hasMoreStill = hasMoreStill;
     notes.filter(n => n.formatTag.url);
 
     // this.notePhrase = note.phrase ? note.phrase : '';
