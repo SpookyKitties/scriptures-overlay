@@ -12,12 +12,11 @@ import { groupBy as _groupBy } from 'lodash';
 
 function isNumVisible(verseNote: VerseNote) {
   if (verseNote.vis) {
-    const groups = _groupBy(verseNote.noteGroups.filter(vng => vng.formatTag.visible), vng => vng.id)
-    console.log(groups);
+    const groups = _groupBy(verseNote.noteGroups.filter(vng => vng.formatTag.visible), vng => vng.id);
     Object.keys(groups).map(key => {
-      groups[key].map(g => g.numVisible = false)
-      groups[key][0].numVisible = true
-    })
+      groups[key].map(g => g.numVisible = false);
+      groups[key][0].numVisible = true;
+    });
 
 
   }
@@ -42,14 +41,13 @@ function resetNotes(
         noteGroup.media = true;
 
       }
-      noteGroup.id = `verse-note-group-${noteGroup.num}${noteGroup.sup}`
-      // console.log(`verse-note-group-${noteGroup.num}${noteGroup.sup}`);
+      noteGroup.id = `verse-note-group-${noteGroup.num}${noteGroup.sup}`;
 
       const v = checkNoteVisiblity(noteGroup);
       return (noteGroup.formatTag.visible = v.includes(true));
     });
     verseNote.vis = v.includes(true);
-    isNumVisible(verseNote)
+    isNumVisible(verseNote);
   });
 }
 function checkNoteVisiblity(noteGroup: VerseNoteGroup) {

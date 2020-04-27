@@ -26,8 +26,10 @@ export class NoteRef {
   public vis?: boolean;
   public label: string;
   public moreStill?: boolean;
-  public constructor(noteC: number, text: string, moreStill?: boolean) {
+  public more?: boolean;
+  public constructor(noteC: number, text: string, moreStill?: boolean, more?: boolean) {
     this.moreStill = moreStill;
+    this.more = more;
     this.category = noteC;
     this.text = text;
   }

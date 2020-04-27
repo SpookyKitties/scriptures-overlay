@@ -53,6 +53,34 @@ class NoteGroupComponent extends Component {
   }
 }
 
+const sortFilterNoteRefs = (
+  verseNoteGroup: VerseNoteGroup,
+  soglo?: boolean,
+) => {
+  if (soglo) {
+    return flatten(
+      verseNoteGroup.notes
+        .filter(nt => nt.formatTag.visible)
+        .map(nt => refFilter(verseNoteGroup, nt.ref)),
+    );
+  }
+  return flatten(
+    uniqBy(
+      verseNoteGroup.notes.filter(nt => nt.formatTag.visible),
+      n => n.id,
+    ).map(nt => nt.ref),
+  );
+};
+
+const refFilter = (verseNoteGroup: VerseNoteGroup, noteRefs: NoteRef[]) => {
+  if (verseNoteGroup.hasMoreStill && verseNoteGroup.showMoreStill) {
+    console.log(noteRefs.filter(noteRef => noteRef.moreStill && noteRef.vis));
+    return noteRefs.filter(noteRef => noteRef.vis && !noteRef.more);
+  }
+
+  return noteRefs.filter(noteRef => noteRef.vis && !noteRef.moreStill);
+};
+
 function clearOffsets(noteGroup: VerseNoteGroup) {
   if (noteGroup.notes) {
     noteGroup.formatTag.offsets = '';
@@ -110,20 +138,7 @@ export class VerseNoteGroupComponent extends Component<{
             gotoLink(event);
           }}
         >
-          {flatten(
-            uniqBy(
-              this.props.noteGroup.notes.filter(nt => nt.formatTag.visible),
-              n => n.id,
-            ).map(nt =>
-              nt.ref.filter(
-                ref =>
-                  ref.vis &&
-                  (ref.moreStill === undefined ||
-                    (ref.moreStill === true &&
-                      this.props.noteGroup.showMoreStill === true)),
-              ),
-            ),
-          )
+          {sortFilterNoteRefs(this.props.noteGroup, this.props.soglo)
             .sort((a, b) => (parseSubdomain().soglo ? 1 : sortNoteRefs(a, b)))
             .map(ref => {
               return (
@@ -193,6 +208,8 @@ export class VerseNoteGroupComponent extends Component<{
                 : 'none'
             }`}
             onClick={() => {
+              console.log(this.props.noteGroup.notes);
+
               this.showMore(true);
             }}
           >

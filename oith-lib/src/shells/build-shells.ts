@@ -191,7 +191,6 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
           const lSup = notes.length > 0 && notes[0].lSup !== undefined ? notes[0].lSup : '';
 
 
-          console.log(hasMoreStillNotes(notes));
 
 
           return new VerseNoteGroup(notes, '', sup, lSup, hasMoreStillNotes(notes));
