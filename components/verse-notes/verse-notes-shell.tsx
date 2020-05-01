@@ -210,7 +210,7 @@ export class VerseNoteGroupComponent extends Component<{
             onClick={() => {
               console.log(this.props.noteGroup.notes);
 
-              this.showMore(true);
+              this.showMore(true, this.props.noteGroup);
             }}
           >
             Show More
@@ -240,9 +240,11 @@ export class VerseNoteGroupComponent extends Component<{
     );
   }
 
-  private showMore(showMore: boolean) {
-    this.props.noteGroup.showMoreStill = showMore;
-    store.updateNoteVisibility$.next(true);
+  private showMore(showMore: boolean, verseNoteGroup?: VerseNoteGroup) {
+    // this.props.noteGroup.showMoreStill = showMore;
+
+    openFocusNotePane.next(showMore ? verseNoteGroup : undefined);
+    // store.updateNoteVisibility$.next(true);
   }
 
   private displayOnSoglo(
@@ -325,6 +327,7 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
 
 import * as viewport from 'viewport-dimensions';
 import { noteModal } from './note-modal';
+import { openFocusNotePane, FocusedNotePane } from './FocusedNotePane';
 export class VerseNotesShellComponent extends Component<VNProps> {
   public state: { chapter: Chapter; verseNotesHeight: string };
 

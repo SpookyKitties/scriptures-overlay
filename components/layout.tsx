@@ -8,6 +8,7 @@ import { SettingsComponent } from './SettingsComponent';
 import Helmet from 'react-helmet';
 import { MenuOverlay } from './MenuOverlay';
 import { parseSubdomain } from './parseSubdomain';
+import { FocusedNotePane } from './verse-notes/FocusedNotePane';
 // import { oithMain } from "../styles/typed/chapter-layout";
 const oithContentStyles: CSSProperties = {
   height: 'calc(100vh - 48px)',
@@ -95,6 +96,7 @@ const Layout: React.FunctionComponent = ({
         /> */}
       </Helmet>
       <div>h</div>
+      <FocusedNotePane></FocusedNotePane>
       <HeaderComponent></HeaderComponent>
       {children}
       {/* <div className=""></div> */}
