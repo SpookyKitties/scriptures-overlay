@@ -41,39 +41,41 @@ export class FocusedNotePane extends Component {
             }}
           ></div>
           <div id={'focusedNotes'}>
-            {this.state.refs.map(ref => {
-              return (
-                <p
-                  onClick={evt => {
-                    if (
-                      (evt.target as HTMLElement).classList.contains(
-                        'ref-label',
-                      )
-                    ) {
-                      refClick(this.state.verseNoteGroup, ref);
-                    }
-                  }}
-                  className={`note-reference ${ref.label
-                    .trim()
-                    .replace('🔊', 'speaker')} ${ref.vis ? '' : 'none'}`}
-                >
-                  <span className="ref-label">{ref.label}</span>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: ref.text.replace(/\#/g, ''),
-                    }}
+            <div className={'verse-note'}>
+              {this.state.refs.map(ref => {
+                return (
+                  <p
                     onClick={evt => {
-                      const elem = evt.target as HTMLElement;
-
-                      // if (elem) {
-                      //   popupClick(elem);
-                      // }
+                      if (
+                        (evt.target as HTMLElement).classList.contains(
+                          'ref-label',
+                        )
+                      ) {
+                        refClick(this.state.verseNoteGroup, ref);
+                      }
                     }}
-                  ></span>
-                  &nbsp;
-                </p>
-              );
-            })}
+                    className={`note-reference ${ref.label
+                      .trim()
+                      .replace('🔊', 'speaker')} ${ref.vis ? '' : 'none'}`}
+                  >
+                    <span className="ref-label">{ref.label}</span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: ref.text.replace(/\#/g, ''),
+                      }}
+                      onClick={evt => {
+                        const elem = evt.target as HTMLElement;
+
+                        // if (elem) {
+                        //   popupClick(elem);
+                        // }
+                      }}
+                    ></span>
+                    &nbsp;
+                  </p>
+                );
+              })}
+            </div>
           </div>
         </div>
       );

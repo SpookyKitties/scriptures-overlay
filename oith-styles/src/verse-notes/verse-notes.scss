@@ -1,5 +1,6 @@
 app-verse-notes,
 verse-notes,
+#focusedNotes,
 .verse-notes {
   display: block;
   background-color: #f7f8f8;
@@ -182,7 +183,8 @@ body {
     display: none !important;
   }
 }
-.soglo {
+.soglo,
+#focusedNotes {
   .scripture-ref.strong {
     font-weight: 700;
   }
@@ -237,6 +239,7 @@ body {
         color: black !important;
         text-decoration: none;
       }
+
       a,
       &.TG {
         color: #177c9c !important;
@@ -246,5 +249,11 @@ body {
         }
       }
     }
+  }
+}
+
+[class*='-none'] {
+  .ref-label {
+    display: none !important;
   }
 }
