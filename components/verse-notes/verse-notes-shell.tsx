@@ -199,6 +199,7 @@ export class VerseNoteGroupComponent extends Component<{
               textDecoration: 'none',
               textAlign: 'center',
               marginRight: '10px',
+              marginTop: '-10px',
             }}
             className={`${
               this.props.noteGroup.hasMoreStill &&
