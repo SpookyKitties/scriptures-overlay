@@ -81,7 +81,7 @@ const bookNames = [
   ['jarom'],
   ['omni'],
   ['words of mormon', 'w of m', 'w-of-m', 'wofm'],
-  ['moses', 'pgp'],
+  ['moses'],
   ['mosiah', 'mosiah'],
   ['alma'],
   ['helaman', 'hel.', 'hel'],
