@@ -15,7 +15,7 @@ const bookNames = [
   ["1 kings", "1 kgs.", "1 kgs", "1-kgs"],
   ["2 kings", "2 kgs.", "2 kgs", "2-kgs"],
   ["1 chronicles", "1 chron.", "1 chron", "1 chr.", "1 chr", "1-chr"],
-  ["2 chronicles", 2 chron.","2 chron","2 chr.","2 chr","2 - chr"],
+  ["2 chronicles", "2 chron.","2 chron","2 chr.","2 chr","2 - chr"],
   ["ezra"],
     ["nehemiah", "neh.", "neh"],
     ["esther", "esth.", "esth"],
