@@ -11,8 +11,17 @@ import { flatten } from 'lodash';
 import { refClick } from './refClick';
 
 export const openFocusNotePane = new BehaviorSubject<VerseNoteGroup>(undefined);
+
+export function displayState<T, T2 extends keyof T>(state: T, key: T2) {
+  return state && state[key] ? state[key] : '';
+}
 export class FocusedNotePane extends Component {
-  public state: { verseNoteGroup?: VerseNoteGroup; refs?: NoteRef[] };
+  public state: {
+    verseNoteGroup?: VerseNoteGroup;
+    refs?: NoteRef[];
+    sup?: string;
+    num?: string;
+  };
 
   componentDidMount() {
     openFocusNotePane.subscribe(vng => {
@@ -20,11 +29,16 @@ export class FocusedNotePane extends Component {
 
       if (vng) {
         const refs = flatten(
-          vng.notes.map(note =>
-            note.ref.filter(ref => ref.moreStill && ref.vis),
-          ),
+          vng.notes.map(note => note.ref.filter(ref => !ref.more && ref.vis)),
         );
-        this.setState({ refs: refs, verseNoteGroup: vng });
+        console.log(vng);
+
+        this.setState({
+          refs: refs,
+          verseNoteGroup: vng,
+          sup: vng.sup,
+          num: vng.num,
+        });
       } else {
         this.setState({ refs: undefined });
       }
@@ -41,40 +55,54 @@ export class FocusedNotePane extends Component {
             }}
           ></div>
           <div id={'focusedNotes'}>
-            <div className={'verse-note'}>
-              {this.state.refs.map(ref => {
-                return (
-                  <p
-                    onClick={evt => {
-                      if (
-                        (evt.target as HTMLElement).classList.contains(
-                          'ref-label',
-                        )
-                      ) {
-                        refClick(this.state.verseNoteGroup, ref);
-                      }
-                    }}
-                    className={`note-reference ${ref.label
-                      .trim()
-                      .replace('🔊', 'speaker')} ${ref.vis ? '' : 'none'}`}
-                  >
-                    <span className="ref-label">{ref.label}</span>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: ref.text.replace(/\#/g, ''),
-                      }}
+            <div style={{ display: 'grid', gridTemplateColumns: '30px 1fr' }}>
+              <div
+                style={{
+                  display: 'block',
+                  listStyle: 'none',
+                  marginLeft: '20px',
+                  lineHeight: '22.5px',
+                  fontSize: '0.83em',
+                  marginTop: '5px',
+                }}
+              >
+                {displayState(this.state, 'num')}
+                {displayState(this.state, 'sup')}
+              </div>
+              <div className={'verse-note'}>
+                {this.state.refs.map(ref => {
+                  return (
+                    <p
                       onClick={evt => {
-                        const elem = evt.target as HTMLElement;
-
-                        // if (elem) {
-                        //   popupClick(elem);
-                        // }
+                        if (
+                          (evt.target as HTMLElement).classList.contains(
+                            'ref-label',
+                          )
+                        ) {
+                          refClick(this.state.verseNoteGroup, ref);
+                        }
                       }}
-                    ></span>
-                    &nbsp;
-                  </p>
-                );
-              })}
+                      className={`note-reference ${ref.label
+                        .trim()
+                        .replace('🔊', 'speaker')} ${ref.vis ? '' : 'none'}`}
+                    >
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: ref.text.replace(/\#/g, ''),
+                        }}
+                        onClick={evt => {
+                          const elem = evt.target as HTMLElement;
+
+                          // if (elem) {
+                          //   popupClick(elem);
+                          // }
+                        }}
+                      ></span>
+                      &nbsp;
+                    </p>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
