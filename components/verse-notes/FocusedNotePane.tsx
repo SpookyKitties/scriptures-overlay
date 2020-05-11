@@ -98,7 +98,7 @@ export class FocusedNotePane extends Component {
                           // }
                         }}
                       ></span>
-                      &nbsp;
+                      {/* &nbsp; */}
                     </p>
                   );
                 })}

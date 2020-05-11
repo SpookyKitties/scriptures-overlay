@@ -171,7 +171,7 @@ export class VerseNoteGroupComponent extends Component<{
                       console.log(elem);
                     }}
                   ></span>
-                  &nbsp;
+                  {/* &nbsp; */}
                 </p>
               );
             })}
