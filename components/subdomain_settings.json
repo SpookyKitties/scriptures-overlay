@@ -83,6 +83,15 @@
       "beta": true,
       "disclaimer": false,
       "soglo": true
+    },
+    {
+      "matches": ["categories.oneinthinehand.org"],
+      "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
+      "storageURL": "https://oithstorage.blob.core.windows.net/categories/",
+      "settings": "",
+      "beta": true,
+      "disclaimer": false,
+      "soglo": true
     }
   ],
   "backup": {
