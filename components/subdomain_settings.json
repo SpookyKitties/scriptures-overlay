@@ -74,6 +74,8 @@
     {
       "matches": [
         "soglo.oneinthinehand.org",
+        "soglo-eng.oneinthinehand.org",
+        "soglo-tc.oneinthinehand.org",
         "glo.oneinthinehand.org",
         "localhost"
       ],
