@@ -72,15 +72,27 @@
       "soglo": false
     },
     {
-      "matches": [
-        "soglo.oneinthinehand.org",
-        "soglo-eng.oneinthinehand.org",
-        "soglo-tc.oneinthinehand.org",
-        "glo.oneinthinehand.org",
-        "localhost"
-      ],
+      "matches": ["soglo.oneinthinehand.org", "glo.oneinthinehand.org"],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/soglo/",
+      "settings": "",
+      "beta": true,
+      "disclaimer": false,
+      "soglo": true
+    },
+    {
+      "matches": ["soglo-eng.oneinthinehand.org", "localhost"],
+      "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
+      "storageURL": "https://oithstorage.blob.core.windows.net/soglo-eng/",
+      "settings": "",
+      "beta": true,
+      "disclaimer": false,
+      "soglo": true
+    },
+    {
+      "matches": ["soglo-tc.oneinthinehand.org", "localhost"],
+      "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
+      "storageURL": "https://oithstorage.blob.core.windows.net/soglo-tc/",
       "settings": "",
       "beta": true,
       "disclaimer": false,
