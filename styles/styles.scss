@@ -4,6 +4,12 @@
   text-align: right;
   direction: rtl;
 }
+.dropdown-item {
+  font-size: 13px !important;
+  input {
+    margin-right: 10px !important;
+  }
+}
 // .verse-number {
 //   font-weight: bold;
 // }
