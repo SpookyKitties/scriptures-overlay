@@ -147,6 +147,8 @@ export function highlightVerses(verses: Verse[], chapterParams: ChapterParams) {
   }
 }
 function getSup(note: Note) {
+  console.log(note.sup);
+
   if (note.sup) {
     return `sup-${note.sup}`;
   }

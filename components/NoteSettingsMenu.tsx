@@ -78,7 +78,7 @@ const menubtn: CSSProperties = {
 
 export class DevSettings extends Component {
   public render() {
-    if (true) {
+    if (!parseSubdomain().soglo) {
       return (
         <div style={{ backgroundColor: 'inherit' }}>
           <hr />

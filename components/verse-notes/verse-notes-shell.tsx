@@ -128,7 +128,7 @@ export class VerseNoteGroupComponent extends Component<{
               this.props.noteGroup.numVisible ? '' : 'none'
             }`}
           >
-            {this.props.noteGroup.num}
+            {this.props.noteGroup.num?.replace('title1', '')}
             {this.props.noteGroup.sup}
           </span>
         </span>
