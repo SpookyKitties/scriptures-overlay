@@ -156,7 +156,7 @@ export class VerseNoteGroupComponent extends Component<{
                     .trim()
                     .replace('🔊', 'speaker')} ${ref.vis ? '' : 'none'}`}
                 >
-                  <span className="ref-label">{ref.label}</span>
+                  {/* <span className="ref-label">{ref.label}</span> */}
                   <span
                     dangerouslySetInnerHTML={{
                       __html: ref.text.replace(/\#/g, ''),
