@@ -5,7 +5,7 @@ import { flatMap$ } from '../../oith-lib/src/rx/flatMap$';
 import { Note, NoteRef } from '../../oith-lib/src/verse-notes/verse-note';
 import { NoteType } from '../../oith-lib/src/verse-notes/settings/note-gorup-settings';
 import FileSaver from 'file-saver';
-import { sortBy } from 'lodash';
+import { first, orderBy, sortBy } from 'lodash';
 import { Chapter } from '../../oith-lib/src/models/Chapter';
 
 function noteRefsToString(noteRefs: NoteRef[]) {
@@ -49,47 +49,6 @@ const docstart = (id: string) =>
 const docend = `</body></html>`;
 export function exportNotes() {
   return newExportNotes();
-  return of(document.querySelectorAll('.checked-overlay')).pipe(
-    flatMap(o => o),
-    map(o => o.className.split(' ')),
-    flatMap$,
-    filter(o => o.startsWith('overlay')),
-    map(o =>
-      appSettings.noteTypes.noteTypes.find(
-        noteType => noteType.className === o,
-      ),
-    ),
-    filter(o => o !== undefined),
-    toArray(),
-    map(noteTypes => {
-      return store.chapter.pipe(
-        take(1),
-        filter(o => o !== undefined),
-        map(chapter => {
-          if (chapter.verseNotes) {
-            const fileTxt = `${docstart(chapter.id)}${verseNotesFromShell(
-              chapter,
-            )
-              .map(verseNote => {
-                return `<verse-notes id="${verseNote.id}">${verseNote.notes
-                  .map(note => notesToString(note, noteTypes))
-                  .join('')}</verse-notes>`;
-              })
-              .join('')}${docend}`;
-
-            const blob = new Blob([fileTxt], {
-              type: 'text/html;charset=utf=8',
-            });
-
-            FileSaver.saveAs(blob, 'test.xml');
-            return fileTxt;
-          }
-          return '';
-        }),
-      );
-    }),
-    flatMap$,
-  );
 }
 
 function getBooksChapters() {
@@ -103,15 +62,15 @@ function getBooksChapters() {
         const chapters = await store.database
           .allDocs$()
           .pipe(
-            map(o =>
-              o.rows
+            map(o => {
+              return o.rows
                 .filter(r =>
                   r.id.startsWith(`${lang}-${location.pathname.split('/')[1]}`),
                 )
                 .map(c => {
                   return { id: c.id, rev: c.value.rev };
-                }),
-            ),
+                });
+            }),
           )
           .toPromise();
 
@@ -133,6 +92,18 @@ const chapterTxt = (chapter: Chapter, noteTypes: NoteType[]) => {
     })
     .join('')}</chapter>`;
 };
+
+function buildFileName() {
+  const overlays = Array.from(document.querySelectorAll('.checked-overlay'))
+    .map(chkBox => {
+      const className = first(
+        chkBox.className.split(' ').filter(cN => cN.startsWith('overlay')),
+      );
+      return className.replace('overlay-', '').replace('-note', '');
+    })
+    .join('-');
+  return `overlay-${overlays}-${location.pathname.split('/')[1]}-offsets.html`;
+}
 export function newExportNotes() {
   return of(document.querySelectorAll('.checked-overlay')).pipe(
     flatMap(o => o),
@@ -149,21 +120,25 @@ export function newExportNotes() {
     map(noteTypes => {
       return getBooksChapters().pipe(
         map(chapters => {
-          const chaptersTxt = sortBy(chapters, c => c.id.split[1]).map(
-            chapter => {
-              if (chapter.verseNotes) {
-                return chapterTxt(chapter, noteTypes);
-              }
-              return '';
-            },
-          );
+          const chaptersTxt = sortBy(chapters, c => {
+            const idSplit = c.id.split('-');
+
+            return parseInt(idSplit[idSplit.length - 2], 10);
+          }).map(chapter => {
+            if (chapter.verseNotes) {
+              return chapterTxt(chapter, noteTypes);
+            }
+            return '';
+          });
 
           const fileTxt = `${docstart('id')}${chaptersTxt.join('')}${docend}`;
           const blob = new Blob([fileTxt], {
             type: 'text/html;charset=utf=8',
           });
+          const fileName = buildFileName();
+          console.log(fileName);
 
-          FileSaver.saveAs(blob, 'test.xml');
+          FileSaver.saveAs(blob, fileName);
           return fileTxt;
         }),
       );

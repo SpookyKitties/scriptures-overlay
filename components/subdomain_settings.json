@@ -32,7 +32,8 @@
         "dev.oneinthinehand.org",
         "beta.scripturesproject.review",
         "alpha.scripturesproject.review",
-        "port.oneinthinehand.org"
+        "port.oneinthinehand.org",
+        "localhost"
       ],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
@@ -81,7 +82,7 @@
       "soglo": true
     },
     {
-      "matches": ["soglo-eng.oneinthinehand.org", "localhost"],
+      "matches": ["soglo-eng.oneinthinehand.org"],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/soglo-eng/",
       "settings": "",
@@ -90,7 +91,7 @@
       "soglo": true
     },
     {
-      "matches": ["soglo-tc.oneinthinehand.org", "localhost"],
+      "matches": ["soglo-tc.oneinthinehand.org"],
       "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
       "storageURL": "https://oithstorage.blob.core.windows.net/soglo-tc/",
       "settings": "",
