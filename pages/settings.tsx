@@ -67,7 +67,7 @@ export default class SettimgsPage extends Component {
           onClick={() => {
             this.setState({ progress: true });
             importFiles('#fileUpload')
-              .pipe(map(() => {}))
+              .pipe()
               .subscribe(
                 () => {},
                 () => {},

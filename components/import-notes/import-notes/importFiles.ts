@@ -1,5 +1,12 @@
 import { of, EMPTY } from 'rxjs';
-import { filter, map, flatMap, toArray, bufferCount } from 'rxjs/operators';
+import {
+  filter,
+  map,
+  flatMap,
+  toArray,
+  bufferCount,
+  mergeMap,
+} from 'rxjs/operators';
 import JSZip from 'jszip';
 import { PouchyRx } from './PouchyRx';
 import { Chapter } from '../../../oith-lib/src/models/Chapter';
@@ -11,6 +18,30 @@ export function querySelector<T extends HTMLElement>(selector: string) {
 }
 
 export function unzip(file: File) {
+  const unzip = async () => {
+    const zip = await JSZip.loadAsync(file);
+    const files = Object.keys(zip.files)
+      .filter(n => n.endsWith('.json'))
+      .map(async n => {
+        try {
+          return JSON.parse(await zip.file(n).async('text'));
+        } catch (error) {
+          return EMPTY;
+        }
+      });
+
+    return Promise.all(files);
+  };
+  return of(unzip()).pipe(
+    flatMap(o => {
+      return o;
+    }),
+    map(o => {
+      console.log(o);
+      return o;
+    }),
+    flatMap(o => o),
+  );
   return of(JSZip.loadAsync(file)).pipe(
     flatMap(o => o),
     map(zip => {
@@ -45,8 +76,14 @@ export function importFiles(selector: string) {
       filterZipFiles,
       map(o => unzip(o)),
       flatMap(o => o),
-      bufferCount(100),
-      map((o: Chapter[]) => database.bulkDocs$(o, 'id')),
+
+      bufferCount(10),
+      map((o: Chapter[]) => {
+        console.log(o.filter(i => i.id === undefined));
+        console.log(o.filter(i => i.id !== undefined));
+
+        return database.bulkDocs$(o, 'id');
+      }),
     )
     .pipe(flatMap(o => o));
 }

@@ -87,22 +87,29 @@ export class PouchyRx {
   public bulkDocs$<T, T2 extends keyof T>(docs: T[], idAttr: T2) {
     return this.allDocsRows$<T, T2>().pipe(
       map(allDocs => {
-        const ptepedDocs = docs.map(
-          (doc): DBItem<T> => {
-            const id = (doc[idAttr] as unknown) as string;
-            const savedDoc = allDocs.find(a => a.id === id);
+        try {
+          const preppedDocs = docs.map(
+            (doc): DBItem<T> => {
+              const id = (doc[idAttr] as unknown) as string;
+              const savedDoc = allDocs.find(a => a.id === id);
 
-            return {
-              _id: id,
-              doc: doc,
-              _rev: savedDoc ? savedDoc.value.rev : undefined,
-            };
-          },
-        );
+              return {
+                _id: id,
+                doc: doc,
+                _rev: savedDoc ? savedDoc.value.rev : undefined,
+              };
+            },
+          );
+          // console.log(ptepedDocs);
 
-        return this.db.bulkDocs(ptepedDocs);
+          return this.db.bulkDocs(preppedDocs);
+        } catch (error) {
+          console.log(error);
+        }
       }),
-      flatMap(o => o),
+      flatMap(o => {
+        return o;
+      }),
     );
   }
 
