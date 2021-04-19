@@ -10,9 +10,9 @@ import {
   emptyDir,
   writeFile,
 } from 'fs-extra';
-import { flatMap$ } from './main';
 import normalizePath from 'normalize-path';
 import { map } from 'rxjs/operators';
+import { flatMap$ } from './rx/flatMap$';
 export function readFile$(fileName: string): Observable<Buffer> {
   return of(readFile(fileName)).pipe(flatMap$);
 }
