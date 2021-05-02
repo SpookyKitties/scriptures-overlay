@@ -7,6 +7,7 @@ import { NoteType } from '../../oith-lib/src/verse-notes/settings/note-gorup-set
 import FileSaver from 'file-saver';
 import { first, orderBy, sortBy } from 'lodash';
 import { Chapter } from '../../oith-lib/src/models/Chapter';
+import { NavigationItem } from '../navigation-item';
 
 function noteRefsToString(noteRefs: NoteRef[]) {
   return noteRefs.map(noteRef => {
@@ -104,45 +105,64 @@ function buildFileName() {
     .join('-');
   return `overlay-${overlays}-${location.pathname.split('/')[1]}-offsets.html`;
 }
-export function newExportNotes() {
-  return of(document.querySelectorAll('.checked-overlay')).pipe(
-    flatMap(o => o),
-    map(o => o.className.split(' ')),
-    flatMap$,
-    filter(o => o.startsWith('overlay')),
-    map(o =>
-      appSettings.noteTypes.noteTypes.find(
-        noteType => noteType.className === o,
-      ),
-    ),
-    filter(o => o !== undefined),
-    toArray(),
-    map(noteTypes => {
-      return getBooksChapters().pipe(
-        map(chapters => {
-          const chaptersTxt = sortBy(chapters, c => {
-            const idSplit = c.id.split('-');
 
-            return parseInt(idSplit[idSplit.length - 2], 10);
-          }).map(chapter => {
-            if (chapter.verseNotes) {
-              return chapterTxt(chapter, noteTypes);
-            }
-            return '';
-          });
+function findSort(flatNav: NavigationItem[], chapter: Chapter) {
+  const navItem = flatNav.find(nav => {
+    const navID = nav.href?.replace('/', '-');
+    return chapter.id.includes(`-${navID}-`);
+  });
+  (chapter as any).sort = flatNav.indexOf(navItem);
+}
 
-          const fileTxt = `${docstart('id')}${chaptersTxt.join('')}${docend}`;
-          const blob = new Blob([fileTxt], {
-            type: 'text/html;charset=utf=8',
-          });
-          const fileName = buildFileName();
-          console.log(fileName);
+const sortChapters = map((chapters: Chapter[]) => {
+  return appSettings.flatNavigation$.pipe(
+    map(flatNav => {
+      chapters.map(chapter => findSort(flatNav, chapter));
 
-          FileSaver.saveAs(blob, fileName);
-          return fileTxt;
-        }),
-      );
+      return sortBy(chapters, chapter => (chapter as any).sort);
     }),
-    flatMap(o => o),
   );
+});
+
+export function newExportNotes() {
+  return of(document.querySelectorAll('.checked-overlay'))
+    .pipe(
+      flatMap(o => o),
+      map(o => o.className.split(' ')),
+      flatMap$,
+      filter(o => o.startsWith('overlay')),
+      map(o =>
+        appSettings.noteTypes.noteTypes.find(
+          noteType => noteType.className === o,
+        ),
+      ),
+      filter(o => o !== undefined),
+      toArray(),
+      map(async noteTypes => {
+        return getBooksChapters().pipe(
+          sortChapters,
+          flatMap$,
+          map(chapters => {
+            const chaptersTxt = chapters.map(chapter => {
+              if (chapter.verseNotes) {
+                return chapterTxt(chapter, noteTypes);
+              }
+              return '';
+            });
+
+            const fileTxt = `${docstart('id')}${chaptersTxt.join('')}${docend}`;
+            const blob = new Blob([fileTxt], {
+              type: 'text/html;charset=utf=8',
+            });
+            const fileName = buildFileName();
+            console.log(fileName);
+
+            FileSaver.saveAs(blob, fileName);
+            return fileTxt;
+          }),
+        );
+      }),
+      flatMap(o => o),
+    )
+    .pipe(flatMap(o => o));
 }

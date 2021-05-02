@@ -9,22 +9,23 @@ import {
   NoteCategories,
   NoteTypes,
 } from '../oith-lib/src/verse-notes/settings/note-gorup-settings';
+import { flattenPrimaryManifest } from './flattenPrimaryManifest';
 import { NavigationItem } from './navigation-item';
 import { parseSubdomain } from './parseSubdomain';
 import { resetNotes$ } from './resetNotes';
 import { Settings } from './Settings';
 
-const flattenPrimaryManifest = (navItem: NavigationItem): NavigationItem[] => {
-  if (Array.isArray(navItem.navigationItems)) {
-    return flatten(
-      navItem.navigationItems
-        .map(nI => flattenPrimaryManifest(nI))
-        .concat([navItem]),
-    );
-  }
+// const flattenPrimaryManifest = (navItem: NavigationItem): NavigationItem[] => {
+//   if (Array.isArray(navItem.navigationItems)) {
+//     return flatten(
+//       navItem.navigationItems
+//         .map(nI => flattenPrimaryManifest(nI))
+//         .concat([navItem]),
+//     );
+//   }
 
-  return [navItem];
-};
+//   return [navItem];
+// };
 
 export class AppSettings {
   public settings: Settings;
