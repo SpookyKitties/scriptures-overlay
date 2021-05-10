@@ -74,7 +74,7 @@ const sortFilterNoteRefs = (
 
 const refFilter = (verseNoteGroup: VerseNoteGroup, noteRefs: NoteRef[]) => {
   if (verseNoteGroup.hasMoreStill && verseNoteGroup.showMoreStill) {
-    console.log(noteRefs.filter(noteRef => noteRef.moreStill && noteRef.vis));
+    // console.log(noteRefs.filter(noteRef => noteRef.moreStill && noteRef.vis));
     return noteRefs.filter(noteRef => noteRef.vis && !noteRef.more);
   }
 
@@ -97,6 +97,7 @@ function clearOffsets(noteGroup: VerseNoteGroup) {
 export class VerseNoteGroupComponent extends Component<{
   noteGroup: VerseNoteGroup;
   soglo: boolean;
+  verseNoteID: string;
 }> {
   render() {
     return (
@@ -161,14 +162,22 @@ export class VerseNoteGroupComponent extends Component<{
                     dangerouslySetInnerHTML={{
                       __html: ref.text.replace(/\#/g, ''),
                     }}
-                    onClick={evt => {
+                    onClick={async evt => {
                       const elem = evt.target as HTMLElement;
 
+                      try {
+                        await deleteNote(
+                          this.props.verseNoteID,
+                          this.props.noteGroup.notes[0].id,
+                        ).toPromise();
+                      } catch (error) {
+                        console.log(error);
+                      }
                       if (elem) {
                         popupClick(elem);
                       }
 
-                      console.log(elem);
+                      // console.log(elem);
                     }}
                   ></span>
                   {/* &nbsp; */}
@@ -209,7 +218,7 @@ export class VerseNoteGroupComponent extends Component<{
                 : 'none'
             }`}
             onClick={() => {
-              console.log(this.props.noteGroup.notes);
+              // console.log(this.props.noteGroup.notes);
 
               this.showMore(true, this.props.noteGroup);
             }}
@@ -316,7 +325,11 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
             {verseNote.noteGroups
               .sort((a, b) => sortVerseNoteGroups(a, b))
               .map(noteGroup => (
-                <VerseNoteGroupComponent noteGroup={noteGroup} soglo={sg} />
+                <VerseNoteGroupComponent
+                  noteGroup={noteGroup}
+                  soglo={sg}
+                  verseNoteID={verseNote.id}
+                />
               ))}
           </div>
         );
@@ -329,6 +342,7 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
 import * as viewport from 'viewport-dimensions';
 import { noteModal } from './note-modal';
 import { openFocusNotePane, FocusedNotePane } from './FocusedNotePane';
+import { deleteNote } from '../edit-mode/deleteNote';
 export class VerseNotesShellComponent extends Component<VNProps> {
   public state: { chapter: Chapter; verseNotesHeight: string };
 

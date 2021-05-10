@@ -9,6 +9,7 @@ import { VerseNoteGroupComponent } from './verse-notes-shell';
 import { parseSubdomain } from '../parseSubdomain';
 import { flatten } from 'lodash';
 import { refClick } from './refClick';
+import { deleteNote } from '../edit-mode/deleteNote';
 
 export const openFocusNotePane = new BehaviorSubject<VerseNoteGroup>(undefined);
 
@@ -73,12 +74,14 @@ export class FocusedNotePane extends Component {
                 {this.state.refs.map(ref => {
                   return (
                     <p
-                      onClick={evt => {
+                      onClick={async evt => {
                         if (
                           (evt.target as HTMLElement).classList.contains(
                             'ref-label',
                           )
                         ) {
+                          console.log('ioajsdfiojasdiofj');
+
                           refClick(this.state.verseNoteGroup, ref);
                         }
                       }}
@@ -92,6 +95,8 @@ export class FocusedNotePane extends Component {
                         }}
                         onClick={evt => {
                           const elem = evt.target as HTMLElement;
+
+                          console.log('ioasjdfiojiasdofj');
 
                           // if (elem) {
                           //   popupClick(elem);

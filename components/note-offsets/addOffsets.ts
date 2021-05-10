@@ -2,8 +2,8 @@ import {
   FormatTagNoteOffsets,
   VerseNote,
 } from '../../oith-lib/src/verse-notes/verse-note';
-import { of, EMPTY } from 'rxjs';
-import { map, toArray, flatMap, filter } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map, flatMap } from 'rxjs/operators';
 import {
   expandOffsets,
   compressRanges,
@@ -15,30 +15,9 @@ import { Verse, FormatText } from '../../oith-lib/src/models/Chapter';
 import {
   extractFormatText,
   addTextToFormatText,
-  expandNoteOffsets,
-  resetVerse,
 } from '../../oith-lib/src/shells/buildFMerged';
 import { store } from '../SettingsComponent';
-
-export function resetLiveVerse(verseid: string, noteID: string) {
-  return store.chapter.pipe(
-    filter(o => o !== undefined),
-    map(chapter => {
-      const verse = chapter.verses.find(v => v.id === verseid);
-
-      const verseNote = chapter.verseNotes.find(v => v.id === noteID);
-      if (verse) {
-        return expandNoteOffsets(verseNote).pipe(
-          toArray(),
-          map(formatTags => resetVerse(verse, formatTags)),
-          flatMap$,
-        );
-      }
-      return EMPTY;
-    }),
-    flatMap$,
-  );
-}
+import { resetLiveVerse } from './resetLiveVerse';
 
 export function addOffsets(element: Element, formatTag: FormatTagNoteOffsets) {
   if (formatTag.offsets === 'all') {
@@ -59,9 +38,9 @@ export function addOffsets(element: Element, formatTag: FormatTagNoteOffsets) {
           ) + range.startOffset;
         const end =
           start + ((selection as unknown) as number).toString().length - 1;
-        const note = Array.from(document.querySelectorAll('.verse-note')).find(
-          vng => vng.contains(element),
-        );
+        const note = Array.from(
+          document.querySelectorAll('.verse-note'),
+        ).find(vng => vng.contains(element));
         const verseID = /(^p|^)(.+)/.exec(verse.id);
         const noteID = note.id;
         const noteIDSplit = noteID.split('-');
