@@ -1,5 +1,5 @@
 import { argv$ } from './argv$';
-import { expandOffsets } from '../offsets/expandOffsets';
+import { expandOffsets$ } from '../offsets/expandOffsets';
 
 test('asdfsdf', async () => {
   // expect(3).toBe(3);

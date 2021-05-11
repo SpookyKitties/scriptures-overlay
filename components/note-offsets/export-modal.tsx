@@ -102,7 +102,7 @@ export class ExportModal extends Component {
               {this.state.noteTypes.map(noteType => {
                 return <ExportModalCheckBox noteType={noteType} />;
               })}
-              <button
+              <a
                 onClick={() => {
                   exportNotes().subscribe(o => {
                     console.log(o);
@@ -110,16 +110,16 @@ export class ExportModal extends Component {
                 }}
               >
                 Export
-              </button>
+              </a>
             </div>
           </div>
-          <button
+          <a
             className="modal-close is-large"
             aria-label="close"
             onClick={() => {
               openExportModal.next(false);
             }}
-          ></button>
+          ></a>
         </div>
       );
     }

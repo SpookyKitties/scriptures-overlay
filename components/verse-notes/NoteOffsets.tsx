@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { VerseNoteGroup } from '../../oith-lib/src/verse-notes/verse-note';
 import { clearOffsets } from './clearOffsets';
 
-export class NoteOffsets extends Component<{
+export class NoteOffsetsCompnent extends Component<{
   noteGroup: VerseNoteGroup;
   verseNodeID: string;
 }> {

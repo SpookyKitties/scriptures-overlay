@@ -4,11 +4,7 @@ import { VerseNoteGroup } from '../../oith-lib/src/verse-notes/verse-note';
 import { resetLiveVerse } from '../note-offsets/resetLiveVerse';
 import { saveChapter } from '../note-offsets/saveChapter';
 import { formatTagService, store } from '../SettingsComponent';
-
-function parseVerseNumfromVerseNoteID(verseNodeID: string) {
-  const verseNodeIDSplit = verseNodeID.split('-');
-  return verseNodeIDSplit[verseNodeIDSplit.length - 3];
-}
+import { parseVerseNumfromVerseNoteID } from './parseVerseNumfromVerseNoteID';
 
 export function clearOffsets(noteGroup: VerseNoteGroup, verseNoteID: string) {
   if (noteGroup.notes) {
