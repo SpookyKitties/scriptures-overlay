@@ -8,9 +8,7 @@ export class DeleteNoteComponent extends Component<{
   verseNoteID: string;
 }> {
   click() {
-    deleteNote(this.props.verseNoteID, this.props.noteGroup).subscribe(o => {
-      console.log(this.props.noteGroup);
-    });
+    deleteNote(this.props.verseNoteID, this.props.noteGroup).subscribe(o => {});
   }
   render() {
     return (
