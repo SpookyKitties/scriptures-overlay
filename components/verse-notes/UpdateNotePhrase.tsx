@@ -4,6 +4,7 @@ import {
   expandOffsets,
 } from '../../oith-lib/src/offsets/expandOffsets';
 import { VerseNoteGroup } from '../../oith-lib/src/verse-notes/verse-note';
+import { saveChapter } from '../note-offsets/saveChapter';
 import { store } from '../SettingsComponent';
 import { parseVerseNumfromVerseNoteID } from './parseVerseNumfromVerseNoteID';
 
@@ -24,7 +25,9 @@ function parsePhraseText(verseNoteID: string, verseNoteGroup: VerseNoteGroup) {
     .join(' ');
   verseNoteGroup.notePhrase = asdf;
   verseNoteGroup.notes.map(note => (note.phrase = asdf));
-  store.resetNotes$.next(true);
+  saveChapter().subscribe(() => {
+    store.resetNotes$.next(true);
+  });
 
   // expandOffsets$(verseNoteGroup.formatTag).subscribe(o => {
   //   const asdf = o
