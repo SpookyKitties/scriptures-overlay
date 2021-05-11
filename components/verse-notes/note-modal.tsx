@@ -453,11 +453,11 @@ export class NoteModalComponent extends Component {
         <div className={`modal-card`} style={{ maxHeight: '50vh' }}>
           <header className={`modal-card-head`}>
             <p className={`modal-card-title`}>Modal title</p>
-            <button
+            <a
               onClick={() => this.close()}
               className={`delete`}
               aria-label="close"
-            ></button>
+            ></a>
           </header>
           <section className={`modal-card-body`}>
             {this.modalToRender()}{' '}

@@ -182,19 +182,10 @@ export class VerseNoteGroupComponent extends Component<{
                 </p>
               );
             })}
-          <div
-            className={`edit-mode-offsets ${
-              this.props.noteGroup.notes[0].formatTag.offsets &&
-              this.props.noteGroup.notes[0].formatTag.offsets.length === 0
-                ? 'none'
-                : ''
-            }`}
-          >
-            <NoteOffsets
-              noteGroup={this.props.noteGroup}
-              verseNodeID={this.props.verseNoteID}
-            ></NoteOffsets>
-          </div>
+          <EditModeComponent
+            noteGroup={this.props.noteGroup}
+            verseNoteID={this.props.verseNoteID}
+          ></EditModeComponent>
           <div
             style={{
               color: '#177c9c',
@@ -299,6 +290,7 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
   componentDidMount() {
     store.updateNoteVisibility$.subscribe(() => {
       this.setState({ verseNote: this.props.verseNote });
+      console.log(this.props.verseNote);
     });
   }
   public render() {
@@ -338,7 +330,7 @@ import { openFocusNotePane, FocusedNotePane } from './FocusedNotePane';
 import { deleteNote } from '../edit-mode/deleteNote';
 import { reInitChapter } from '../../pages/[book]/[chapter]';
 import { resetLiveVerse } from '../note-offsets/resetLiveVerse';
-import { NoteOffsets } from './NoteOffsets';
+import { EditModeComponent } from './EditModeComponent';
 export class VerseNotesShellComponent extends Component<VNProps> {
   public state: { chapter: Chapter; verseNotesHeight: string };
 

@@ -1,0 +1,6 @@
+div[id^='fra-'] .note-phrase::before {
+  content: '“';
+}
+div[id^='fra-'] .note-phrase::after {
+  content: '”';
+}

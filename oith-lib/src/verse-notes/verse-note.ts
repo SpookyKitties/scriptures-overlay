@@ -1,5 +1,5 @@
 import cuid from 'cuid';
-import { expandOffsets } from '../offsets/expandOffsets';
+import { expandOffsets$ } from '../offsets/expandOffsets';
 import { Observable, Subject } from 'rxjs';
 // import { NoteCategory } from './settings/note-gorup-settings';
 
@@ -79,6 +79,7 @@ export class Note extends Doc {
 }
 
 export class VerseNoteGroup {
+  public delete: boolean;
   public id: string;
   public formatTag: FormatTagNoteOffsets;
   public noteGroupID = cuid();
@@ -548,7 +549,7 @@ export class FormatTagNoteOffsets extends FormatTag {
     }
     this.h = new Subject();
 
-    expandOffsets(this);
+    expandOffsets$(this);
   }
 }
 export class FormatTagNotePronunciation extends FormatTagNoteOffsets {
@@ -568,7 +569,7 @@ export class FormatTagNotePronunciation extends FormatTagNoteOffsets {
     if (note) {
       this.href = note.href;
     }
-    expandOffsets(this);
+    expandOffsets$(this);
   }
 }
 

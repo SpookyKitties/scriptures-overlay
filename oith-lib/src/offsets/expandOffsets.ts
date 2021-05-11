@@ -10,7 +10,24 @@ import {
   filter,
 } from 'rxjs/operators';
 import { flatMap$ } from '../rx/flatMap$';
-export function expandOffsets(offsets: Offset): Observable<number[]> {
+
+export function expandOffsets(offsets: string) {
+  if (offsets) {
+    const off = offsets
+      .replace(/\s/g, '')
+      .split(',')
+      .map(l => {
+        const n = l.split('-');
+
+        return n.length === 1 || n[0] === offsets[1]
+          ? [parseInt(n[0])]
+          : range(parseInt(n[0]), parseInt(n[1]) + 1);
+      });
+    return off;
+  }
+  return [[]];
+}
+export function expandOffsets$(offsets: Offset): Observable<number[]> {
   // (offsets.offsets )
   return of(offsets.offsets as string).pipe(
     filterUndefinedNull$,
@@ -47,8 +64,8 @@ export function expandOffsets(offsets: Offset): Observable<number[]> {
   // map(o => (offsets.uncompressedOffsets = o.sort((a, b) => a - b))),
   // );
 }
-export function compressRanges(array: number[]): ([number, number])[] {
-  const ranges: ([number, number])[] = [];
+export function compressRanges(array: number[]): [number, number][] {
+  const ranges: [number, number][] = [];
   let rstart: number, rend: number;
   const sortedArray = uniq(
     sortBy(array, (u): number => {

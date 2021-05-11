@@ -9,7 +9,7 @@ import { of, EMPTY, forkJoin, Observable } from 'rxjs';
 import { flatMap$ } from '../rx/flatMap$';
 import { map, toArray, flatMap } from 'rxjs/operators';
 import { VerseNote, FormatTag, FormatTagType } from '../verse-notes/verse-note';
-import { expandOffsets } from '../offsets/expandOffsets';
+import { expandOffsets$ } from '../offsets/expandOffsets';
 import { isEqual } from 'lodash';
 
 export function expandNoteOffsets(verseNote?: VerseNote) {
@@ -17,14 +17,11 @@ export function expandNoteOffsets(verseNote?: VerseNote) {
     if (verseNote.noteGroups) {
       return of(
         verseNote.noteGroups.map(ng =>
-          forkJoin(expandOffsets(ng.formatTag), of(ng.formatTag)).pipe(
+          forkJoin(expandOffsets$(ng.formatTag), of(ng.formatTag)).pipe(
             map(o => o[1]),
           ),
         ),
-      ).pipe(
-        flatMap$,
-        flatMap$,
-      );
+      ).pipe(flatMap$, flatMap$);
     }
   }
 
@@ -35,9 +32,9 @@ export function extractFormatText(
   verse: FormatGroup | Verse | FormatText,
 ): Observable<FormatText> {
   if (Array.isArray((verse as FormatGroup | Verse).grps)) {
-    return of((verse as FormatGroup | Verse).grps as (
-      | FormatGroup
-      | FormatText)[]).pipe(
+    return of(
+      (verse as FormatGroup | Verse).grps as (FormatGroup | FormatText)[],
+    ).pipe(
       flatMap$,
       map(o => extractFormatText(o)),
       flatMap$,
@@ -137,7 +134,7 @@ export function resetVerse(verse: Verse, formatTags?: FormatTag[]) {
   // return of(asdf()).pipe(flatMap(o => o));
   return extractFormatText(verse).pipe(
     map((o: FormatText) => {
-      return expandOffsets(o).pipe(
+      return expandOffsets$(o).pipe(
         map(() => addTextToFormatText(verse, o, formatTags)),
         flatMap$,
       );

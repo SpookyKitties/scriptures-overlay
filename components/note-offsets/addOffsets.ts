@@ -5,7 +5,7 @@ import {
 import { of } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
 import {
-  expandOffsets,
+  expandOffsets$,
   compressRanges,
 } from '../../oith-lib/src/offsets/expandOffsets';
 import { flatMap$ } from '../../oith-lib/src/rx/flatMap$';
@@ -53,7 +53,7 @@ export function addOffsets(element: Element, formatTag: FormatTagNoteOffsets) {
             formatTag.offsets && formatTag.offsets.trim().length > 0 ? ',' : ''
           }${newOffsets}`;
           console.log(formatTag.offsets);
-          return expandOffsets(formatTag).pipe(
+          return expandOffsets$(formatTag).pipe(
             map(() => {
               if (formatTag.uncompressedOffsets.includes(0)) {
                 formatTag.offsets = 'all';

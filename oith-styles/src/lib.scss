@@ -8,6 +8,7 @@
 @import './header/oith_header.scss';
 @import './normalize.scss';
 @import './verse-notes/mobile-notes.scss';
+@import './verse-notes/note-phrases-quotes.scss';
 @import './verse-notes/focused-note-pane.scss';
 // @import './bulma-0.8.0/bulma.sass';
 // @import './bulma-0.8.0/sass/components/menu.sass';
@@ -23,4 +24,8 @@ html {
 }
 .highlight:not(:last-child) {
   margin-bottom: 0 !important;
+}
+
+.delete-true {
+  display: none !important;
 }
