@@ -27,7 +27,13 @@ export class NoteRef {
   public label: string;
   public moreStill?: boolean;
   public more?: boolean;
-  public constructor(noteC: number, text: string, moreStill?: boolean, more?: boolean) {
+  public delete?: boolean;
+  public constructor(
+    noteC: number,
+    text: string,
+    moreStill?: boolean,
+    more?: boolean,
+  ) {
     this.moreStill = moreStill;
     this.more = more;
     this.category = noteC;
@@ -47,6 +53,7 @@ export class Note extends Doc {
   public sup?: string;
   public num?: string;
   public lSup?: string;
+  public delete?: boolean;
   // public docType: DocType = DocType.NOTE;
   public constructor(
     vid: string,
@@ -87,7 +94,12 @@ export class VerseNoteGroup {
   public hasMoreStill?: boolean;
   public showMoreStill?: boolean;
 
-  public constructor(notes: Note[], id: string, sup?: string, lSup?: string, hasMoreStill?: boolean
+  public constructor(
+    notes: Note[],
+    id: string,
+    sup?: string,
+    lSup?: string,
+    hasMoreStill?: boolean,
   ) {
     // this.offsets =
     // note.formatTag.offsets && note.formatTag.offsets !== ''

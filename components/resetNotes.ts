@@ -9,16 +9,16 @@ import {
 } from '../oith-lib/src/verse-notes/verse-note';
 import { groupBy as _groupBy } from 'lodash';
 
-
 function isNumVisible(verseNote: VerseNote) {
   if (verseNote.vis) {
-    const groups = _groupBy(verseNote.noteGroups.filter(vng => vng.formatTag.visible), vng => vng.id);
+    const groups = _groupBy(
+      verseNote.noteGroups.filter(vng => vng.formatTag.visible),
+      vng => vng.id,
+    );
     Object.keys(groups).map(key => {
-      groups[key].map(g => g.numVisible = false);
+      groups[key].map(g => (g.numVisible = false));
       groups[key][0].numVisible = true;
     });
-
-
   }
 }
 
@@ -39,7 +39,6 @@ function resetNotes(
         noteGroup.num = `${splitid[splitid.length - 3]}`;
         noteGroup.sup = '';
         noteGroup.media = true;
-
       }
       noteGroup.id = `verse-note-group-${noteGroup.num}${noteGroup.sup}`;
 
@@ -57,7 +56,9 @@ function checkNoteVisiblity(noteGroup: VerseNoteGroup) {
     if (note.formatTag.visible) {
       const refVis = note.ref.map(ref => {
         if (ref.label.includes('🔊')) {
-          const p = appSettings.noteSettings.addSettings.find(ns => ns.additionalcontent === 'pronunciation');
+          const p = appSettings.noteSettings.addSettings.find(
+            ns => ns.additionalcontent === 'pronunciation',
+          );
           if (p && p.enabled === false) {
             return (ref.vis =
               appSettings.settings.vis[`nc-${ref.category}`] === true);

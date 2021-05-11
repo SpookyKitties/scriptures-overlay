@@ -4,6 +4,7 @@ import {
 } from '../../oith-lib/src/verse-notes/verse-note';
 import { parseSubdomain } from '../parseSubdomain';
 export function refClick(noteGroup: VerseNoteGroup, ref: NoteRef) {
+  console.log('ioajsdfiojasdiofj');
   if (
     ref.label.includes('🔊') &&
     noteGroup &&
