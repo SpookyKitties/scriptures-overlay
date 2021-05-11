@@ -25,6 +25,7 @@ export function deleteNote(verseNoteID: string, noteGroups: VerseNoteGroup) {
         verseNoteID,
       ).pipe(
         map(() => {
+          resetNotes$();
           store.updateVerses.next(true);
           store.updateNoteVisibility$.next(true);
         }),

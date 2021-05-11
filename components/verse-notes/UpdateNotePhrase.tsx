@@ -16,8 +16,6 @@ function parsePhraseText(verseNoteID: string, verseNoteGroup: VerseNoteGroup) {
   const verseText = document.querySelector(`#${verseID}`)?.textContent;
   const offsetsGroups = expandOffsets(verseNoteGroup.formatTag.offsets);
 
-  console.log(offsetsGroups);
-
   const asdf = offsetsGroups
     .map(offsetsGroup => {
       return offsetsGroup.map(offset => verseText[offset]).join('');
