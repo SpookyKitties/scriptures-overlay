@@ -68,6 +68,8 @@ export function addOffsets(element: Element, formatTag: FormatTagNoteOffsets) {
               });
               console.log(formatTag.offsets);
 
+              console.log(verseID);
+
               return saveChapter();
             }),
             flatMap$,

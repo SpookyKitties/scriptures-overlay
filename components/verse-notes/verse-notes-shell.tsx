@@ -62,14 +62,14 @@ const sortFilterNoteRefs = (
       verseNoteGroup.notes
         .filter(nt => nt.formatTag.visible)
         .map(nt => refFilter(verseNoteGroup, nt.ref)),
-    );
+    ).filter(nr => !nr.delete);
   }
   return flatten(
     uniqBy(
       verseNoteGroup.notes.filter(nt => nt.formatTag.visible),
       n => n.id,
     ).map(nt => nt.ref),
-  );
+  ).filter(nr => !nr.delete);
 };
 
 const refFilter = (verseNoteGroup: VerseNoteGroup, noteRefs: NoteRef[]) => {
@@ -102,7 +102,9 @@ export class VerseNoteGroupComponent extends Component<{
   render() {
     return (
       <div
-        className={`verse-note-group ${this.props.noteGroup.id} ${
+        className={`verse-note-group  delete-${
+          this.props.noteGroup.notes[0].delete
+        } ${this.props.noteGroup.id} ${
           this.props.noteGroup.media ? 'soglo-media' : ''
         } ${this.props.soglo ? 'soglo' : ''} ${
           this.props.noteGroup.formatTag.visible ? '' : 'none'
@@ -113,13 +115,17 @@ export class VerseNoteGroupComponent extends Component<{
             const ee = evt.target as HTMLElement;
             notePhraseClick(ee, this.props.noteGroup.formatTag);
           }}
-          className="note-phrase"
+          className={`note-phrase`}
           style={this.displayOnSoglo(
             this.props.soglo == false,
             this.props.noteGroup,
           )}
         >
-          {this.props.noteGroup.notes[0].phrase}
+          <span
+            dangerouslySetInnerHTML={{
+              __html: this.props.noteGroup.notes[0]?.phrase,
+            }}
+          ></span>
         </span>
         <span
           style={this.displayOnSoglo(this.props.soglo, this.props.noteGroup)}
@@ -153,26 +159,37 @@ export class VerseNoteGroupComponent extends Component<{
                       refClick(this.props.noteGroup, ref);
                     }
                   }}
-                  className={`note-reference ${ref.label
-                    .trim()
-                    .replace('🔊', 'speaker')} ${ref.vis ? '' : 'none'}`}
+                  className={`note-reference delete-${
+                    ref.delete
+                  } ${ref.label.trim().replace('🔊', 'speaker')} ${
+                    ref.vis ? '' : 'none'
+                  }`}
                 >
                   {/* <span className="ref-label">{ref.label}</span> */}
                   <span
                     dangerouslySetInnerHTML={{
                       __html: ref.text.replace(/\#/g, ''),
                     }}
-                    onClick={async evt => {
+                    onClick={evt => {
                       const elem = evt.target as HTMLElement;
 
-                      try {
-                        await deleteNote(
-                          this.props.verseNoteID,
-                          this.props.noteGroup.notes[0].id,
-                        ).toPromise();
-                      } catch (error) {
-                        console.log(error);
-                      }
+                      // ref.delete = true;
+                      // store.updateNoteVisibility$.next(true);
+                      // store.updateFTags$.next(true);
+                      // saveChapter();
+                      // try {
+                      //   deleteNote(
+                      //     this.props.verseNoteID,
+                      //     this.props.noteGroup.notes[0].id,
+                      //     this.props.noteGroup,
+                      //   ).subscribe(() => {
+                      //     // store.resetNotes$.next(true);
+                      //     // formatTagService.reset();
+                      //     store.updateNoteVisibility$.next(true);
+                      //   });
+                      // } catch (error) {
+                      //   console.log(error);
+                      // }
                       if (elem) {
                         popupClick(elem);
                       }
@@ -343,6 +360,7 @@ import * as viewport from 'viewport-dimensions';
 import { noteModal } from './note-modal';
 import { openFocusNotePane, FocusedNotePane } from './FocusedNotePane';
 import { deleteNote } from '../edit-mode/deleteNote';
+import { reInitChapter } from '../../pages/[book]/[chapter]';
 export class VerseNotesShellComponent extends Component<VNProps> {
   public state: { chapter: Chapter; verseNotesHeight: string };
 

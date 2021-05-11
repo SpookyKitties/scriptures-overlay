@@ -8,6 +8,8 @@ import {
 import { store } from '../SettingsComponent';
 
 export function resetLiveVerse(verseid: string, noteID: string) {
+  console.log(verseid);
+
   return store.chapter.pipe(
     filter(o => o !== undefined),
     map(chapter => {

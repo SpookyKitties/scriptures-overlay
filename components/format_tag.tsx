@@ -195,7 +195,7 @@ export class FormatTag extends Component<{
                       .filter(n => Array.isArray(n.notes))
                       .map(n => n.notes),
                   )[0]
-                    .phrase.toLowerCase()
+                    .phrase?.toLowerCase()
                     .replace('“', '')
                     .replace('”', '')}.wav`;
                   new Audio(fileName).play();

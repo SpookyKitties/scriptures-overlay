@@ -1,6 +1,15 @@
 {
   "subdomains": [
     {
+      "matches": ["notes.oneinthinehand.org", "localhost"],
+      "audioURL": "https://oithstorage.blob.core.windows.net/blobtest/",
+      "storageURL": "https://oithstorage.blob.core.windows.net/blobtest/",
+      "settings": "",
+      "beta": true,
+      "disclaimer": false,
+      "soglo": false
+    },
+    {
       "matches": [
         "b.oneinthinehand.org",
         "oneinthinehand.org",

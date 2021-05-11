@@ -53,6 +53,7 @@ export function reInitChapter() {
     )
     .subscribe(chapter => {
       store.chapter.next(chapter);
+      console.log(chapter);
     });
 }
 
