@@ -290,6 +290,7 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
   componentDidMount() {
     store.updateNoteVisibility$.subscribe(() => {
       this.setState({ verseNote: this.props.verseNote });
+      console.log(this.props.verseNote);
     });
   }
   public render() {

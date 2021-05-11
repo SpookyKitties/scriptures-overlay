@@ -79,6 +79,7 @@ export class Note extends Doc {
 }
 
 export class VerseNoteGroup {
+  public delete: boolean;
   public id: string;
   public formatTag: FormatTagNoteOffsets;
   public noteGroupID = cuid();
