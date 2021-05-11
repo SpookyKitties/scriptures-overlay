@@ -8,13 +8,7 @@ import {
   VerseNoteGroup,
 } from '../../oith-lib/src/verse-notes/verse-note';
 import { gotoLink } from '../gotoLink';
-import { saveChapter } from '../note-offsets/saveChapter';
-import {
-  formatTagService,
-  store,
-  appSettings,
-  resetMobileNotes,
-} from '../SettingsComponent';
+import { store, appSettings, resetMobileNotes } from '../SettingsComponent';
 import { notePhraseClick } from './notePhraseClick';
 import { refClick } from './refClick';
 import { MobileNotesComponent } from '../mobile-notes.tsx/MobileNotesComponent';
@@ -81,19 +75,6 @@ const refFilter = (verseNoteGroup: VerseNoteGroup, noteRefs: NoteRef[]) => {
   return noteRefs.filter(noteRef => noteRef.vis && !noteRef.moreStill);
 };
 
-function clearOffsets(noteGroup: VerseNoteGroup) {
-  if (noteGroup.notes) {
-    noteGroup.formatTag.offsets = '';
-    noteGroup.notes.map(note => {
-      note.formatTag.offsets = '';
-    });
-
-    store.resetNotes$.next(true);
-    formatTagService.reset();
-
-    saveChapter().subscribe();
-  }
-}
 export class VerseNoteGroupComponent extends Component<{
   noteGroup: VerseNoteGroup;
   soglo: boolean;
@@ -209,15 +190,10 @@ export class VerseNoteGroupComponent extends Component<{
                 : ''
             }`}
           >
-            <span className={`tag is-info is-small`}>
-              {this.props.noteGroup.notes[0].formatTag.offsets}
-              <a
-                onClick={() => {
-                  clearOffsets(this.props.noteGroup);
-                }}
-                className={'delete'}
-              ></a>
-            </span>
+            <NoteOffsets
+              noteGroup={this.props.noteGroup}
+              verseNodeID={this.props.verseNoteID}
+            ></NoteOffsets>
           </div>
           <div
             style={{
@@ -361,6 +337,8 @@ import { noteModal } from './note-modal';
 import { openFocusNotePane, FocusedNotePane } from './FocusedNotePane';
 import { deleteNote } from '../edit-mode/deleteNote';
 import { reInitChapter } from '../../pages/[book]/[chapter]';
+import { resetLiveVerse } from '../note-offsets/resetLiveVerse';
+import { NoteOffsets } from './NoteOffsets';
 export class VerseNotesShellComponent extends Component<VNProps> {
   public state: { chapter: Chapter; verseNotesHeight: string };
 

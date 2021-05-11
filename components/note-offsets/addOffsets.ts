@@ -42,6 +42,7 @@ export function addOffsets(element: Element, formatTag: FormatTagNoteOffsets) {
           document.querySelectorAll('.verse-note'),
         ).find(vng => vng.contains(element));
         const verseID = /(^p|^)(.+)/.exec(verse.id);
+
         const noteID = note.id;
         const noteIDSplit = noteID.split('-');
         if (verseID && verseID[2] === noteIDSplit[noteIDSplit.length - 3]) {
@@ -66,9 +67,6 @@ export function addOffsets(element: Element, formatTag: FormatTagNoteOffsets) {
               formatTag.notes.map(n => {
                 n.formatTag.offsets = formatTag.offsets;
               });
-              console.log(formatTag.offsets);
-
-              console.log(verseID);
 
               return saveChapter();
             }),
