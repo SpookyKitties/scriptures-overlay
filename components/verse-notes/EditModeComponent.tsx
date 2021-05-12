@@ -37,10 +37,6 @@ export class EditModeComponent extends Component<{
           verseNodeID={this.props.verseNoteID}
         ></NoteOffsetsCompnent>
         <br />
-        <UpdateNotePhrase
-          noteGroup={this.props.noteGroup}
-          verseNoteID={this.props.verseNoteID}
-        ></UpdateNotePhrase>
         <DeleteNoteComponent
           noteGroup={this.props.noteGroup}
           verseNoteID={this.props.verseNoteID}

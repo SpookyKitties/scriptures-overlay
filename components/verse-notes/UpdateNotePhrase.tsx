@@ -50,10 +50,7 @@ async function setNotePhrases(chapter: Chapter) {
   );
 }
 
-export class UpdateNotePhrase extends Component<{
-  noteGroup: VerseNoteGroup;
-  verseNoteID: string;
-}> {
+export class UpdateNotePhrase extends Component {
   click() {
     store.chapter
       .pipe(
@@ -74,9 +71,11 @@ export class UpdateNotePhrase extends Component<{
   }
   render() {
     return (
-      <a onClick={() => this.click()} className={`button is-small`}>
-        Update Phrase
-      </a>
+      <div className={`btn-update-phrase`}>
+        <a onClick={() => this.click()} className={`button is-small `}>
+          Update Phrase
+        </a>
+      </div>
     );
   }
 }

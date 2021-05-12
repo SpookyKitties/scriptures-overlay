@@ -330,6 +330,7 @@ import { deleteNote } from '../edit-mode/deleteNote';
 import { reInitChapter } from '../../pages/[book]/[chapter]';
 import { resetLiveVerse } from '../note-offsets/resetLiveVerse';
 import { EditModeComponent } from './EditModeComponent';
+import { UpdateNotePhrase } from './UpdateNotePhrase';
 export class VerseNotesShellComponent extends Component<VNProps> {
   public state: { chapter: Chapter; verseNotesHeight: string };
 
@@ -390,6 +391,7 @@ export class VerseNotesShellComponent extends Component<VNProps> {
             })}
             <div className="white-space"></div>
           </div>
+          <UpdateNotePhrase></UpdateNotePhrase>
         </div>
       );
     }

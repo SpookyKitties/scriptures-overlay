@@ -111,8 +111,20 @@ body {
   .edit-mode-offsets {
     display: block;
   }
+  .btn-update-phrase {
+    display: block;
+    position: relative;
+    bottom: 78px;
+    width: 100%;
+    a {
+      width: 100%;
+    }
+  }
 }
 .edit-mode-offsets {
+  display: none;
+}
+.btn-update-phrase {
   display: none;
 }
 
