@@ -12,9 +12,11 @@ export class DeleteNoteComponent extends Component<{
   }
   render() {
     return (
-      <a onClick={() => this.click()} className={`button is-small`}>
-        Delete Note
-      </a>
+      <a
+        onClick={() => this.click()}
+        className={'delete is-small show-edit-mode'}
+        style={{ position: 'fixed', right: '10px' }}
+      ></a>
     );
   }
 }
@@ -37,10 +39,6 @@ export class EditModeComponent extends Component<{
           verseNodeID={this.props.verseNoteID}
         ></NoteOffsetsCompnent>
         <br />
-        <DeleteNoteComponent
-          noteGroup={this.props.noteGroup}
-          verseNoteID={this.props.verseNoteID}
-        ></DeleteNoteComponent>
       </div>
     );
   }

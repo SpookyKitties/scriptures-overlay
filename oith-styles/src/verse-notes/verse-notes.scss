@@ -120,12 +120,18 @@ body {
       width: 100%;
     }
   }
+  .show-edit-mode {
+    display: initial !important;
+  }
 }
 .edit-mode-offsets {
   display: none;
 }
 .btn-update-phrase {
   display: none;
+}
+.show-edit-mode {
+  display: none !important;
 }
 
 .chapternotes ~ .chapternotes {
