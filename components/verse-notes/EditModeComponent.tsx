@@ -15,7 +15,7 @@ export class DeleteNoteComponent extends Component<{
       <a
         onClick={() => this.click()}
         className={'delete is-small show-edit-mode'}
-        style={{ position: 'fixed', right: '10px' }}
+        style={{ position: 'absolute', right: '10px', top: '10px' }}
       ></a>
     );
   }
