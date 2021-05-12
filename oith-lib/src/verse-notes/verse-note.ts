@@ -54,6 +54,7 @@ export class Note extends Doc {
   public num?: string;
   public lSup?: string;
   public delete?: boolean;
+  public oPhrase: string;
   // public docType: DocType = DocType.NOTE;
   public constructor(
     vid: string,
@@ -67,6 +68,7 @@ export class Note extends Doc {
     super(vid, DocType.NOTE);
     // this.id = vid;
     this.phrase = notePhrase;
+    this.oPhrase = notePhrase;
     this.ref = noteRefs;
     this.noteType = noteType;
     this.formatTag = {
