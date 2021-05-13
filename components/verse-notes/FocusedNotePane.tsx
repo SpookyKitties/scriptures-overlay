@@ -80,8 +80,6 @@ export class FocusedNotePane extends Component {
                             'ref-label',
                           )
                         ) {
-                          console.log('ioajsdfiojasdiofj');
-
                           refClick(this.state.verseNoteGroup, ref);
                         }
                       }}
@@ -94,10 +92,7 @@ export class FocusedNotePane extends Component {
                           __html: ref.text.replace(/\#/g, ''),
                         }}
                         onClick={evt => {
-                          const elem = evt.target as HTMLElement;
-
-                          console.log('ioasjdfiojiasdofj');
-
+                          // const elem = evt.target as HTMLElement;
                           // if (elem) {
                           //   popupClick(elem);
                           // }

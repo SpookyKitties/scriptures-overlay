@@ -89,7 +89,9 @@ export class VerseNoteGroupComponent extends Component<{
           this.props.noteGroup.media ? 'soglo-media' : ''
         } ${this.props.soglo ? 'soglo' : ''} ${
           this.props.noteGroup.formatTag.visible ? '' : 'none'
-        }   ${this.props.noteGroup.formatTag.highlight ? 'highlight' : ''}`}
+        }   ${
+          this.props.noteGroup.formatTag.highlight ? 'highlight' : ''
+        } sup-${this.props.noteGroup.sup}`}
       >
         <span
           onClick={(evt: MouseEvent) => {
@@ -112,6 +114,9 @@ export class VerseNoteGroupComponent extends Component<{
           noteGroup={this.props.noteGroup}
           verseNoteID={this.props.verseNoteID}
         ></DeleteNoteComponent>
+        <EditButtonComponent
+          noteGroup={this.props.noteGroup}
+        ></EditButtonComponent>
         <span
           style={this.displayOnSoglo(this.props.soglo, this.props.noteGroup)}
         >
@@ -150,6 +155,9 @@ export class VerseNoteGroupComponent extends Component<{
                     ref.vis ? '' : 'none'
                   }`}
                 >
+                  {/* <textarea name="" id="" cols={30} rows={10}>
+                    {ref.text.replace(/\#/g, '')}
+                  </textarea> */}
                   {/* <span className="ref-label">{ref.label}</span> */}
                   <span
                     dangerouslySetInnerHTML={{
@@ -336,6 +344,8 @@ import { resetLiveVerse } from '../note-offsets/resetLiveVerse';
 import { EditModeComponent } from './EditModeComponent';
 import { DeleteNoteComponent } from './DeleteNoteComponent';
 import { UpdateNotePhrase } from './UpdateNotePhrase';
+import { UpdateSuperscriptsComponent } from './UpdateSuperscriptsComponent';
+import { EditButtonComponent } from './EditButtonComponent';
 export class VerseNotesShellComponent extends Component<VNProps> {
   public state: { chapter: Chapter; verseNotesHeight: string };
 
@@ -396,6 +406,7 @@ export class VerseNotesShellComponent extends Component<VNProps> {
             })}
             <div className="white-space"></div>
           </div>
+          <UpdateSuperscriptsComponent></UpdateSuperscriptsComponent>
           <UpdateNotePhrase></UpdateNotePhrase>
         </div>
       );

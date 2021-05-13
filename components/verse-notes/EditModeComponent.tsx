@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { VerseNoteGroup } from '../../oith-lib/src/verse-notes/verse-note';
 import { NoteOffsetsCompnent } from './NoteOffsets';
 import { UpdateNotePhrase } from './UpdateNotePhrase';
+
 export class EditModeComponent extends Component<{
   noteGroup: VerseNoteGroup;
   verseNoteID: string;

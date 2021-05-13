@@ -42,14 +42,13 @@ function parsePhraseText(verseNoteID: string, verseNoteGroup: VerseNoteGroup) {
   // });
 }
 
-async function setNotePhrases(chapter: Chapter) {
+export async function setNotePhrases(chapter: Chapter) {
   chapter.verseNotes?.map(verseNote =>
     verseNote.noteGroups?.map(noteGroup => {
       return parsePhraseText(verseNote.id, noteGroup);
     }),
   );
 }
-
 export class UpdateNotePhrase extends Component {
   click() {
     store.chapter
