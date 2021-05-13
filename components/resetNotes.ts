@@ -51,9 +51,9 @@ function resetNotes(
 }
 function checkNoteVisiblity(noteGroup: VerseNoteGroup) {
   return noteGroup.notes.map(note => {
-    if (note.delete) {
-      return false;
-    }
+    // if (note.delete) {
+    //   return false;
+    // }
     note.formatTag.visible =
       appSettings.settings.vis[`nt-${note.noteType}`] === true;
     if (note.formatTag.visible) {

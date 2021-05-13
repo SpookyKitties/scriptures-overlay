@@ -7,17 +7,13 @@ import { resetNotes$ } from '../resetNotes';
 import { store } from '../SettingsComponent';
 import { parseVerseNumfromVerseNoteID } from '../verse-notes/parseVerseNumfromVerseNoteID';
 
-export function deleteNote(verseNoteID: string, noteGroups: VerseNoteGroup) {
-  noteGroups.notes?.map(note => (note.delete = true));
-  noteGroups.delete = true;
-
-  // const note = verseNote?.notes?.find(note => note.id == noteID);
-  // if (note) {
-  //   note.delete = true;
-  // }
-  // const index = verseNote?.notes?.indexOf(note);
-  // verseNote?.notes?.splice(index, 1);
-
+function setNoteDeletion(
+  verseNoteID: string,
+  noteGroups: VerseNoteGroup,
+  state: boolean,
+) {
+  noteGroups.notes?.map(note => (note.delete = state));
+  noteGroups.delete = state;
   return saveChapter().pipe(
     map(() => {
       return resetLiveVerse(
@@ -33,6 +29,21 @@ export function deleteNote(verseNoteID: string, noteGroups: VerseNoteGroup) {
     }),
     flatMap(o => o),
   );
+}
+
+export function restoreNote(verseNoteID: string, noteGroups: VerseNoteGroup) {
+  return setNoteDeletion(verseNoteID, noteGroups, false);
+}
+export function deleteNote(verseNoteID: string, noteGroups: VerseNoteGroup) {
+  return setNoteDeletion(verseNoteID, noteGroups, true);
+
+  // const note = verseNote?.notes?.find(note => note.id == noteID);
+  // if (note) {
+  //   note.delete = true;
+  // }
+  // const index = verseNote?.notes?.indexOf(note);
+  // verseNote?.notes?.splice(index, 1);
+
   // resetNotes$();
   // console.log(
   //   chapter.verseNotes?.find(verseNote => verseNote.id === verseNoteID),

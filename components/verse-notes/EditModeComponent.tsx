@@ -1,25 +1,7 @@
 import { Component } from 'react';
 import { VerseNoteGroup } from '../../oith-lib/src/verse-notes/verse-note';
-import { deleteNote } from '../edit-mode/deleteNote';
 import { NoteOffsetsCompnent } from './NoteOffsets';
 import { UpdateNotePhrase } from './UpdateNotePhrase';
-export class DeleteNoteComponent extends Component<{
-  noteGroup: VerseNoteGroup;
-  verseNoteID: string;
-}> {
-  click() {
-    deleteNote(this.props.verseNoteID, this.props.noteGroup).subscribe(o => {});
-  }
-  render() {
-    return (
-      <a
-        onClick={() => this.click()}
-        className={'delete is-small show-edit-mode'}
-        style={{ position: 'absolute', right: '10px', top: '10px' }}
-      ></a>
-    );
-  }
-}
 export class EditModeComponent extends Component<{
   noteGroup: VerseNoteGroup;
   verseNoteID: string;

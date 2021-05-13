@@ -16,11 +16,13 @@ export function expandNoteOffsets(verseNote?: VerseNote) {
   if (verseNote && verseNote.notes) {
     if (verseNote.noteGroups) {
       return of(
-        verseNote.noteGroups.map(ng =>
-          forkJoin(expandOffsets$(ng.formatTag), of(ng.formatTag)).pipe(
-            map(o => o[1]),
+        verseNote.noteGroups
+          .filter(ng => !ng.delete)
+          .map(ng =>
+            forkJoin(expandOffsets$(ng.formatTag), of(ng.formatTag)).pipe(
+              map(o => o[1]),
+            ),
           ),
-        ),
       ).pipe(flatMap$, flatMap$);
     }
   }

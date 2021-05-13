@@ -107,11 +107,11 @@ export class VerseNoteGroupComponent extends Component<{
               __html: this.props.noteGroup.notes[0]?.phrase,
             }}
           ></span>
-          <DeleteNoteComponent
-            noteGroup={this.props.noteGroup}
-            verseNoteID={this.props.verseNoteID}
-          ></DeleteNoteComponent>
         </span>
+        <DeleteNoteComponent
+          noteGroup={this.props.noteGroup}
+          verseNoteID={this.props.verseNoteID}
+        ></DeleteNoteComponent>
         <span
           style={this.displayOnSoglo(this.props.soglo, this.props.noteGroup)}
         >
@@ -333,7 +333,8 @@ import { openFocusNotePane, FocusedNotePane } from './FocusedNotePane';
 import { deleteNote } from '../edit-mode/deleteNote';
 import { reInitChapter } from '../../pages/[book]/[chapter]';
 import { resetLiveVerse } from '../note-offsets/resetLiveVerse';
-import { DeleteNoteComponent, EditModeComponent } from './EditModeComponent';
+import { EditModeComponent } from './EditModeComponent';
+import { DeleteNoteComponent } from './DeleteNoteComponent';
 import { UpdateNotePhrase } from './UpdateNotePhrase';
 export class VerseNotesShellComponent extends Component<VNProps> {
   public state: { chapter: Chapter; verseNotesHeight: string };
