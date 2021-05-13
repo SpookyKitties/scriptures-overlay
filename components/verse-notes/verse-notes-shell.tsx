@@ -89,10 +89,14 @@ export class VerseNoteGroupComponent extends Component<{
           this.props.noteGroup.media ? 'soglo-media' : ''
         } ${this.props.soglo ? 'soglo' : ''} ${
           this.props.noteGroup.formatTag.visible ? '' : 'none'
-        }   ${
-          this.props.noteGroup.formatTag.highlight ? 'highlight' : ''
-        } sup-${this.props.noteGroup.sup}`}
+        }   ${this.props.noteGroup.formatTag.highlight ? 'highlight' : ''}`}
       >
+        <span
+          className={`soglo-num ${this.props.noteGroup.numVisible ? '' : ''}`}
+        >
+          {this.props.noteGroup.num?.replace('title1', '')}
+          {this.props.noteGroup.sup}
+        </span>
         <span
           onClick={(evt: MouseEvent) => {
             const ee = evt.target as HTMLElement;

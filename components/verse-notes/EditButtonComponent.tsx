@@ -1,12 +1,16 @@
 import { Component } from 'react';
 import { VerseNoteGroup } from '../../oith-lib/src/verse-notes/verse-note';
+import { showNoteEditModal } from './NoteEditModalComponent';
 
 export class EditButtonComponent extends Component<{
   noteGroup: VerseNoteGroup;
 }> {
+  click() {
+    showNoteEditModal.next(true);
+  }
   render() {
     return (
-      <span className={'edit-button'}>
+      <span className={'edit-button'} onClick={() => this.click()}>
         <svg style={{ width: '16px', height: '16px' }} viewBox="0 0 24 24">
           <path
             fill="currentColor"

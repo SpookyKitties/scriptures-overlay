@@ -82,18 +82,17 @@ function setSogloSup(
   i: number,
   noteGroup: VerseNoteGroup,
 ) {
-  if (parseSubdomain().soglo) {
-    const splitid = verseNote.id.split('-');
-    const num = `${splitid[splitid.length - 3]}`;
-    // const sup = noteGroup.notes[0].sup;
-
-    // noteGroup.sup = sup;
-    noteGroup.num = num;
-    // noteGroup.notes.map(n => {
-    //   n.sup = sup;
-    //   n.num = num;
-    // });
-  }
+  const splitid = verseNote.id.split('-');
+  const num = `${splitid[splitid.length - 3]}`;
+  noteGroup.num = num;
+  // if (parseSubdomain().soglo) {
+  // const sup = noteGroup.notes[0].sup;
+  // noteGroup.sup = sup;
+  // noteGroup.notes.map(n => {
+  //   n.sup = sup;
+  //   n.num = num;
+  // });
+  // }
 }
 
 export function resetNotes$() {
