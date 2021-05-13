@@ -6,7 +6,7 @@ export class EditButtonComponent extends Component<{
   noteGroup: VerseNoteGroup;
 }> {
   click() {
-    showNoteEditModal.next(true);
+    showNoteEditModal.next({ display: true, noteGroup: this.props.noteGroup });
   }
   render() {
     return (

@@ -94,7 +94,10 @@ export class VerseNoteGroupComponent extends Component<{
         <span
           className={`soglo-num ${this.props.noteGroup.numVisible ? '' : ''}`}
         >
-          {this.props.noteGroup.num?.replace('title1', '')}
+          {this.props.noteGroup.num
+            ?.replace('title1', '')
+            .replace('sub', '')
+            .replace(/intro.+/g, '')}
           {this.props.noteGroup.sup}{' '}
         </span>
         <span
@@ -410,7 +413,7 @@ export class VerseNotesShellComponent extends Component<VNProps> {
             })}
             <div className="white-space"></div>
           </div>
-          <UpdateSuperscriptsComponent></UpdateSuperscriptsComponent>
+          {/* <UpdateSuperscriptsComponent></UpdateSuperscriptsComponent> */}
           <UpdateNotePhrase></UpdateNotePhrase>
         </div>
       );
