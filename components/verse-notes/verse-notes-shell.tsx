@@ -95,7 +95,7 @@ export class VerseNoteGroupComponent extends Component<{
           className={`soglo-num ${this.props.noteGroup.numVisible ? '' : ''}`}
         >
           {this.props.noteGroup.num?.replace('title1', '')}
-          {this.props.noteGroup.sup}
+          {this.props.noteGroup.sup}{' '}
         </span>
         <span
           onClick={(evt: MouseEvent) => {
