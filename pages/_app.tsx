@@ -13,7 +13,6 @@ import Helmet from 'react-helmet';
 import { NavigationItem } from '../components/navigation-item';
 import { ExportModal } from '../components/note-offsets/export-modal';
 import { PouchyRx } from '../components/import-notes/import-notes/PouchyRx';
-
 export class Store {
   public chapterHistory: Chapter[] = [];
   public updateVerses = new BehaviorSubject<boolean>(true);

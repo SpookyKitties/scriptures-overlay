@@ -80,6 +80,9 @@ const Layout: React.FunctionComponent = ({
     <div id="oith-main" className={`oith-main  `}>
       <Helmet>
         <html lang="en" />
+
+        <script type="text/javascript" src="/tinymce.min.js"></script>
+
         {/* <title>{store ? store.title$.toPromise() : "hhh"}</title> */}
         {/* <script
           async
