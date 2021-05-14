@@ -28,6 +28,7 @@ export class NoteRef {
   public moreStill?: boolean;
   public more?: boolean;
   public delete?: boolean;
+  public tempValue?: string;
   public constructor(
     noteC: number,
     text: string,
