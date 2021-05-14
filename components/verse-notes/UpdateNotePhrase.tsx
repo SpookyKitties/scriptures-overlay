@@ -1,6 +1,6 @@
 import { flatten } from 'lodash';
 import { Component } from 'react';
-import { filter, map, flatMap } from 'rxjs/operators';
+import { filter, map, flatMap, take } from 'rxjs/operators';
 import { Chapter } from '../../oith-lib/src/models/Chapter';
 import {
   expandOffsets$,
@@ -11,23 +11,36 @@ import { saveChapter } from '../note-offsets/saveChapter';
 import { store } from '../SettingsComponent';
 import { parseVerseNumfromVerseNoteID } from './parseVerseNumfromVerseNoteID';
 
-function parsePhraseText(verseNoteID: string, verseNoteGroup: VerseNoteGroup) {
-  const baseVerseID = parseVerseNumfromVerseNoteID(verseNoteID);
+async function parsePhraseText(
+  verseNoteID: string,
+  verseNoteGroup: VerseNoteGroup,
+) {
+  try {
+    const chapter = await store.chapter.pipe(take(1)).toPromise();
+    const baseVerseID = parseVerseNumfromVerseNoteID(verseNoteID);
 
-  const verseID = /^\d+$/.test(baseVerseID) ? `p${baseVerseID}` : baseVerseID;
+    // const verseID = /^\d+$/.test(baseVerseID) ? `${baseVerseID}` : baseVerseID;
 
-  const verseText = document.querySelector(`#${verseID}`)?.textContent;
-  const offsetsGroups = expandOffsets(verseNoteGroup.formatTag.offsets);
+    // const verseText = document.querySelector(`#${verseID}`)?.textContent;
+    console.log(baseVerseID);
+    console.log(chapter.verses.find(verse => verse.id === baseVerseID));
 
-  const asdf = offsetsGroups
-    .map(offsetsGroup => {
-      return offsetsGroup.map(offset => verseText[offset]).join('');
-    })
-    .join(' ');
-  if (asdf.trim() !== '') {
-    verseNoteGroup.notePhrase = asdf;
-    verseNoteGroup.notes.map(note => (note.phrase = asdf));
-  } else {
+    const verseText = chapter.verses.find(verse => verse.id === baseVerseID)
+      ?.text;
+    const offsetsGroups = expandOffsets(verseNoteGroup.formatTag.offsets);
+
+    const asdf = offsetsGroups
+      .map(offsetsGroup => {
+        return offsetsGroup.map(offset => verseText[offset]).join('');
+      })
+      .join(' ');
+    if (asdf.trim() !== '') {
+      verseNoteGroup.notePhrase = asdf;
+      verseNoteGroup.notes.map(note => (note.phrase = asdf));
+    } else {
+    }
+  } catch (error) {
+    // console.log(error);
   }
   // saveChapter().subscribe(() => {
   //   store.resetNotes$.next(true);

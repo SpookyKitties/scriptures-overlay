@@ -256,7 +256,14 @@ export class FormatTag extends Component<{
         );
       };
       // return <span style={{ content: hasLetters().join('') }}></span>;
-      return <sup>{uniq(hasLetters()).join('')}</sup>;
+      return (
+        <sup
+          // className={`${uniq(hasLetters()).join('')}`}
+          style={{ userSelect: 'none' }}
+        >
+          {uniq(hasLetters()).join('')}
+        </sup>
+      );
     }
     return <></>;
   }
