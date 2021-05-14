@@ -148,7 +148,7 @@ export class NoteEditModalComponent extends Component {
                         'searchreplace visualblocks code fullscreen',
                         'insertdatetime media table paste code help wordcount',
                       ],
-                      toolbar: 'undo redo | ' + 'bold italic link',
+                      toolbar: 'undo redo | ' + 'bold italic link underline',
                     }}
                     onEditorChange={(value, editor) => {
                       this.handleUpdate(value, editor, ref);
