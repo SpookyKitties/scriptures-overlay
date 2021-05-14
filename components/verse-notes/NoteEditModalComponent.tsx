@@ -5,6 +5,7 @@ import { VerseNoteGroup } from '../../oith-lib/src/verse-notes/verse-note';
 import { saveChapter } from '../note-offsets/saveChapter';
 import { decode } from 'he';
 import { resetNotes$ } from '../resetNotes';
+// import tinymce from 'tinymce';
 
 export const showNoteEditModal = new BehaviorSubject<{
   display: boolean;
@@ -17,7 +18,11 @@ export class NoteEditModalComponent extends Component {
     showNoteEditModal.subscribe(o => {
       this.setState({ show: o.display, noteGroup: o.noteGroup });
     });
+    // tinymce.init({
+    //   selector: 'textarea',
+    // });
   }
+
   close() {
     showNoteEditModal.next({ display: false });
   }

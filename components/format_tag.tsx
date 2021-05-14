@@ -222,7 +222,7 @@ export class FormatTag extends Component<{
   }
 
   hasLSup() {
-    if (this.state && parseSubdomain().soglo) {
+    if (this.state && !parseSubdomain().soglo) {
       const hasVis = (note: Note[]) => {
         return note.filter(n => n.formatTag.visible);
       };
@@ -242,7 +242,7 @@ export class FormatTag extends Component<{
     return '';
   }
   renderLetters() {
-    if (this.state && parseSubdomain().soglo) {
+    if (this.state && !parseSubdomain().soglo) {
       const hasLetters = () => {
         const hasVis = (note: Note[]) => {
           return note.filter(n => n.formatTag.visible && n.sup !== undefined);
