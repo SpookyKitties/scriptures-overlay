@@ -48,12 +48,17 @@ export class FormatTag extends Component<{
   formatMerged: FormatMerged;
   offsets: string;
 }> {
-  public state: { formatMerged: FormatMerged; classList: string; text: string };
+  public state: {
+    formatMerged: FormatMerged;
+    classList: string;
+    text: string;
+  };
 
   public style: CSSProperties = {
     backgroundColor: 'inherit',
   };
   public className = '';
+
   constructor(props) {
     super(props);
     // this.state = { formatMerged: this.props.formatMerged };
@@ -69,6 +74,8 @@ export class FormatTag extends Component<{
     this.setState({ text: this.props.formatMerged.text });
     this.setState({ formatMerged: this.props.formatMerged });
     this.setState({ offset: this.props.formatMerged.offset });
+
+    console.log(this.props.formatMerged);
 
     store.updateFTags$
       .pipe(
@@ -241,39 +248,70 @@ export class FormatTag extends Component<{
     }
     return '';
   }
-  renderLetters() {
-    if (this.state && !parseSubdomain().soglo) {
-      const hasLetters = () => {
-        const hasVis = (note: Note[]) => {
-          return note.filter(n => n.formatTag.visible && n.sup !== undefined);
-        };
-        return flatten(
+  getLetters() {
+    if (this.state) {
+      const hasVis = (note: Note[]) => {
+        return note.filter(n => n.formatTag.visible && n.sup !== undefined);
+      };
+      return uniq(
+        flatten(
           flatten(
             (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
               .filter(n => Array.isArray(n.notes))
               .map(n => hasVis(n.notes)),
           ).map(n => n.sup),
-        );
-      };
-      // return <span style={{ content: hasLetters().join('') }}></span>;
-      return (
-        <sup
-          // className={`${uniq(hasLetters()).join('')}`}
-          style={{ userSelect: 'none' }}
-        >
-          {uniq(hasLetters()).join('')}
-        </sup>
+        ),
       );
+    }
+    return [];
+  }
+  renderLetters() {
+    if (this.state && !parseSubdomain().soglo) {
+      // const hasLetters = () => {
+      //   const hasVis = (note: Note[]) => {
+      //     return note.filter(n => n.formatTag.visible && n.sup !== undefined);
+      //   };
+      //   return flatten(
+      //     flatten(
+      //       (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
+      //         .filter(n => Array.isArray(n.notes))
+      //         .map(n => hasVis(n.notes)),
+      //     ).map(n => n.sup),
+      //   );
+      // };
+      // return <span style={{ content: hasLetters().join('') }}></span>;
+
+      /// This does a check to see if the offset for this format tag
+      /// is in the first offset grouping. If not, no superscript is shown
+      const offsets = this.state.formatMerged?.formatTags[0]?.offsets?.split(
+        ',',
+      );
+      if (
+        offsets &&
+        offsets[0].startsWith(this.state?.formatMerged?.offset.toString())
+      ) {
+        return (
+          <sup
+            // className={`${uniq(hasLetters()).join('')}`}
+            style={{ userSelect: 'none' }}
+          >
+            {this.getLetters().join('')}
+          </sup>
+        );
+      }
     }
     return <></>;
   }
   public render() {
+    const letters = this.renderLetters();
     return (
       <span
         className={`${displayStateKey(
           this.state,
           'classList',
-        )} ${this.hasLSup()}`}
+        )} ${this.hasLSup()} ${this.getLetters().map(
+          letter => `sup-elm-${letter} `,
+        )}`}
         style={this.style}
         data-offset={`${this.state ? this.state['offset'] : ''}`}
         onClick={evt => {
