@@ -31,7 +31,7 @@ export class NoteOffsetsCompnent extends Component<{
         {this.props.noteGroup.notes[0].formatTag.offsets}
         <a
           onClick={() => {
-            clearOffsets(this.props.noteGroup, this.props.verseNodeID);
+            clearOffsets(this.props.noteGroup, this.props.verseNodeID, '');
           }}
           className={'delete'}
         ></a>
