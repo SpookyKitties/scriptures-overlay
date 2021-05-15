@@ -7,6 +7,25 @@ export class NoteOffsetsCompnent extends Component<{
   verseNodeID: string;
 }> {
   render() {
+    return this.props.noteGroup.notes[0].formatTag.offsets
+      ?.split(',')
+      .map(offsets => {
+        return (
+          <span className={`tag is-info is-small`}>
+            {offsets}
+            <a
+              onClick={() => {
+                clearOffsets(
+                  this.props.noteGroup,
+                  this.props.verseNodeID,
+                  offsets,
+                );
+              }}
+              className={'delete'}
+            ></a>
+          </span>
+        );
+      });
     return (
       <span className={`tag is-info is-small`}>
         {this.props.noteGroup.notes[0].formatTag.offsets}
