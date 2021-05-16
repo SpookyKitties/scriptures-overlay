@@ -95,12 +95,10 @@ export class NoteEditModalComponent extends Component {
       flattenNoteGroupsRefs(this.state.noteGroup)
         .filter(ref => ref.tempValue !== undefined)
         .map(ref => {
-          ref.text = ref.tempValue;
+          ref.text = decode(ref.tempValue).replace(/\u00B7/g, '\u00a0');
           ref.tempValue = undefined;
         });
       saveChapter().subscribe(() => {
-        console.log('ioasjdfioajsdfiojioajsdfiojio');
-
         resetNotes$();
         showNoteEditModal.next({ display: false });
       });
@@ -109,7 +107,8 @@ export class NoteEditModalComponent extends Component {
 
   handleUpdate(value: string, editor: Editor, ref: NoteRef) {
     const content = editor.getContent({ format: 'html' });
-    ref.tempValue = content;
+    ref.tempValue = content.replace('\u00B7', '\u00a0');
+    console.log(decode(ref.tempValue).replace('\u00B7', '\u00a0'));
 
     // saveChapter().subscribe(() => {
     //   console.log('ioasjdfioajsdfiojioajsdfiojio');
@@ -140,7 +139,7 @@ export class NoteEditModalComponent extends Component {
               )?.map((ref, i) => {
                 return (
                   <EditorComponent
-                    initialValue={`${ref.text}`}
+                    initialValue={`${ref.text.replace(/\u00a0/g, '\u00B7')}`}
                     init={{
                       menubar: false,
                       plugins: [
