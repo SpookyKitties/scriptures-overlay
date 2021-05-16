@@ -22,8 +22,6 @@ async function parsePhraseText(
     // const verseID = /^\d+$/.test(baseVerseID) ? `${baseVerseID}` : baseVerseID;
 
     // const verseText = document.querySelector(`#${verseID}`)?.textContent;
-    console.log(baseVerseID);
-    console.log(chapter.verses.find(verse => verse.id === baseVerseID));
 
     const verseText = chapter.verses.find(verse => verse.id === baseVerseID)
       ?.text;
@@ -35,9 +33,9 @@ async function parsePhraseText(
         : ' … ';
     const asdf = offsetsGroups
       .map(offsetsGroup => {
-        return offsetsGroup.map(offset => verseText[offset]).join(ellipses);
+        return offsetsGroup.map(offset => verseText[offset]).join('');
       })
-      .join(' ');
+      .join(ellipses);
     if (asdf.trim() !== '') {
       verseNoteGroup.notePhrase = asdf;
       verseNoteGroup.notes.map(note => (note.phrase = asdf));
