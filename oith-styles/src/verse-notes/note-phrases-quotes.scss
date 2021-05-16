@@ -1,8 +1,8 @@
 div[id^='fra-'] .note-phrase::before {
-  content: '«';
+  content: '« ';
 }
 div[id^='fra-'] .note-phrase::after {
-  content: '»';
+  content: ' »';
 }
 div[id^='eng-'] .note-phrase::before {
   content: '“';
