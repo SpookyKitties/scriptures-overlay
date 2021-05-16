@@ -1,12 +1,12 @@
-div[id^='fra-'] .note-phrase::before {
+div[id^='fra-'] .note-phrase-text::before {
   content: '« ';
 }
-div[id^='fra-'] .note-phrase::after {
+div[id^='fra-'] .note-phrase-text::after {
   content: ' »';
 }
-div[id^='eng-'] .note-phrase::before {
+div[id^='eng-'] .note-phrase-text::before {
   content: '“';
 }
-div[id^='eng-'] .note-phrase::after {
+div[id^='eng-'] .note-phrase-text::after {
   content: '”';
 }

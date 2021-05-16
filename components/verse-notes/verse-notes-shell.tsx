@@ -91,7 +91,7 @@ export class VerseNoteGroupComponent extends Component<{
           this.props.noteGroup.formatTag.visible ? '' : 'none'
         }   ${this.props.noteGroup.formatTag.highlight ? 'highlight' : ''}`}
       >
-        <span
+        {/* <span
           className={`soglo-num ${this.props.noteGroup.numVisible ? '' : ''}`}
         >
           {this.props.noteGroup.num
@@ -99,7 +99,7 @@ export class VerseNoteGroupComponent extends Component<{
             .replace('sub', '')
             .replace(/intro.+/g, '')}
           {this.props.noteGroup.sup}{' '}
-        </span>
+        </span> */}
         <span
           onClick={(evt: MouseEvent) => {
             const ee = evt.target as HTMLElement;
@@ -112,6 +112,16 @@ export class VerseNoteGroupComponent extends Component<{
           )}
         >
           <span
+            className={`soglo-num ${this.props.noteGroup.numVisible ? '' : ''}`}
+          >
+            {this.props.noteGroup.num
+              ?.replace('title1', '')
+              .replace('sub', '')
+              .replace(/intro.+/g, '')}
+            {this.props.noteGroup.sup}{' '}
+          </span>
+          <span
+            className={`note-phrase-text`}
             dangerouslySetInnerHTML={{
               __html: this.props.noteGroup.notes[0]?.phrase,
             }}
@@ -138,6 +148,7 @@ export class VerseNoteGroupComponent extends Component<{
         </span>
         <div
           className={`note`}
+          style={{ width: '84%' }}
           onClick={event => {
             gotoLink(event);
           }}
@@ -265,7 +276,7 @@ export class VerseNoteGroupComponent extends Component<{
     noteGroup: VerseNoteGroup,
   ): CSSProperties {
     const vis = noteGroup.formatTag.visible;
-    return { display: `${sg && vis ? 'initial' : 'none'}` };
+    return { display: `${sg && vis ? 'block' : 'none'}` };
   }
 }
 function getSup(note: { lSup?: string; sup?: string }) {

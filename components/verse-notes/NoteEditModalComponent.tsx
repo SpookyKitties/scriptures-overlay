@@ -151,6 +151,7 @@ export class NoteEditModalComponent extends Component {
                       toolbar:
                         'undo redo | ' +
                         'bold italic underline link nonbreaking visualchars',
+                      visualchars_default_state: true,
                     }}
                     onEditorChange={(value, editor) => {
                       this.handleUpdate(value, editor, ref);
