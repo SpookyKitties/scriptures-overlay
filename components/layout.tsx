@@ -4,7 +4,7 @@ import { CSSProperties, Component } from 'react';
 import Head from 'next/head';
 import '../styles/styles.scss';
 import { HeaderComponent } from './header.component';
-import { SettingsComponent } from './SettingsComponent';
+import { appSettings, SettingsComponent } from './SettingsComponent';
 import Helmet from 'react-helmet';
 import { MenuOverlay } from './MenuOverlay';
 import { parseSubdomain } from './parseSubdomain';
@@ -77,7 +77,11 @@ const Layout: React.FunctionComponent = ({
   // shortTitle
 }) => {
   return (
-    <div id="oith-main" className={`oith-main  `}>
+    <div
+      id="oith-main"
+      className={`oith-main }`}
+      lang={`${appSettings?.settings?.lang}`}
+    >
       <Helmet>
         <html lang="en" />
 

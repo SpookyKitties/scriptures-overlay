@@ -29,9 +29,13 @@ async function parsePhraseText(
       ?.text;
     const offsetsGroups = expandOffsets(verseNoteGroup.formatTag.offsets);
 
+    const ellipses =
+      document.querySelector('.oith-main')?.getAttribute('lang') === 'eng'
+        ? ' … '
+        : ' … ';
     const asdf = offsetsGroups
       .map(offsetsGroup => {
-        return offsetsGroup.map(offset => verseText[offset]).join(' ... ');
+        return offsetsGroup.map(offset => verseText[offset]).join(ellipses);
       })
       .join(' ');
     if (asdf.trim() !== '') {
