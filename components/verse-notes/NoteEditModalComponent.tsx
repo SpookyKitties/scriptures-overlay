@@ -107,8 +107,9 @@ export class NoteEditModalComponent extends Component {
 
   handleUpdate(value: string, editor: Editor, ref: NoteRef) {
     const content = editor.getContent({ format: 'html' });
-    ref.tempValue = content.replace('\u00B7', '\u00a0');
-    console.log(decode(ref.tempValue).replace('\u00B7', '\u00a0'));
+    ref.tempValue = decode(content).replace('\u00B7', '\u00a0');
+    // console.log(decode(ref.tempValue).replace('\u00B7', '\u00a0'));
+    // editor.setContent(decode(content).replace(/\u00a0/g, '\u00B7'));
 
     // saveChapter().subscribe(() => {
     //   console.log('ioasjdfioajsdfiojioajsdfiojio');
@@ -139,17 +140,17 @@ export class NoteEditModalComponent extends Component {
               )?.map((ref, i) => {
                 return (
                   <EditorComponent
-                    initialValue={`${ref.text.replace(/\u00a0/g, '\u00B7')}`}
+                    initialValue={`${ref.text}`}
                     init={{
                       menubar: false,
                       plugins: [
                         'advlist autolink lists link image charmap print preview anchor',
-                        'searchreplace visualblocks code fullscreen',
-                        'insertdatetime media table paste code help wordcount',
+                        'searchreplace visualblocks code fullscreen textpattern',
+                        'insertdatetime media table paste code help wordcount nonbreaking visualchars',
                       ],
                       toolbar:
                         'undo redo | ' +
-                        'bold italic underline link nonbreaking',
+                        'bold italic underline link nonbreaking visualchars',
                     }}
                     onEditorChange={(value, editor) => {
                       this.handleUpdate(value, editor, ref);
