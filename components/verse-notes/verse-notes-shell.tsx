@@ -1,4 +1,4 @@
-import { flatten, uniqBy } from 'lodash';
+import { flatten, sortBy, uniqBy } from 'lodash';
 import { Component, MouseEvent, CSSProperties } from 'react';
 import { Chapter } from '../../oith-lib/src/models/Chapter';
 import {
@@ -289,6 +289,16 @@ function getSup(note: { lSup?: string; sup?: string }) {
   return '-';
 }
 
+function newSortVerseNoteGroups(verseNoteGroup: VerseNoteGroup) {
+  if (verseNoteGroup.formatTag.offsets === 'all') {
+    return -1;
+  }
+  return verseNoteGroup.formatTag &&
+    verseNoteGroup.formatTag.uncompressedOffsets
+    ? verseNoteGroup.formatTag.uncompressedOffsets[0]
+    : 0;
+}
+
 function sortVerseNoteGroups(
   verseNoteGroupA: VerseNoteGroup,
   verseNoteGroupB: VerseNoteGroup,
@@ -300,6 +310,7 @@ function sortVerseNoteGroups(
   //     (getSup(verseNoteGroupB).charCodeAt(0) - 65)
   //   );
   // }
+
   const getFirstOffset = (vng: VerseNoteGroup) => {
     if (vng.formatTag.offsets === 'all') {
       return -1;
@@ -308,6 +319,10 @@ function sortVerseNoteGroups(
       ? vng.formatTag.uncompressedOffsets[0]
       : 0;
   };
+
+  console.log(
+    `${getFirstOffset(verseNoteGroupA)} ${getFirstOffset(verseNoteGroupB)}`,
+  );
 
   return getFirstOffset(verseNoteGroupA) - getFirstOffset(verseNoteGroupB);
 }
@@ -336,15 +351,15 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
             id={verseNote.id}
           >
             <p className="short-title">{shortTitle}</p>
-            {verseNote.noteGroups
-              .sort((a, b) => sortVerseNoteGroups(a, b))
-              .map(noteGroup => (
-                <VerseNoteGroupComponent
-                  noteGroup={noteGroup}
-                  soglo={sg}
-                  verseNoteID={verseNote.id}
-                />
-              ))}
+            {sortBy(verseNote.noteGroups, vng =>
+              newSortVerseNoteGroups(vng),
+            ).map(noteGroup => (
+              <VerseNoteGroupComponent
+                noteGroup={noteGroup}
+                soglo={sg}
+                verseNoteID={verseNote.id}
+              />
+            ))}
           </div>
         );
       }

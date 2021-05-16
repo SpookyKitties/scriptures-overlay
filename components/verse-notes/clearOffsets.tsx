@@ -1,8 +1,10 @@
 import { map } from 'rxjs/operators';
+import { expandOffsets$ } from '../../oith-lib/src/offsets/expandOffsets';
 import { flatMap$ } from '../../oith-lib/src/rx/flatMap$';
 import { VerseNoteGroup } from '../../oith-lib/src/verse-notes/verse-note';
 import { resetLiveVerse } from '../note-offsets/resetLiveVerse';
 import { saveChapter } from '../note-offsets/saveChapter';
+import { resetNotes$ } from '../resetNotes';
 import { formatTagService, store } from '../SettingsComponent';
 import { parseVerseNumfromVerseNoteID } from './parseVerseNumfromVerseNoteID';
 
@@ -37,17 +39,22 @@ export function clearOffsets(
     // store.updateVerses.next(true);
     // store.updateFTags$.next(true);
     // formatTagService.reset();
-    saveChapter()
+    return expandOffsets$(noteGroup.formatTag)
       .pipe(
         map(() => {
-          return resetLiveVerse(
-            parseVerseNumfromVerseNoteID(verseNoteID),
-            verseNoteID,
-          ).pipe(
+          return saveChapter().pipe(
             map(() => {
-              store.updateVerses.next(true);
-              store.updateNoteVisibility$.next(true);
+              return resetLiveVerse(
+                parseVerseNumfromVerseNoteID(verseNoteID),
+                verseNoteID,
+              ).pipe(
+                map(() => {
+                  store.updateVerses.next(true);
+                  store.updateNoteVisibility$.next(true);
+                }),
+              );
             }),
+            flatMap$,
           );
         }),
         flatMap$,
