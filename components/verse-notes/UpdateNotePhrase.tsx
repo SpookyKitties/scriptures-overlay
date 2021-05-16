@@ -31,7 +31,7 @@ async function parsePhraseText(
 
     const asdf = offsetsGroups
       .map(offsetsGroup => {
-        return offsetsGroup.map(offset => verseText[offset]).join('');
+        return offsetsGroup.map(offset => verseText[offset]).join(' ... ');
       })
       .join(' ');
     if (asdf.trim() !== '') {

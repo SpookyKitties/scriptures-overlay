@@ -75,8 +75,6 @@ export class FormatTag extends Component<{
     this.setState({ formatMerged: this.props.formatMerged });
     this.setState({ offset: this.props.formatMerged.offset });
 
-    console.log(this.props.formatMerged);
-
     store.updateFTags$
       .pipe(
         map(() => {
