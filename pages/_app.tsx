@@ -114,6 +114,7 @@ class MyApp extends App {
         </Head>
         <Helmet>
           <title>{this.state ? `${this.state['title']}` : 'z'}</title>
+          <link rel="manifest" href="/manifest.json"></link>
         </Helmet>
         <Component {...pageProps} />
         <ExportModal />

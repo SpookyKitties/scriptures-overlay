@@ -1,0 +1,17 @@
+{
+  "dir": "ltr",
+  "lang": "en",
+  "name": "JBNotes",
+  "short_name": "JBNotes",
+  "scope": "/",
+  "display": "browser",
+  "start_url": "https://port.oneinthinehand.org/",
+  "background_color": "#000000",
+  "theme_color": "transparent",
+  "description": "Test",
+  "orientation": "any",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "icons": [],
+  "url": "https://port.oneinthinehand.org"
+}
