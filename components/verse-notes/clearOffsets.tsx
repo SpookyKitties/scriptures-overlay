@@ -28,7 +28,12 @@ export function clearOffsets(
 
       // noteGroup.formatTag.offsets =
       noteGroup.offsets = newOffsets;
+
       noteGroup.formatTag.offsets = newOffsets;
+      if (newOffsets?.trim() === '') {
+        noteGroup.notePhrase = noteGroup.notes[0].oPhrase;
+        noteGroup?.notes.map(note => (note.phrase = note.oPhrase));
+      }
       noteGroup.notes.map(note => {
         note.formatTag.offsets = newOffsets;
       });
