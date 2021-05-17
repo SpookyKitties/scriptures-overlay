@@ -12,6 +12,7 @@ import { filter, map } from 'rxjs/operators';
 import Helmet from 'react-helmet';
 import { NavigationItem } from '../components/navigation-item';
 import { ExportModal } from '../components/note-offsets/export-modal';
+import '../styles/styles.scss';
 import { PouchyRx } from '../components/import-notes/import-notes/PouchyRx';
 export class Store {
   public chapterHistory: Chapter[] = [];

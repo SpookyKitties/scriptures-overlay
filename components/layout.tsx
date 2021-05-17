@@ -2,7 +2,6 @@ import { NextPage } from 'next';
 import { NavbarComponents, NavbarProps } from './navbar.component';
 import { CSSProperties, Component } from 'react';
 import Head from 'next/head';
-import '../styles/styles.scss';
 import { HeaderComponent } from './header.component';
 import { appSettings, SettingsComponent } from './SettingsComponent';
 import Helmet from 'react-helmet';
