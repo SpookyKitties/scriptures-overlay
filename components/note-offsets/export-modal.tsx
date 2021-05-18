@@ -64,11 +64,21 @@ function addToDatabaseIfNotIn() {
 }
 
 export class ExportModal extends Component {
-  public state: { active: boolean; noteTypes: NoteType[] };
+  public state: {
+    active: boolean;
+    noteTypes: NoteType[];
+    none: boolean;
+    ot: boolean;
+    nt: boolean;
+    bofm: boolean;
+    dc: boolean;
+    pgp: boolean;
+  };
 
   public componentDidMount() {
     openExportModal = new BehaviorSubject(false);
     resetCheckboxes = new BehaviorSubject(false);
+    this.setState({ none: true });
 
     openExportModal
       .pipe(
@@ -77,15 +87,33 @@ export class ExportModal extends Component {
 
           this.setState({ active: o });
           if (appSettings && appSettings.noteTypes) {
-            this.setState({ noteTypes: appSettings.noteTypes.noteTypes });
+            this.setState({
+              noteTypes: appSettings.noteTypes.noteTypes,
+            });
           }
-
+          Array.from(
+            document.querySelectorAll('.testamentExportSelection input'),
+          ).map((elm: HTMLInputElement) => (elm.checked = false));
           return addToDatabaseIfNotIn();
         }),
         flatMap(o => o),
       )
       .subscribe();
   }
+  testamentSelectionClick(elm: HTMLElement) {
+    this.setState({ none: false });
+    this.setState({ ot: false });
+    this.setState({ nt: false });
+    this.setState({ dc: false });
+    this.setState({ pgp: false });
+    this.setState({ [`${(elm as HTMLInputElement).value}`]: true });
+
+    // Array.from(
+    //   document.querySelectorAll('.testamentExportSelection input'),
+    // ).map((elm: HTMLInputElement) => (elm.checked = false));
+    // (elm as HTMLInputElement).checked = true;
+  }
+
   public render() {
     if (this.state && this.state.noteTypes) {
       return (
@@ -111,6 +139,81 @@ export class ExportModal extends Component {
               >
                 Export
               </a>
+
+              <div className="testamentExportSelection control">
+                <label className="radio">
+                  <input
+                    type="radio"
+                    name="testamentNone"
+                    value="none"
+                    checked={this.state?.none}
+                    onClick={evt =>
+                      this.testamentSelectionClick(evt.target as HTMLElement)
+                    }
+                  />
+                  None
+                </label>
+                <label className="radio">
+                  <input
+                    type="radio"
+                    name="testamentOT"
+                    value="ot"
+                    checked={this.state?.ot}
+                    onClick={evt =>
+                      this.testamentSelectionClick(evt.target as HTMLElement)
+                    }
+                  />
+                  OT
+                </label>
+                <label className="radio">
+                  <input
+                    type="radio"
+                    name="testamentNT"
+                    value="nt"
+                    checked={this.state?.nt}
+                    onClick={evt =>
+                      this.testamentSelectionClick(evt.target as HTMLElement)
+                    }
+                  />
+                  NT
+                </label>
+                <label className="radio">
+                  <input
+                    type="radio"
+                    name="testamentBOFM"
+                    value="bofm"
+                    checked={this.state?.bofm}
+                    onClick={evt =>
+                      this.testamentSelectionClick(evt.target as HTMLElement)
+                    }
+                  />
+                  BOFM
+                </label>
+                <label className="radio">
+                  <input
+                    type="radio"
+                    name="testamentDC"
+                    value="dc"
+                    checked={this.state?.dc}
+                    onClick={evt =>
+                      this.testamentSelectionClick(evt.target as HTMLElement)
+                    }
+                  />
+                  DC
+                </label>
+                <label className="radio">
+                  <input
+                    type="radio"
+                    name="testamentPGP"
+                    value="pgp"
+                    checked={this.state?.pgp}
+                    onClick={evt =>
+                      this.testamentSelectionClick(evt.target as HTMLElement)
+                    }
+                  />
+                  PGP
+                </label>
+              </div>
             </div>
           </div>
           <a

@@ -5,9 +5,10 @@ import { flatMap$ } from '../../oith-lib/src/rx/flatMap$';
 import { Note, NoteRef } from '../../oith-lib/src/verse-notes/verse-note';
 import { NoteType } from '../../oith-lib/src/verse-notes/settings/note-gorup-settings';
 import FileSaver from 'file-saver';
-import { first, orderBy, sortBy } from 'lodash';
+import { first, flatten, orderBy, sortBy } from 'lodash';
 import { Chapter } from '../../oith-lib/src/models/Chapter';
 import { NavigationItem } from '../navigation-item';
+import { testaments } from './testament_list.json';
 
 function noteRefsToString(noteRefs: NoteRef[]) {
   return noteRefs.map(noteRef => {
@@ -51,37 +52,94 @@ const docend = `</body></html>`;
 export function exportNotes() {
   return newExportNotes();
 }
+function getChapters(idPart: string) {
+  return store.database.allDocs$().pipe(
+    map(o => {
+      return o.rows
+        .filter(r => r.id.startsWith(`${idPart}`))
+        .map(c => {
+          return { id: c.id, rev: c.value.rev };
+        });
+    }),
+  );
+}
+
+function getChaptersByTestament(testament: string) {
+  console.log(testament);
+
+  const testamentChapterIds = async () => {
+    console.log(testaments[testament]);
+
+    return flatten(
+      await Promise.all(
+        flatten(
+          (testaments[testament] as string[]).map(book => {
+            return getChapters(`eng-${book}`).toPromise();
+          }),
+        ),
+      ),
+    );
+  };
+  return of(testamentChapterIds()).pipe(
+    flatMap(o => o),
+    map(async chapterIds => {
+      console.log(chapterIds);
+
+      return of(
+        (await store.database.bulkGet$({
+          docs: chapterIds,
+        })) as Chapter[],
+      );
+    }),
+    flatMap(o => o),
+    flatMap(o => o),
+    map(chapters => {
+      console.log(chapters.length);
+      return chapters;
+    }),
+  );
+}
 
 function getBooksChapters() {
-  return store.chapter.pipe(
-    take(1),
-    filter(o => o !== undefined),
-    map(chapter => {
-      const getChapters = async () => {
-        const lang = chapter.id.split('-')[0] as string;
+  const elm = (document.querySelector(
+    '.testamentExportSelection input:checked',
+  ) as HTMLInputElement)?.value;
+  if (elm === 'none' || elm == undefined) {
+    return store.chapter.pipe(
+      take(1),
+      filter(o => o !== undefined),
+      map(chapter => {
+        const getChapters = async () => {
+          const lang = chapter.id.split('-')[0] as string;
 
-        const chapters = await store.database
-          .allDocs$()
-          .pipe(
-            map(o => {
-              return o.rows
-                .filter(r =>
-                  r.id.startsWith(`${lang}-${location.pathname.split('/')[1]}`),
-                )
-                .map(c => {
-                  return { id: c.id, rev: c.value.rev };
-                });
-            }),
-          )
-          .toPromise();
+          const chapters = await store.database
+            .allDocs$()
+            .pipe(
+              map(o => {
+                return o.rows
+                  .filter(r =>
+                    r.id.startsWith(
+                      `${lang}-${location.pathname.split('/')[1]}`,
+                    ),
+                  )
+                  .map(c => {
+                    return { id: c.id, rev: c.value.rev };
+                  });
+              }),
+            )
+            .toPromise();
 
-        return (await store.database.bulkGet$({ docs: chapters })) as Chapter[];
-      };
+          return (await store.database.bulkGet$({
+            docs: chapters,
+          })) as Chapter[];
+        };
 
-      return of(getChapters()).pipe(flatMap$);
-    }),
-    flatMap$,
-  );
+        return of(getChapters()).pipe(flatMap$);
+      }),
+      flatMap$,
+    );
+  }
+  return getChaptersByTestament(elm);
 }
 
 const chapterTxt = (chapter: Chapter, noteTypes: NoteType[]) => {
