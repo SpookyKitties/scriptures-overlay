@@ -56,6 +56,8 @@ export class Note extends Doc {
   public lSup?: string;
   public delete?: boolean;
   public oPhrase: string;
+  public verseMarker: string;
+  public noteMarker: string;
   // public docType: DocType = DocType.NOTE;
   public constructor(
     vid: string,
