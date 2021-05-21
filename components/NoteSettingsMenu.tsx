@@ -13,13 +13,13 @@ import { parseSubdomain } from './parseSubdomain';
 
 const noteSettingsMenuStyles: CSSProperties = {
   position: 'absolute',
-  right: '0px',
   // minWidth: '12rem',
   paddingTop: '4px',
   top: '100%',
   zIndex: 20,
   backgroundColor: 'white',
-  left: 'unset',
+  // right: '0px',
+  // left: 'unset',
   // width: '250px',
   // height: 'calc(100vh - 48px)',
   overflowY: 'scroll',

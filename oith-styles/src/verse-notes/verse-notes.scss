@@ -315,11 +315,20 @@ body {
     }
   }
 }
+.note-settings-menu.dropdown-menu {
+  left: unset;
+  right: 0px;
+}
 
 [lang='pes'] {
+  .note-settings-menu.dropdown-menu {
+    left: 0px;
+    right: unset;
+  }
   .verse-note-group {
     .show-edit-mode {
-      &.checkbox [type='checkbox'], .edit-button{
+      &.checkbox [type='checkbox'],
+      .edit-button {
         left: 10px !important;
         right: initial !important;
       }
