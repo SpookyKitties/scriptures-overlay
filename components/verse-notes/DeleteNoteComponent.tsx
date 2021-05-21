@@ -20,7 +20,6 @@ export class DeleteNoteComponent extends Component<{
           onChange={() => this.click()}
           type="checkbox"
           checked={!this.props.noteGroup.delete}
-          style={{ position: 'absolute', right: '10px', top: '10px' }}
         />
       </label>
     );

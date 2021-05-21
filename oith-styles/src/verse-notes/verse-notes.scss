@@ -115,6 +115,7 @@ body {
 .edit-mode {
   .edit-mode-offsets {
     display: block;
+    direction: ltr;
   }
   .btn-update-phrase {
     display: block;
@@ -303,5 +304,25 @@ body {
 [class*='-none'] {
   .ref-label {
     display: none !important;
+  }
+}
+.verse-note-group {
+  .show-edit-mode {
+    &.checkbox [type='checkbox'] {
+      right: 10px;
+      top: 10px;
+      position: absolute !important;
+    }
+  }
+}
+
+[lang='pes'] {
+  .verse-note-group {
+    .show-edit-mode {
+      &.checkbox [type='checkbox'], .edit-button{
+        left: 10px !important;
+        right: initial !important;
+      }
+    }
   }
 }
