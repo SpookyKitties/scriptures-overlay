@@ -130,17 +130,10 @@ export class ExportModal extends Component {
               {this.state.noteTypes.map(noteType => {
                 return <ExportModalCheckBox noteType={noteType} />;
               })}
-              <a
-                onClick={() => {
-                  exportNotes().subscribe(o => {
-                    console.log(o);
-                  });
-                }}
+              <div
+                className="testamentExportSelection control"
+                style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}
               >
-                Export
-              </a>
-
-              <div className="testamentExportSelection control">
                 <label className="radio">
                   <input
                     type="radio"
@@ -214,6 +207,17 @@ export class ExportModal extends Component {
                   PGP
                 </label>
               </div>
+
+              <a
+                className={`button is-light`}
+                onClick={() => {
+                  exportNotes().subscribe(o => {
+                    console.log(o);
+                  });
+                }}
+              >
+                Export
+              </a>
             </div>
           </div>
           <a
