@@ -74,7 +74,9 @@ function getChaptersByTestament(testament: string) {
       await Promise.all(
         flatten(
           (testaments[testament] as string[]).map(book => {
-            return getChapters(`eng-${book}`).toPromise();
+            return getChapters(
+              `${appSettings.settings.lang}-${book}`,
+            ).toPromise();
           }),
         ),
       ),

@@ -12,6 +12,7 @@ import {
 import { NoteSettings } from '../oith-lib/src/processors/NoteSettings';
 import { map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
+import { appSettings } from '../components/SettingsComponent';
 function showProgress() {
   return (
     <progress className="progress is-small is-primary" max="100">
@@ -29,24 +30,33 @@ function reloadSettings() {
     }
   };
   const settings = database
-    .get<NoteSettings>(`eng-note-settings`)
+    .get<NoteSettings>(`${appSettings.settings.lang}-note-settings`)
     .pipe(
       map(noteSettings =>
-        save('eng-scriptures-overlay-noteSettings', noteSettings),
+        save(
+          `${appSettings.settings.lang}-scriptures-overlay-noteSettings`,
+          noteSettings,
+        ),
       ),
     );
   const cats = database
-    .get(`eng-note-categories`)
+    .get(`${appSettings.settings.lang}-note-categories`)
     .pipe(
       map(noteSettings =>
-        save('eng-scriptures-overlay-noteCategories', noteSettings),
+        save(
+          `${appSettings.settings.lang}-scriptures-overlay-noteCategories`,
+          noteSettings,
+        ),
       ),
     );
   const types = database
-    .get(`eng-note-types`)
+    .get(`${appSettings.settings.lang}-note-types`)
     .pipe(
       map(noteSettings =>
-        save('eng-scriptures-overlay-noteTypes', noteSettings),
+        save(
+          `${appSettings.settings.lang}-scriptures-overlay-noteTypes`,
+          noteSettings,
+        ),
       ),
     );
 

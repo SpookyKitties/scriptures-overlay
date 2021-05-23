@@ -78,7 +78,7 @@ const Layout: React.FunctionComponent = ({
   return (
     <div
       id="oith-main"
-      className={`oith-main }`}
+      className={`oith-main `}
       lang={`${appSettings?.settings?.lang}`}
     >
       <Helmet>

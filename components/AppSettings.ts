@@ -72,7 +72,7 @@ export class AppSettings {
       const subD = parseSubdomain();
       try {
         const data = await axios.get(
-          `${subD.storageURL}${'eng'}-${subD.settings}${fileName}.json`,
+          `${subD.storageURL}${this.settings.lang}-${subD.settings}${fileName}.json`,
           {
             responseType: 'json',
           },
@@ -141,36 +141,40 @@ export class AppSettings {
       )
       .subscribe();
   }
-  private initNav() {
+  private async initNav() {
     const subdomain = parseSubdomain();
-    of(
-      axios.get(
-        `https://oithstorage.blob.core.windows.net/blobtest/${this.settings.lang}-navigation.json`,
-        {
-          responseType: 'json',
-        },
-      ),
-    )
-      .pipe(
-        flatMap(o => o),
-        map(o => o.data as NavigationItem),
+    try {
+      await of(
+        axios.get(
+          `https://oithstorage.blob.core.windows.net/blobtest/${this.settings.lang}-navigation.json`,
+          {
+            responseType: 'json',
+          },
+        ),
       )
-      .subscribe(o => {
-        this.navigation$.next(o);
-      });
+        .pipe(
+          flatMap(o => o),
+          map(o => {
+            this.navigation$.next(o.data as NavigationItem);
+          }),
+        )
+        .toPromise();
+    } catch (error) {}
   }
   public loadNoteSettings() {
     const noteCategoriesS = localStorage.getItem(
-      `eng-scriptures-overlay-noteCategories`,
+      `${this.settings.lang}-scriptures-overlay-noteCategories`,
     );
 
     this.noteCategories = noteCategoriesS
       ? JSON.parse(noteCategoriesS)
       : undefined;
     const noteSettingsS = localStorage.getItem(
-      `eng-scriptures-overlay-noteSettings`,
+      `${this.settings.lang}-scriptures-overlay-noteSettings`,
     );
-    const noteTypesS = localStorage.getItem(`eng-scriptures-overlay-noteTypes`);
+    const noteTypesS = localStorage.getItem(
+      `${this.settings.lang}-scriptures-overlay-noteTypes`,
+    );
 
     this.noteSettings = noteSettingsS ? JSON.parse(noteSettingsS) : undefined;
     this.noteTypes = noteTypesS ? JSON.parse(noteTypesS) : undefined;

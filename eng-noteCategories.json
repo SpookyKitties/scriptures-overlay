@@ -1,0 +1,153 @@
+{
+  "id": "eng-note-categories",
+  "noteCategories": [
+    {
+      "category": 1,
+      "className": "reference-label-harmony",
+      "name": "HMY",
+      "label": "HMY",
+      "on": ["harmony"]
+    },
+    {
+      "category": 2,
+      "className": "reference-label-jst",
+      "name": "JST",
+      "label": "JST",
+      "on": ["jst"]
+    },
+    {
+      "category": 3,
+      "className": "reference-label-quotation",
+      "name": "QUO",
+      "label": "QUO",
+      "on": ["quotation"]
+    },
+    {
+      "category": 4,
+      "className": "reference-label-phrasing",
+      "name": "PHR",
+      "label": "PHR",
+      "on": ["phrasing"]
+    },
+    {
+      "category": 5,
+      "className": "reference-label-definition",
+      "name": "DCT",
+      "label": "DCT",
+      "on": ["definition"]
+    },
+    {
+      "category": 6,
+      "className": "reference-label-trn",
+      "name": "TRN",
+      "label": "TRN",
+      "on": ["trn"]
+    },
+    {
+      "category": 7,
+      "className": "reference-label-or",
+      "name": "OR",
+      "label": "OR",
+      "on": ["or"]
+    },
+    {
+      "category": 8,
+      "className": "reference-label-alt",
+      "name": "ALT",
+      "label": "ALT",
+      "on": ["alt"]
+    },
+    {
+      "category": 9,
+      "className": "reference-label-ie",
+      "name": "IE",
+      "label": "IE",
+      "on": ["ie"]
+    },
+    {
+      "category": 10,
+      "className": "reference-label-cross-ref",
+      "name": "CR",
+      "label": "CR",
+      "on": ["cross-ref"]
+    },
+    {
+      "category": 11,
+      "className": "reference-label-history",
+      "name": "HST",
+      "label": "HST",
+      "on": ["history"]
+    },
+    {
+      "category": 12,
+      "className": "reference-label-geography",
+      "name": "GEO",
+      "label": "GEO",
+      "on": ["geography"]
+    },
+    {
+      "category": 13,
+      "className": "reference-label-biography",
+      "name": "BIO",
+      "label": "BIO",
+      "on": ["biography"]
+    },
+    {
+      "category": 14,
+      "className": "reference-label-pronunciation",
+      "name": "â˜º",
+      "label": "â˜º",
+      "on": ["pronunciation"]
+    },
+    {
+      "category": 15,
+      "className": "reference-label-tg",
+      "name": "TG",
+      "label": "TG",
+      "on": ["tg"]
+    },
+    {
+      "category": 16,
+      "className": "reference-label-gs",
+      "name": "GS",
+      "label": "GS",
+      "on": ["gs"]
+    },
+    {
+      "category": 17,
+      "className": "reference-label-bd",
+      "name": "BD",
+      "label": "BD",
+      "on": ["bd"]
+    },
+    {
+      "category": 18,
+      "className": "reference-label-menge",
+      "name": "Menge",
+      "label": "MG",
+      "on": ["menge"]
+    },
+    {
+      "category": 18,
+      "className": "reference-label-triple-index",
+      "name": "Triple-Index",
+      "label": " ",
+      "on": ["triple-index"]
+    },
+    {
+      "category": 20,
+      "className": "reference-label-media",
+      "name": "Media",
+      "label": "Media",
+      "on": ["media"]
+    },
+    {
+      "category": -10000,
+      "className": "reference-label-error",
+      "name": "ERROR",
+      "label": "ERROR",
+      "on": [""]
+    }
+  ],
+  "visibilitySettings": []
+}
