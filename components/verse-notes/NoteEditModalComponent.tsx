@@ -11,37 +11,12 @@ import { resetNotes$ } from '../resetNotes';
 // import tinymce from 'tinymce';
 import { Editor as EditorComponent } from '@tinymce/tinymce-react';
 import { Editor } from 'tinymce';
+import { appSettings } from '../SettingsComponent';
+import {
+  NoteCategories,
+  NoteCategory,
+} from '../../oith-lib/src/verse-notes/settings/note-gorup-settings';
 
-// // TinyMCE so the global var exists
-// // eslint-disable-next-line no-unused-vars
-// import tinymce from 'tinymce/tinymce';
-// // Theme
-// import 'tinymce/themes/silver';
-// // Toolbar icons
-// import 'tinymce/icons/default';
-// // Editor styles
-// import 'tinymce/skins/ui/oxide/skin.min.css';
-// import 'tinymce/skins/content/default/content.min.css';
-// // importing the plugin js.
-// import 'tinymce/plugins/advlist';
-// import 'tinymce/plugins/autolink';
-// import 'tinymce/plugins/link';
-// import 'tinymce/plugins/image';
-// import 'tinymce/plugins/lists';
-// import 'tinymce/plugins/charmap';
-// import 'tinymce/plugins/hr';
-// import 'tinymce/plugins/anchor';
-// import 'tinymce/plugins/spellchecker';
-// import 'tinymce/plugins/searchreplace';
-// import 'tinymce/plugins/wordcount';
-// import 'tinymce/plugins/code';
-// import 'tinymce/plugins/fullscreen';
-// import 'tinymce/plugins/insertdatetime';
-// import 'tinymce/plugins/media';
-// import 'tinymce/plugins/nonbreaking';
-// import 'tinymce/plugins/table';
-// import 'tinymce/plugins/template';
-// import 'tinymce/plugins/help';
 export function flattenNoteGroupsRefs(noteGroup: VerseNoteGroup) {
   return flatten(noteGroup.notes.map(note => note.ref));
 }
@@ -61,9 +36,6 @@ export class NoteEditModalComponent extends Component {
     showNoteEditModal.subscribe(o => {
       this.setState({ show: o.display, noteGroup: o.noteGroup });
     });
-    // tinymce.init({
-    //   selector: 'textarea',
-    // });
   }
 
   close() {
@@ -74,28 +46,31 @@ export class NoteEditModalComponent extends Component {
     }
     showNoteEditModal.next({ display: false });
   }
-  save() {
-    // Array.from(document.querySelectorAll('[id^=edit-ref')).map(editRef => {
-    //   try {
-    //     const index = parseInt(last(editRef.id.split('-')));
-    //     const ref = flatten(this.state.noteGroup.notes.map(note => note.ref))[
-    //       index
-    //     ];
-    //     // console.log(ref.text);
-    //     console.log(editRef);
 
-    //     // ref.text = editRef.innerHTML
-    //     //   ?.replace(/&lt;/g, '<')
-    //     //   .replace(/&gt;/g, '>');
-    //     console.log(decode(editRef.textContent));
-    //     ref.text = decode(editRef.textContent).replace(/&nbsp;/g, '\u00A0');
-    //   } catch (error) {}
-    // });
+  updateCategory(ref: NoteRef) {
+    const existingCategory = appSettings.noteCategories?.noteCategories.find(
+      noteCategory => noteCategory.category === ref.category,
+    );
+    const replacementCategory = appSettings.noteCategories?.noteCategories.find(
+      noteCategory => noteCategory.category === ref.tempCategory,
+    );
+    if (existingCategory && replacementCategory) {
+      ref.category = ref.tempCategory;
+      ref.text = ref.text?.replace(
+        `>${existingCategory.label}`,
+        `>${replacementCategory.label}`,
+      );
+    }
+  }
+  save() {
     if (this.state && this.state.noteGroup) {
       flattenNoteGroupsRefs(this.state.noteGroup)
         .filter(ref => ref.tempValue !== undefined)
         .map(ref => {
-          ref.text = decode(ref.tempValue).replace(/\u00B7/g, '\u00a0');
+          ref.text = decode(ref.tempValue)
+            .replace(/\u00B7/g, '\u00a0')
+            .replace(' mceNonEditable', '');
+          this.updateCategory(ref);
           ref.tempValue = undefined;
         });
       saveChapter().subscribe(() => {
@@ -104,19 +79,24 @@ export class NoteEditModalComponent extends Component {
       });
     }
   }
-
+  changeNoteCategory(ref: NoteRef, noteCategory: NoteCategory, index: number) {
+    try {
+      // const editor = this.state[`editor${index}`] as Editor;
+      // const refVal = decode(editor.getContent({ format: 'html' })).replace(
+      //   '\u00B7',
+      //   '\u00a0',
+      // );
+      // console.log(editor);
+      // const
+      ref.tempCategory = noteCategory.category;
+    } catch (error) {}
+    this.setState({ [`dropdown-${index}`]: false });
+  }
   handleUpdate(value: string, editor: Editor, ref: NoteRef) {
     const content = editor.getContent({ format: 'html' });
-    ref.tempValue = decode(content).replace('\u00B7', '\u00a0');
-    // console.log(decode(ref.tempValue).replace('\u00B7', '\u00a0'));
-    // editor.setContent(decode(content).replace(/\u00a0/g, '\u00B7'));
-
-    // saveChapter().subscribe(() => {
-    //   console.log('ioasjdfioajsdfiojioajsdfiojio');
-
-    //   resetNotes$();
-    //   // showNoteEditModal.next({ display: false });
-    // });
+    ref.tempValue = decode(content)
+      .replace('\u00B7', '\u00a0')
+      .replace(' mceNonEditable', '');
   }
   render() {
     if (this.state?.show && this.state?.noteGroup !== undefined) {
@@ -139,33 +119,97 @@ export class NoteEditModalComponent extends Component {
                 this.state?.noteGroup?.notes?.map(note => note.ref),
               )?.map((ref, i) => {
                 return (
-                  <EditorComponent
-                    initialValue={`${ref.text}`}
-                    init={{
-                      menubar: false,
-                      plugins: [
-                        'advlist autolink lists link image charmap print preview anchor',
-                        'searchreplace visualblocks code fullscreen textpattern',
-                        'insertdatetime media table paste code help wordcount nonbreaking visualchars',
-                      ],
-                      toolbar:
-                        'undo redo | ' +
-                        'bold italic underline link nonbreaking visualchars',
-                      visualchars_default_state: true,
-                    }}
-                    onEditorChange={(value, editor) => {
-                      this.handleUpdate(value, editor, ref);
-                    }}
-                  ></EditorComponent>
-                  // <textarea
-                  //   className={`textarea`}
-                  //   name=""
-                  //   id={`edit-ref-${i}`}
-                  //   style={{ width: '100%', height: '100px' }}
-                  //   contentEditable="true"
-                  // >
-                  //   {ref.text}
-                  // </textarea>
+                  <div>
+                    <div
+                      className={`dropdown ${
+                        this.state && (this.state[`dropdown-${i}`] as boolean)
+                          ? 'is-active'
+                          : ''
+                      } `}
+                    >
+                      <div className="dropdown-trigger">
+                        <button
+                          className="button"
+                          aria-haspopup="true"
+                          aria-controls="dropdown-menu"
+                          onClick={() => {
+                            const bool = this.state[`dropdown-${i}`] as boolean;
+                            this.setState({ [`dropdown-${i}`]: !bool });
+                          }}
+                        >
+                          <span>Note Category</span>
+                          <span className="icon is-small">
+                            <i
+                              className="fas fa-angle-down"
+                              aria-hidden="true"
+                            ></i>
+                          </span>
+                        </button>
+                      </div>
+                      <div
+                        className="dropdown-menu"
+                        id="dropdown-menu"
+                        role="menu"
+                      >
+                        <div
+                          className="dropdown-content"
+                          style={{ height: '100px', overflowY: 'scroll' }}
+                        >
+                          {appSettings.noteCategories?.noteCategories
+                            .filter(
+                              noteCategory =>
+                                noteCategory.label.trim() !== '' &&
+                                noteCategory.label.toLowerCase() !== 'error',
+                            )
+                            .map(noteCategory => {
+                              return (
+                                <a
+                                  onClick={() => {
+                                    this.changeNoteCategory(
+                                      ref,
+                                      noteCategory,
+                                      i,
+                                    );
+                                  }}
+                                  className={`dropdown-item ${
+                                    ref.category === noteCategory.category
+                                      ? 'is-active'
+                                      : ''
+                                  }`}
+                                >
+                                  {noteCategory.label.replace('â˜º', '🔊')}
+                                </a>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    </div>
+
+                    <EditorComponent
+                      initialValue={`${ref.text.replace(
+                        '<span class="small',
+                        '<span class="small mceNonEditable',
+                      )}`}
+                      onInit={(evt, editor) => {
+                        this.setState({ [`editor${i}`]: editor });
+                      }}
+                      init={{
+                        menubar: false,
+                        plugins: [
+                          'advlist autolink lists link image charmap print preview anchor',
+                          'searchreplace visualblocks code fullscreen textpattern noneditable',
+                          'insertdatetime media table paste code help wordcount nonbreaking visualchars',
+                        ],
+                        toolbar:
+                          'undo redo | ' +
+                          'bold italic underline link nonbreaking visualchars',
+                        visualchars_default_state: true,
+                      }}
+                      onEditorChange={(value, editor) => {
+                        this.handleUpdate(value, editor, ref);
+                      }}
+                    ></EditorComponent>
+                  </div>
                 );
               })}
             </section>

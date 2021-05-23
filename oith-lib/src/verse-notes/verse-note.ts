@@ -29,6 +29,7 @@ export class NoteRef {
   public more?: boolean;
   public delete?: boolean;
   public tempValue?: string;
+  public tempCategory?: number;
   public constructor(
     noteC: number,
     text: string,

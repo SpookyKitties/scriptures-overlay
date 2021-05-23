@@ -159,7 +159,7 @@ export class NoteSettingsMenu extends Component<{
       return (
         <div
           style={noteSettingsMenuStyles}
-          className={`note-settings-menu  dropdown-menu`}
+          className={`note-settings-menu dropdown-menu  dropdown-menu-2`}
         >
           <div className={`dropdowggn-content`}>
             <div style={{ textAlign: 'center' }}>Note Sets</div>
