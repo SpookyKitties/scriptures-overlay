@@ -41,9 +41,11 @@ class Index extends Component {
           <SearchBoxComponent />
           <hr />
           <div className={`nav-items-holder`}>
-            {this.state.navigation.navigationItems.map(ni => {
-              return <NavItem card={true} navItem={ni} />;
-            })}
+            {this.state.navigation.navigationItems
+              .filter(navItem => !navItem.shortTitle.includes('{'))
+              .map(ni => {
+                return <NavItem card={true} navItem={ni} />;
+              })}
             <div
               style={{
                 display: 'grid',

@@ -122,9 +122,9 @@ export class NavItem extends Component<{
             </span>
             <div className={`navigation-child`}>
               {this.state.open ? (
-                ni.navigationItems.map(n => (
-                  <NavItem card={this.props.card} navItem={n} />
-                ))
+                ni.navigationItems
+                  .filter(navItem => !navItem.shortTitle.includes('{'))
+                  .map(n => <NavItem card={this.props.card} navItem={n} />)
               ) : (
                 <></>
               )}
