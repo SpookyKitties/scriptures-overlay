@@ -26,7 +26,9 @@ function notesToString(note: Note, noteTypes: NoteType[]) {
     noteType => noteType.noteType === note.noteType,
   );
   if (noteType) {
-    return `<note class="${noteType.className}" id="${note.id}" offsets="${
+    return `<note class="${noteType.className}" note-marker=${
+      note.noteMarker
+    } sourceID="${note.sourceID}" id="${note.id}" offsets="${
       note.formatTag.offsets
     }"><p class="note-phrase">${note.phrase}</p>${noteRefsToString(
       note.ref,

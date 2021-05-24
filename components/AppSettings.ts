@@ -66,9 +66,7 @@ export class AppSettings {
     key: T,
     fileName: 'noteSettings' | 'noteCategories' | 'noteTypes',
   ) {
-    if (!this[key] || (this[key] && fileName !== 'noteSettings')) {
-      const lang = this.settings.lang;
-
+    try {
       const subD = parseSubdomain();
       try {
         const data = await axios.get(
@@ -82,6 +80,8 @@ export class AppSettings {
       } catch (error) {
         console.log(error);
       }
+    } catch (error) {}
+    if (!this[key]) {
     }
   }
 

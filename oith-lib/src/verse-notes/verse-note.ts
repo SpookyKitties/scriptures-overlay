@@ -59,6 +59,7 @@ export class Note extends Doc {
   public oPhrase: string;
   public verseMarker: string;
   public noteMarker: string;
+  public sourceID?: string;
   // public docType: DocType = DocType.NOTE;
   public constructor(
     vid: string,
