@@ -4,6 +4,12 @@ div[id^='fra-'] .note-phrase-text::before {
 div[id^='fra-'] .note-phrase-text::after {
   content: ' »';
 }
+div[id^='deu-'] .note-phrase-text::before {
+  content: '“';
+}
+div[id^='deu-'] .note-phrase-text::after {
+  content: '„';
+}
 div[id^='eng-'] .note-phrase-text::before {
   content: '“';
 }
