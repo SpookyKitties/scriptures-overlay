@@ -28,8 +28,10 @@ function notesToString(note: Note, noteTypes: NoteType[]) {
   if (noteType) {
     return `<note class="${noteType.className}" note-marker="${
       note.noteMarker ? note.noteMarker : ''
-    }" sourceID="${note.sourceID}" id="${note.id}" offsets="${
-      note.formatTag.offsets
+    }" sourceID="${note.sourceID ? note.sourceID : ''}" id="${
+      note.id
+    }" offsets="${
+      note.formatTag.offsets ? note.formatTag.offsets : ''
     }"><p class="note-phrase">${note.phrase}</p>${noteRefsToString(
       note.ref,
     ).join('')}</note>`;
