@@ -9,10 +9,11 @@ import { first, flatten, orderBy, sortBy } from 'lodash';
 import { Chapter } from '../../oith-lib/src/models/Chapter';
 import { NavigationItem } from '../navigation-item';
 import { testaments } from './testament_list.json';
+import { NoteOverlayNew } from '../../new_preprocessor/lib/models/Settings/NoteOverlay';
 
 function noteRefsToString(noteRefs: NoteRef[]) {
   return noteRefs.map(noteRef => {
-    const noteCategory = appSettings.noteCategories.noteCategories.find(
+    const noteCategory = appSettings.newNoteSettings.noteCategories.find(
       nc => nc.category === noteRef.category,
     );
     if (noteCategory) {
@@ -21,9 +22,9 @@ function noteRefsToString(noteRefs: NoteRef[]) {
   });
 }
 
-function notesToString(note: Note, noteTypes: NoteType[]) {
+function notesToString(note: Note, noteTypes: NoteOverlayNew[]) {
   const noteType = noteTypes.find(
-    noteType => noteType.noteType === note.noteType,
+    noteType => noteType.overlay === note.noteType,
   );
   if (noteType) {
     return `<note class="${noteType.className}" note-marker="${
@@ -146,7 +147,7 @@ function getBooksChapters() {
   return getChaptersByTestament(elm);
 }
 
-const chapterTxt = (chapter: Chapter, noteTypes: NoteType[]) => {
+const chapterTxt = (chapter: Chapter, noteTypes: NoteOverlayNew[]) => {
   return `<chapter id="${chapter.id}">${verseNotesFromShell(chapter)
     .map(verseNote => {
       return `<verse-notes id="${verseNote.id}">${verseNote.notes
@@ -194,7 +195,7 @@ export function newExportNotes() {
       flatMap$,
       filter(o => o.startsWith('overlay')),
       map(o =>
-        appSettings.noteTypes.noteTypes.find(
+        appSettings.newNoteSettings.noteOverlays.find(
           noteType => noteType.className === o,
         ),
       ),

@@ -86,9 +86,9 @@ export class ExportModal extends Component {
           resetCheckboxes.next(true);
 
           this.setState({ active: o });
-          if (appSettings && appSettings.noteTypes) {
+          if (appSettings && appSettings.newNoteSettings?.noteOverlays) {
             this.setState({
-              noteTypes: appSettings.noteTypes.noteTypes,
+              noteTypes: appSettings.newNoteSettings.noteOverlays,
             });
           }
           Array.from(

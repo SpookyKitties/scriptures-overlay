@@ -1,47 +1,52 @@
 import axios from 'axios';
-import { flatten, groupBy as _groupBy, Dictionary, sortBy } from 'lodash';
+import { Dictionary, flatten, groupBy as _groupBy } from 'lodash';
 import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { filter, find, flatMap, map, toArray } from 'rxjs/operators';
 import { parseSubdomain } from '../../../components/parseSubdomain';
 import { appSettings } from '../../../components/SettingsComponent';
 import { VideoData } from '../../../components/VideoComponent';
-import { Chapter, FormatGroup, FormatText, Verse, VersePlaceholder } from '../models/Chapter';
+import { NoteSettingsNew } from '../../../new_preprocessor/lib/models/Settings/NoteSettings';
+import {
+  Chapter,
+  FormatGroup,
+  FormatText,
+  Verse,
+  VersePlaceholder,
+} from '../models/Chapter';
 import { flatMap$ } from '../rx/flatMap$';
-import { NoteCategories } from '../verse-notes/settings/note-gorup-settings';
-import { VerseNote, VerseNoteGroup, Note } from '../verse-notes/verse-note';
+import { Note, VerseNote, VerseNoteGroup } from '../verse-notes/verse-note';
 import { buildFMerged } from './buildFMerged';
 
 function findFormatGroupsWithVerseIDs(
   formatGroup: FormatGroup,
 ): Observable<VersePlaceholder> {
-  return of(formatGroup.grps as (
-    | FormatGroup
-    | FormatText
-    | VersePlaceholder)[]).pipe(
-      filter(o => o !== undefined),
-      flatMap$,
-      map(o => {
-        if ((o as VersePlaceholder).v !== undefined) {
-          return of(o as VersePlaceholder);
-        }
-        return findFormatGroupsWithVerseIDs(o as FormatGroup);
-      }),
-      flatMap$,
-    );
+  return of(
+    formatGroup.grps as (FormatGroup | FormatText | VersePlaceholder)[],
+  ).pipe(
+    filter(o => o !== undefined),
+    flatMap$,
+    map(o => {
+      if ((o as VersePlaceholder).v !== undefined) {
+        return of(o as VersePlaceholder);
+      }
+      return findFormatGroupsWithVerseIDs(o as FormatGroup);
+    }),
+    flatMap$,
+  );
 }
 function findFormatGroupsWithVerseIDs2(
   formatGroup: FormatGroup,
 ): VersePlaceholder[] {
-  return flatten((formatGroup.grps as (
-    | FormatGroup
-    | FormatText
-    | VersePlaceholder)[]).map(grp => {
-      if ((grp as VersePlaceholder).v !== undefined) {
-        return [(grp as VersePlaceholder)];
-      }
-      return findFormatGroupsWithVerseIDs2(grp as FormatGroup);
-
-    }));
+  return flatten(
+    (formatGroup.grps as (FormatGroup | FormatText | VersePlaceholder)[]).map(
+      grp => {
+        if ((grp as VersePlaceholder).v !== undefined) {
+          return [grp as VersePlaceholder];
+        }
+        return findFormatGroupsWithVerseIDs2(grp as FormatGroup);
+      },
+    ),
+  );
   // return of(formatGroup.grps as (
   //   | FormatGroup
   //   | FormatText
@@ -67,10 +72,10 @@ export function generateVerseNoteShell(chapter: Chapter) {
     .map(v => {
       return (chapter.verseNotes
         ? chapter.verseNotes.find(
-          vN =>
-            vN.id ===
-            `${chapter.id.replace('-chapter', '')}-${v.id}-verse-notes`,
-        )
+            vN =>
+              vN.id ===
+              `${chapter.id.replace('-chapter', '')}-${v.id}-verse-notes`,
+          )
         : undefined) as VerseNote;
     })
     .filter(o => o !== undefined);
@@ -81,13 +86,12 @@ export function generateVerseNoteShell(chapter: Chapter) {
 
 export function addVersesToBody(chapter: Chapter) {
   // (flatMapDeep(chapter.body.grps));
-  const addVerses = () => (findFormatGroupsWithVerseIDs2(chapter.body).map(o => {
-    o.verse = chapter.verses.find(v => v.id === o.v);
-
-  }));
+  const addVerses = () =>
+    findFormatGroupsWithVerseIDs2(chapter.body).map(o => {
+      o.verse = chapter.verses.find(v => v.id === o.v);
+    });
 
   return of(addVerses());
-
 
   // return findFormatGroupsWithVerseIDs(chapter.body).pipe(
   //   map(o => {
@@ -102,13 +106,13 @@ function extractFormatText(
   verse: FormatGroup | Verse | FormatText,
 ): Observable<FormatText> {
   if (Array.isArray((verse as FormatGroup | Verse).grps)) {
-    return of((verse as FormatGroup | Verse).grps as (
-      | FormatGroup
-      | FormatText)[]).pipe(
-        flatMap$,
-        map(o => extractFormatText(o)),
-        flatMap$,
-      );
+    return of(
+      (verse as FormatGroup | Verse).grps as (FormatGroup | FormatText)[],
+    ).pipe(
+      flatMap$,
+      map(o => extractFormatText(o)),
+      flatMap$,
+    );
   } else if ((verse as FormatText).docType === 5) {
     return of(verse as FormatText);
   }
@@ -153,19 +157,20 @@ function getSup(note: Note) {
     return `sup-${note.sup}`;
   }
   if (note.lSup) {
-
     return `lsup-${note.lSup}`;
   }
   return 'undefined';
 }
 
 const hasMoreStillNotes = (notes: Note[]) => {
-  return notes.filter(note => note.ref.filter(ref => ref.moreStill === true).length > 0).length > 0;
+  return (
+    notes.filter(
+      note => note.ref.filter(ref => ref.moreStill === true).length > 0,
+    ).length > 0
+  );
 };
 
 function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
-
-
   const s = verseNotea?.map(vN => {
     if (vN.notes) {
       let sortedNotes: Dictionary<Note[]>;
@@ -178,30 +183,30 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
             return note.id;
           }
 
-
           return `${getSup(note)}-${note.formatTag.offsets}`;
         });
 
-
-        vN.noteGroups = (Array.from(Object.keys(sortedNotes)).map(key => {
+        vN.noteGroups = Array.from(Object.keys(sortedNotes)).map(key => {
           const notes = sortedNotes[key];
 
-
-          const firstNoteWithASup = notes.length > 0 ? notes.find(n => n.sup !== undefined) : undefined;
+          const firstNoteWithASup =
+            notes.length > 0 ? notes.find(n => n.sup !== undefined) : undefined;
 
           const sup = firstNoteWithASup ? firstNoteWithASup.sup : '';
-          const lSup = notes.length > 0 && notes[0].lSup !== undefined ? notes[0].lSup : '';
+          const lSup =
+            notes.length > 0 && notes[0].lSup !== undefined
+              ? notes[0].lSup
+              : '';
 
-
-
-
-          return new VerseNoteGroup(notes, '', sup, lSup, hasMoreStillNotes(notes));
-        }));
-
-
-      }
-      else {
-
+          return new VerseNoteGroup(
+            notes,
+            '',
+            sup,
+            lSup,
+            hasMoreStillNotes(notes),
+          );
+        });
+      } else {
         sortedNotes = _groupBy(vN.notes, note => {
           if (
             note.formatTag.offsets === '' ||
@@ -217,12 +222,12 @@ function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
           const notes = sortedNotes[key].sort(
             (a, b) => a.noteType - b.noteType,
           );
-          const sup = notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : '';
+          const sup =
+            notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : '';
 
           return new VerseNoteGroup(notes, '', sup);
         });
       }
-
     }
   });
 
@@ -236,8 +241,12 @@ function findAllGrpsWithName(
   if (grp.name && grp.name.toLowerCase() === name) {
     return of(grp);
   } else if (Array.isArray(grp.grps)) {
-
-    return of(grp.grps.map(grp => findAllGrpsWithName(name, grp as FormatGroup))).pipe(flatMap(o => o), flatMap$);
+    return of(
+      grp.grps.map(grp => findAllGrpsWithName(name, grp as FormatGroup)),
+    ).pipe(
+      flatMap(o => o),
+      flatMap$,
+    );
   }
 
   return EMPTY;
@@ -267,42 +276,38 @@ function prepVideos(chapter: Chapter) {
   );
 }
 
-
 const port = parseInt(process?.env?.PORT as string, 10) || 3000;
 
 function addRefLabel(chapter: Chapter) {
-
   return of(
-    appSettings && appSettings.noteCategories
-      ? of(appSettings.noteCategories)
+    appSettings && appSettings.newNoteSettings
+      ? of(appSettings.newNoteSettings.noteCategories)
       : of(
-        axios.get(
-          `${parseSubdomain().storageURL}${'eng'}-${parseSubdomain().settings}${'noteCategories'}.json`
-          ,
-          {
-            responseType: 'json',
-          },
+          axios.get(
+            `${parseSubdomain().storageURL}${'eng'}-${
+              parseSubdomain().settings
+            }${'noteCategories'}.json`,
+            {
+              responseType: 'json',
+            },
+          ),
+        ).pipe(
+          flatMap$,
+          map(res => (res.data as NoteSettingsNew).noteCategories),
         ),
-      ).pipe(
-        flatMap$,
-        map(res => res.data as NoteCategories),
-      ),
   ).pipe(
     flatMap$,
     map(noteCategories => {
       return chapter.verseNotes?.map(verseNote => {
         verseNote.notes?.map(note => {
           note.ref.map(ref => {
-            const cat =
-              noteCategories && noteCategories.noteCategories
-                ? noteCategories.noteCategories.find(
-                  c => c.category === ref.category,
-                )
-                : { label: 'err' };
+            const cat = noteCategories
+              ? noteCategories.find(c => c.category === ref.category)
+              : { label: 'err' };
 
             ref.label = `${
               cat ? cat.label.replace('â˜º', '🔊').replace('DCT', '🔍') : 'ERR'
-              }\u00a0`;
+            }\u00a0`;
           });
         });
       });
@@ -360,9 +365,8 @@ export interface ChapterParams {
 export function parseChapterParams(
   params: Params,
   lang: string,
-  host: string
+  host: string,
 ): ChapterParams {
-
   const book = params['book'] as string;
   const chapterSplit = (params['chapter'] as string).split('.');
 
@@ -372,6 +376,6 @@ export function parseChapterParams(
     highlight: chapterSplit[1],
     context: chapterSplit[2],
     lang: lang,
-    host: host
+    host: host,
   };
 }

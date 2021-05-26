@@ -1,0 +1,8 @@
+export enum DocType {
+  VERSENOTE,
+  NOTE,
+  CHAPTER,
+  VERSE,
+  FORMATGROUP,
+  FORMATTEXT,
+}

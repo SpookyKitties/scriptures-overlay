@@ -48,10 +48,10 @@ export class NoteEditModalComponent extends Component {
   }
 
   updateCategory(ref: NoteRef) {
-    const existingCategory = appSettings.noteCategories?.noteCategories.find(
+    const existingCategory = appSettings.newNoteSettings?.noteCategories.find(
       noteCategory => noteCategory.category === ref.category,
     );
-    const replacementCategory = appSettings.noteCategories?.noteCategories.find(
+    const replacementCategory = appSettings.newNoteSettings?.noteCategories.find(
       noteCategory => noteCategory.category === ref.tempCategory,
     );
     if (existingCategory && replacementCategory) {
@@ -155,7 +155,7 @@ export class NoteEditModalComponent extends Component {
                           className="dropdown-content"
                           style={{ height: '100px', overflowY: 'scroll' }}
                         >
-                          {appSettings.noteCategories?.noteCategories
+                          {appSettings?.newNoteSettings?.noteCategories
                             .filter(
                               noteCategory =>
                                 noteCategory.label.trim() !== '' &&

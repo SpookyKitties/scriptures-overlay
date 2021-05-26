@@ -1,14 +1,9 @@
 import axios from 'axios';
-import Fuse from 'fuse.js';
-import { cloneDeep, flatten } from 'lodash';
 import { BehaviorSubject, forkJoin, of } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
+import { NoteSettingsNew } from '../new_preprocessor/lib/models/Settings/NoteSettings';
 import { NoteSettings } from '../oith-lib/src/processors/NoteSettings';
 import { flatMap$ } from '../oith-lib/src/rx/flatMap$';
-import {
-  NoteCategories,
-  NoteTypes,
-} from '../oith-lib/src/verse-notes/settings/note-gorup-settings';
 import { flattenPrimaryManifest } from './flattenPrimaryManifest';
 import { NavigationItem } from './navigation-item';
 import { parseSubdomain } from './parseSubdomain';
@@ -30,21 +25,19 @@ import { Settings } from './Settings';
 export class AppSettings {
   public settings: Settings;
   public noteSettings?: NoteSettings;
-  public noteTypes?: NoteTypes;
   public displayNav$: BehaviorSubject<boolean>; //(false);
   public displayUnderline$: BehaviorSubject<boolean>; //(false);
   public notesMode$: BehaviorSubject<string>;
   public navigation$ = new BehaviorSubject<NavigationItem>(undefined);
   public updatenavigation$ = new BehaviorSubject<boolean>(undefined);
   public flatNavigation$ = new BehaviorSubject<NavigationItem[]>(undefined);
-  '';
   public flatNavigationParents$ = new BehaviorSubject<NavigationItem[]>(
     undefined,
   );
 
   public fuse$: BehaviorSubject<any>;
+  public newNoteSettings?: NoteSettingsNew;
 
-  public noteCategories?: NoteCategories;
   constructor(lang: string) {
     const settingsS = localStorage.getItem(
       `${lang}-scriptures-overlay-settings`,
@@ -62,29 +55,6 @@ export class AppSettings {
     });
   }
 
-  private async getNoteTypeSettings<T extends keyof AppSettings>(
-    key: T,
-    fileName: 'noteSettings' | 'noteCategories' | 'noteTypes',
-  ) {
-    try {
-      const subD = parseSubdomain();
-      try {
-        const data = await axios.get(
-          `${subD.storageURL}${this.settings.lang}-${subD.settings}${fileName}.json`,
-          {
-            responseType: 'json',
-          },
-        );
-        this[key] = data.data;
-        this.save(key);
-      } catch (error) {
-        console.log(error);
-      }
-    } catch (error) {}
-    if (!this[key]) {
-    }
-  }
-
   private flattenNavigation() {
     this.navigation$
       .pipe(
@@ -93,49 +63,6 @@ export class AppSettings {
           const o = flattenPrimaryManifest(navigation);
 
           this.flatNavigation$.next(o);
-          // const hg = cloneDeep(o);
-
-          // const fuse = new Fuse(
-          //   hg.map(n => {
-          //     n.title = n.title.toLowerCase();
-          //     n.shortTitle = n.shortTitle.toLowerCase();
-          //     return n;
-          //   }),
-          //   {
-          //     keys: ['title', 'shortTitle', 'href'],
-          //     threshold: 0.35,
-          //     includeScore: true,
-          //     caseSensitive: false,
-          //     tokenize: true,
-          //     location: 0,
-          //   },
-          // );
-
-          // this.fuse$ = new BehaviorSubject(fuse);
-          // return of(flattenPrimaryManifest(navigation)).pipe(
-          //   map(o => {
-          //     this.flatNavigation$.next(o);
-          //     const hg = cloneDeep(o);
-
-          //     const fuse = new Fuse(
-          //       hg.map(n => {
-          //         n.title = n.title.toLowerCase();
-          //         n.shortTitle = n.shortTitle.toLowerCase();
-          //         return n;
-          //       }),
-          //       {
-          //         keys: ['title', 'shortTitle', 'href'],
-          //         threshold: 0.35,
-          //         includeScore: true,
-          //         caseSensitive: false,
-          //         tokenize: true,
-          //         location: 0,
-          //       },
-          //     );
-
-          //     this.fuse$ = new BehaviorSubject(fuse);
-          //   }),
-          // );
         }),
         // flatMap$,
       )
@@ -161,33 +88,28 @@ export class AppSettings {
         .toPromise();
     } catch (error) {}
   }
-  public loadNoteSettings() {
-    const noteCategoriesS = localStorage.getItem(
-      `${this.settings.lang}-scriptures-overlay-noteCategories`,
+
+  public async loadNewNoteSettings() {
+    const subD = parseSubdomain();
+
+    const settings = await axios.get(
+      `${subD.storageURL}${this.settings.lang}-dev-settings.json`,
+      {
+        responseType: 'json',
+      },
     );
 
-    this.noteCategories = noteCategoriesS
-      ? JSON.parse(noteCategoriesS)
-      : undefined;
+    this.newNoteSettings = settings.data as NoteSettingsNew;
+    this.save('newNoteSettings');
+  }
+  public loadNoteSettings() {
     const noteSettingsS = localStorage.getItem(
       `${this.settings.lang}-scriptures-overlay-noteSettings`,
     );
-    const noteTypesS = localStorage.getItem(
-      `${this.settings.lang}-scriptures-overlay-noteTypes`,
-    );
 
     this.noteSettings = noteSettingsS ? JSON.parse(noteSettingsS) : undefined;
-    this.noteTypes = noteTypesS ? JSON.parse(noteTypesS) : undefined;
     return (
-      forkJoin(
-        of(this.getNoteTypeSettings('noteSettings', 'noteSettings')).pipe(
-          flatMap$,
-        ),
-        of(this.getNoteTypeSettings('noteCategories', 'noteCategories')).pipe(
-          flatMap$,
-        ),
-        of(this.getNoteTypeSettings('noteTypes', 'noteTypes')).pipe(flatMap$),
-      )
+      forkJoin(of(this.loadNewNoteSettings()).pipe(flatMap$))
         // .pipe(flatMap(o => o))
         .pipe(
           map(o => {

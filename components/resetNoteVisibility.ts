@@ -4,7 +4,7 @@ import { map, toArray } from 'rxjs/operators';
 import { flatMap$ } from '../oith-lib/src/rx/flatMap$';
 
 function resetNoteCategories() {
-  appSettings.noteCategories.noteCategories
+  appSettings.newNoteSettings.noteCategories
     .filter(noteCategory => {
       const off = noteCategory.off
         ? !noteCategory.off
@@ -23,11 +23,11 @@ function resetNoteCategories() {
 }
 
 function resetNoteTypes() {
-  appSettings.noteTypes.noteTypes
+  appSettings.newNoteSettings.noteOverlays
     .filter(noteType => {
       return appSettings.settings.vis[noteType.className] === true;
     })
-    .map(c => (appSettings.settings.vis[`nt-${c.noteType}`] = true));
+    .map(c => (appSettings.settings.vis[`nt-${c.overlay}`] = true));
 }
 
 function resetNoteSettings() {
