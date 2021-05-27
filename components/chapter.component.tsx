@@ -44,19 +44,11 @@ export function renderFormat(ft: FormatText) {
       <Fragment>
         {ft.formatMerged.map(fm => {
           return <FormatTag formatMerged={fm} offsets={ft.offsets}></FormatTag>;
-          return (
-            <span
-              onClick={() => {
-                fm.text = 'aaa';
-              }}
-            >
-              {fm.text}
-            </span>
-          );
         })}
       </Fragment>
     );
   }
+
   return <div>bbbhh</div>;
 }
 
@@ -78,6 +70,7 @@ function renderFormatGroup(grp: FormatGroup | VersePlaceholder | FormatText) {
       const elementName = formatGroup.name
         ? formatGroup.name.toLowerCase()
         : '';
+
       switch (elementName) {
         case 'body':
         case 'div': {
@@ -309,7 +302,7 @@ function detectswipe(el: string, func: (direct: string) => void) {
   const ele = document.querySelector(el);
   ele.addEventListener(
     'touchstart',
-    function(e) {
+    function (e) {
       var t = (e as any).touches[0];
       swipe_det.sX = t.screenX;
       swipe_det.sY = t.screenY;
@@ -318,7 +311,7 @@ function detectswipe(el: string, func: (direct: string) => void) {
   );
   ele.addEventListener(
     'touchmove',
-    function(e) {
+    function (e) {
       // e.preventDefault();
       var t = (e as any).touches[0];
       swipe_det.eX = t.screenX;
@@ -328,7 +321,7 @@ function detectswipe(el: string, func: (direct: string) => void) {
   );
   ele.addEventListener(
     'touchend',
-    function(e) {
+    function (e) {
       //horizontal detection
       if (
         (swipe_det.eX - min_x > swipe_det.sX ||
@@ -383,7 +376,7 @@ export class ChapterComponent extends Component {
         map(c => scrollIntoView(c)),
         flatMap(o => o),
       )
-      .subscribe(() => {});
+      .subscribe(() => { });
 
     setTimeout(() => {
       detectswipe('.chapter-loader', direct => {
@@ -397,19 +390,18 @@ export class ChapterComponent extends Component {
     }, 1000);
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   public render() {
     if (this.state && this.state.chapter) {
       return (
         <div
-          className={`chapter-content ${
-            this.state &&
+          className={`chapter-content ${this.state &&
             this.state.chapter &&
             !this.state.chapter.id.includes('-come-foll')
-              ? ' classic-scriptures'
-              : 'manual'
-          }`}
+            ? ' classic-scriptures'
+            : 'manual'
+            }`}
         >
           <span
             onClick={() => {

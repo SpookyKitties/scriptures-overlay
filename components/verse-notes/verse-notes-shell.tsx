@@ -430,7 +430,7 @@ export class VerseNotesShellComponent extends Component<VNProps> {
           {this.renderFuture()}
           <div className="verse-notes">
             {this.props.chapter.verses.map(verse => {
-              const verseNote = this.props.chapter.verseNotes.find(vN =>
+              const verseNote = this.props.chapter.verseNotes?.find(vN =>
                 vN.id.includes(`-${verse.id}-verse-notes`),
               );
               if (verseNote) {

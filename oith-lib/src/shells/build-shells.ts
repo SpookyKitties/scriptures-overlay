@@ -86,10 +86,13 @@ export function generateVerseNoteShell(chapter: Chapter) {
 
 export function addVersesToBody(chapter: Chapter) {
   // (flatMapDeep(chapter.body.grps));
-  const addVerses = () =>
-    findFormatGroupsWithVerseIDs2(chapter.body).map(o => {
-      o.verse = chapter.verses.find(v => v.id === o.v);
-    });
+  
+  const addVerses = () => (findFormatGroupsWithVerseIDs2(chapter.body).map(o => {
+    
+    o.verse = chapter.verses.find(v => v.id === o.v);
+    console.log(o.verse);
+
+  }));
 
   return of(addVerses());
 
