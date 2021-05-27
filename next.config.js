@@ -13,7 +13,6 @@ module.exports = withPlugins([
   nextPwa({
     pwa: {
       dest: 'public',
-      mode: 'production'
     },
   }),
 ]);
