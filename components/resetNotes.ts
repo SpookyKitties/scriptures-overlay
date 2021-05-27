@@ -25,7 +25,7 @@ function isNumVisible(verseNote: VerseNote) {
 function resetNotes(
   chapter: Chapter, //import("c:/users/jared/source/repos/scriptures-overlay/oith-lib/src/models/Chapter").Chapter
 ) {
-  chapter.verseNotes.map(verseNote => {
+  chapter.verseNotes?.map(verseNote => {
     const v = verseNote.noteGroups.map((noteGroup, i) => {
       const refs = noteGroup.notes.filter(
         n => n.ref.find(r => r.text.includes('video')) !== undefined,

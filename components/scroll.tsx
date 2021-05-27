@@ -46,7 +46,7 @@ syncScrolling
               const tempID = /^(p)(.+)$/g.exec(verse.id);
               const id = tempID ? tempID[2] : verse.id;
 
-              const vn = chapter.verseNotes.find(vn =>
+              const vn = chapter.verseNotes?.find(vn =>
                 vn.id.includes(`-${id}-verse-note`),
               );
               if (syncedVerse) {

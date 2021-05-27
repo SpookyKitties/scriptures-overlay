@@ -33,6 +33,8 @@ export function expandNoteOffsets(verseNote?: VerseNote) {
 export function extractFormatText(
   verse: FormatGroup | Verse | FormatText,
 ): Observable<FormatText> {
+  console.log((verse as FormatText)?.docType);
+  
   if (Array.isArray((verse as FormatGroup | Verse).grps)) {
     return of(
       (verse as FormatGroup | Verse).grps as (FormatGroup | FormatText)[],
@@ -42,6 +44,8 @@ export function extractFormatText(
       flatMap$,
     );
   } else if ((verse as FormatText).docType === 5) {
+    console.log(verse);
+    
     return of(verse as FormatText);
   }
 
@@ -63,7 +67,9 @@ export function addTextToFormatText(
   formatText: FormatText,
   formatTags?: FormatTag[],
 ) {
+  console.log(verse);
   if (formatText.offsets && !formatTags) {
+    
     const split = formatText.offsets.split('-');
 
     return of(
@@ -134,6 +140,8 @@ export function resetVerse(verse: Verse, formatTags?: FormatTag[]) {
   //   );
   // };
   // return of(asdf()).pipe(flatMap(o => o));
+  console.log(verse);
+  
   return extractFormatText(verse).pipe(
     map((o: FormatText) => {
       return expandOffsets$(o).pipe(
@@ -147,18 +155,20 @@ export function resetVerse(verse: Verse, formatTags?: FormatTag[]) {
 }
 export function buildFMerged(chapter: Chapter) {
   const t = chapter.verses.map(async verse => {
-    if (chapter.verseNotes) {
-      const verseNote = chapter.verseNotes.find(vN =>
-        vN.id.includes(`-${verse.id}-verse-note`),
-      );
+    console.log(verse);
+    
+    const verseNote = chapter.verseNotes?.find(vN =>
+      vN.id.includes(`-${verse.id}-verse-note`),
+    );
 
-      await expandNoteOffsets(verseNote)
-        .pipe(
-          toArray(),
-          map(formatTags => resetVerse(verse, formatTags)),
-          flatMap$,
-        )
-        .toPromise();
+    await expandNoteOffsets(verseNote)
+      .pipe(
+        toArray(),
+        map(formatTags => resetVerse(verse, formatTags)),
+        flatMap$,
+      )
+      .toPromise();
+    if (chapter.verseNotes) {
     }
   });
   return of(Promise.all(t)).pipe(flatMap(o => o));
