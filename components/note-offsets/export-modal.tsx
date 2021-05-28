@@ -103,10 +103,13 @@ export class ExportModal extends Component {
   testamentSelectionClick(elm: HTMLElement) {
     this.setState({ none: false });
     this.setState({ ot: false });
+    this.setState({ bofm: false });
     this.setState({ nt: false });
     this.setState({ dc: false });
     this.setState({ pgp: false });
     this.setState({ [`${(elm as HTMLInputElement).value}`]: true });
+    console.log(this.state);
+    
 
     // Array.from(
     //   document.querySelectorAll('.testamentExportSelection input'),
