@@ -108,7 +108,6 @@ export class ExportModal extends Component {
     this.setState({ dc: false });
     this.setState({ pgp: false });
     this.setState({ [`${(elm as HTMLInputElement).value}`]: true });
-    console.log(this.state);
     
 
     // Array.from(

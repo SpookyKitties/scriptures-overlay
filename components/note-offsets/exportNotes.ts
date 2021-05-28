@@ -167,7 +167,13 @@ function buildFileName() {
       return className.replace('overlay-', '').replace('-note', '');
     })
     .join('-');
-  return `overlay-${overlays}-${location.pathname.split('/')[1]}-offsets.html`;
+  const testamentElm = document.querySelector(
+    '.testamentExportSelection input:checked',
+  ) as HTMLInputElement | undefined;
+
+  return `overlay-${overlays}-${
+    testamentElm?.value ? testamentElm.value : location.pathname.split('/')[1]
+  }-offsets.html`;
 }
 
 function findSort(flatNav: NavigationItem[], chapter: Chapter) {
