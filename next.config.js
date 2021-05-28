@@ -1,6 +1,5 @@
 // next.config.js
 const withPlugins = require('next-compose-plugins');
-const withSass = require('@zeit/next-sass');
 const nextPwa = require('next-pwa');
 const withCSS = require('@zeit/next-css');
 // module.exports = withSass({
@@ -8,8 +7,6 @@ const withCSS = require('@zeit/next-css');
 // });
 
 module.exports = withPlugins([
-  withSass({}),
-  withCSS({}),
   nextPwa({
     pwa: {
       dest: 'public',
