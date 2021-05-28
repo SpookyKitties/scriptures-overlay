@@ -94,8 +94,8 @@ body {
         padding-bottom: 1em;
       }
       .small-caps {
-        font-variant: small-caps;
-        font-feature-settings: initial;
+        // font-variant: small-caps;
+        font-feature-settings: "smcp" !important;
       }
       .uppercase {
         text-transform: uppercase;
@@ -299,6 +299,7 @@ body {
     }
   }
 }
+
 body {
   -webkit-overflow-scrolling: touch;
 
