@@ -57,6 +57,8 @@ export class SettingsComponent extends Component {
       )
       .subscribe();
     store.editMode$.subscribe(o => {
+      console.log(o);
+
       if (o) {
         document.body.classList.add('edit-mode');
       } else {

@@ -22,7 +22,7 @@ export class Store {
   public resetNotes$ = new BehaviorSubject(undefined);
   public initChapter$ = new BehaviorSubject<Chapter>(undefined);
   public updateNoteVisibility$ = new BehaviorSubject<boolean>(true);
-  public editMode$ = new BehaviorSubject<boolean>(true);
+  public editMode$ = new BehaviorSubject<boolean>(false);
   public disableNav$ = new BehaviorSubject<boolean>(false);
 
   history: boolean;

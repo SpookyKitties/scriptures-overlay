@@ -34,9 +34,7 @@ function resetNoteSettings() {
   appSettings.settings.vis = undefined;
   appSettings.settings.vis = {};
 
-  console.log(typeof appSettings);
-
-  const showMoreSetting = appSettings.noteSettings.addSettings.find(
+  const showMoreSetting = appSettings.noteSettings?.addSettings.find(
     addSet => addSet.additionalcontent === 'show-more',
   );
 

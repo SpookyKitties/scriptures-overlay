@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Fuse from 'fuse.js';
 import { cloneDeep, flatten } from 'lodash';
 import { BehaviorSubject, forkJoin, of } from 'rxjs';
@@ -68,23 +68,62 @@ export class AppSettings {
   ) {
     try {
       const subD = parseSubdomain();
+      let data: AxiosResponse | undefined = undefined;
       try {
-        const data = await axios.get(
-          `${subD.storageURL}${this.settings.lang}-${subD.settings}${fileName}.json`,
-          {
-            responseType: 'json',
-          },
-        );
-        this[key] = data.data;
+        if (fileName === 'noteSettings') {
+          try {
+            const noteSettings = JSON.parse(
+              localStorage.getItem(
+                `${this.settings.lang}-scriptures-overlay-${subD.settings}${fileName}`,
+              ),
+            );
+
+            if (!noteSettings) {
+              throw new Error();
+            }
+
+            this[key] = noteSettings;
+          } catch (error) {
+            data = await this.getNoteSettings(subD, fileName);
+            console.log(data);
+
+            this[key] = data.data;
+          }
+        } else {
+          data = await this.getNoteSettings(subD, fileName);
+          this[key] = data.data;
+        }
+
         this.save(key);
       } catch (error) {
-        console.log(error);
+        console.log(`${key} ${error}`);
       }
     } catch (error) {}
     if (!this[key]) {
     }
   }
 
+  private async getNoteSettings(
+    subD: {
+      matches: string[];
+      storageURL: string;
+      settings: string;
+      beta: boolean;
+      audioURL: string;
+      soglo: boolean;
+      disclaimer: boolean;
+    },
+    fileName: string,
+  ) {
+    console.log(this.settings);
+
+    return await axios.get(
+      `${subD.storageURL}${this.settings.lang}-${subD.settings}${fileName}.json`,
+      {
+        responseType: 'json',
+      },
+    );
+  }
   private flattenNavigation() {
     this.navigation$
       .pipe(
@@ -175,6 +214,8 @@ export class AppSettings {
     const noteTypesS = localStorage.getItem(
       `${this.settings.lang}-scriptures-overlay-noteTypes`,
     );
+
+    console.log(noteSettingsS);
 
     this.noteSettings = noteSettingsS ? JSON.parse(noteSettingsS) : undefined;
     this.noteTypes = noteTypesS ? JSON.parse(noteTypesS) : undefined;

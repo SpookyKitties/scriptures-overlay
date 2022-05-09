@@ -41,7 +41,6 @@
     "adm-zip": "^0.4.16",
     "axios": "^0.21.1",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "caniuse-lite": "^1.0.30001170",
     "cheerio": "^1.0.0-rc.5",
     "cookie-parser": "^1.4.5",
     "cuid": "^2.1.8",

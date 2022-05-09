@@ -251,6 +251,8 @@ export class FormatTag extends Component<{
       const hasVis = (note: Note[]) => {
         return note.filter(n => n.formatTag.visible && n.sup !== undefined);
       };
+      // console.log(this.state);
+
       return uniq(
         flatten(
           flatten(

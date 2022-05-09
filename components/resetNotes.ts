@@ -58,6 +58,7 @@ function checkNoteVisiblity(noteGroup: VerseNoteGroup) {
       appSettings.settings.vis[
         `nt-${note['overlay'] ? note['overlay'] : note.noteType}`
       ] === true;
+
     if (note.formatTag.visible) {
       const refVis = note.ref.map(ref => {
         if (ref.label.includes('🔊')) {

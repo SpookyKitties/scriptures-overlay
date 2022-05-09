@@ -29,6 +29,7 @@ function reloadSettings() {
       localStorage.setItem(settingName, JSON.stringify(setting.doc));
     }
   };
+
   const settings = database
     .get<NoteSettings>(`${appSettings.settings.lang}-note-settings`)
     .pipe(

@@ -36,6 +36,7 @@ export type ImgAttr = {
   alt: string;
 };
 import Router from 'next/router';
+import { saveChapter } from '../../components/note-offsets/saveChapter';
 
 export function reInitChapter() {
   store.chapter
@@ -105,17 +106,20 @@ class OithParent extends Component<{ chapter?: Chapter; lang: string }> {
         store.chapter.next(chapter[0]);
       });
 
-    store.chapter.pipe(filter(o => o !== undefined)).subscribe(chapter => {
-      if (titleService && chapter) {
-        titleService.next([chapter.title, chapter.shortTitle]);
-      }
-      this.setState({ chapter: chapter });
-      setTimeout(() => {
-        ReactGA.pageview(window.location.pathname + window.location.search);
-      }, 200);
+    store.chapter
+      .pipe(filter(o => o !== undefined))
+      .subscribe(async chapter => {
+        await saveChapter().toPromise();
+        if (titleService && chapter) {
+          titleService.next([chapter.title, chapter.shortTitle]);
+        }
+        this.setState({ chapter: chapter });
+        setTimeout(() => {
+          ReactGA.pageview(window.location.pathname + window.location.search);
+        }, 200);
 
-      store.disableNav$.next(false);
-    });
+        store.disableNav$.next(false);
+      });
 
     this.setMobileGridStyle();
 
@@ -313,6 +317,7 @@ async function loadChapter(req: IncomingMessage, query: ParsedUrlQuery) {
       store.chapter.next(chapter);
     }
     store.history = true;
+
     return { lang };
   } else {
     // let chapter = await getChapterRemote(id, params);
