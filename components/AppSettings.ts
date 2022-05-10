@@ -85,7 +85,6 @@ export class AppSettings {
             this[key] = noteSettings;
           } catch (error) {
             data = await this.getNoteSettings(subD, fileName);
-            console.log(data);
 
             this[key] = data.data;
           }
@@ -95,9 +94,7 @@ export class AppSettings {
         }
 
         this.save(key);
-      } catch (error) {
-        console.log(`${key} ${error}`);
-      }
+      } catch (error) {}
     } catch (error) {}
     if (!this[key]) {
     }
@@ -115,8 +112,6 @@ export class AppSettings {
     },
     fileName: string,
   ) {
-    console.log(this.settings);
-
     return await axios.get(
       `${subD.storageURL}${this.settings.lang}-${subD.settings}${fileName}.json`,
       {
@@ -214,8 +209,6 @@ export class AppSettings {
     const noteTypesS = localStorage.getItem(
       `${this.settings.lang}-scriptures-overlay-noteTypes`,
     );
-
-    console.log(noteSettingsS);
 
     this.noteSettings = noteSettingsS ? JSON.parse(noteSettingsS) : undefined;
     this.noteTypes = noteTypesS ? JSON.parse(noteTypesS) : undefined;

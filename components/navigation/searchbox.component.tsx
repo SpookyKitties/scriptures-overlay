@@ -157,8 +157,8 @@ export class SearchBoxComponent extends Component {
           onKeyDown={evt => {
             const elem = evt.target as HTMLInputElement;
             if (evt.key.toLowerCase() === 'enter') {
-              console.log(evt.key);
-              console.log(elem.value);
+              // console.log(evt.key);
+              // console.log(elem.value);
 
               this.lookUp(elem.value.toLowerCase());
             }
