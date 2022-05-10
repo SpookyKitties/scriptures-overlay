@@ -2,6 +2,7 @@ import { sortBy } from 'lodash';
 import { Chapter } from '../../oith-lib/src/models/Chapter';
 
 export async function updateSuperscripts(chapter: Chapter) {
+  return;
   chapter.verseNotes?.map(verseNote => {
     return sortBy(
       verseNote.noteGroups?.filter(noteGroup => !noteGroup.delete),
