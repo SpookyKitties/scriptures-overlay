@@ -122,8 +122,8 @@ export class AppSettings {
   private flattenNavigation() {
     this.navigation$
       .pipe(
-        filter(o => o !== undefined),
-        map(navigation => {
+        filter((o) => o !== undefined),
+        map((navigation) => {
           const o = flattenPrimaryManifest(navigation);
 
           this.flatNavigation$.next(o);
@@ -187,8 +187,8 @@ export class AppSettings {
         ),
       )
         .pipe(
-          flatMap(o => o),
-          map(o => {
+          flatMap((o) => o),
+          map((o) => {
             this.navigation$.next(o.data as NavigationItem);
           }),
         )
@@ -224,7 +224,7 @@ export class AppSettings {
       )
         // .pipe(flatMap(o => o))
         .pipe(
-          map(o => {
+          map((o) => {
             resetNotes$();
           }),
         )
@@ -267,7 +267,7 @@ export class AppSettings {
   }
   public save<T extends keyof this>(key: T) {
     localStorage.setItem(
-      `${this.settings.lang}-scriptures-overlay-${key}`,
+      `${this.settings.lang}-scriptures-overlay-${key as string}`,
       JSON.stringify(this[key]),
     );
   }

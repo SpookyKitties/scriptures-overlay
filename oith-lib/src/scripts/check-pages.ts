@@ -7,16 +7,16 @@ import { readFile } from 'fs-extra';
 import { JSDOM } from 'jsdom';
 
 export function main() {
-  return of(argv.i as string)
+  return of(argv['i'] as string)
     .pipe(
-      filter(o => o !== undefined),
-      map(i => FastGlob.default(normalizePath(`${i}/**/**`))),
-      flatMap(o => o),
-      flatMap(o => o),
-      map(fileName =>
+      filter((o) => o !== undefined),
+      map((i) => FastGlob.default(normalizePath(`${i}/**/**`))),
+      flatMap((o) => o),
+      flatMap((o) => o),
+      map((fileName) =>
         of(readFile(normalizePath(fileName))).pipe(
-          flatMap(o => o),
-          map(o => {
+          flatMap((o) => o),
+          map((o) => {
             const doc = new JSDOM(o).window.document;
 
             return forkJoin(
@@ -24,14 +24,14 @@ export function main() {
               of(doc.querySelector('header') !== null),
               of(doc.querySelector('.body-block') !== null),
             ).pipe(
-              filter(o => o[1] === false && o[2] === false), // || o[1] !== o[2])
+              filter((o) => o[1] === false && o[2] === false), // || o[1] !== o[2])
             );
           }),
-          flatMap(o => o),
-          map(o => o),
+          flatMap((o) => o),
+          map((o) => o),
         ),
       ),
-      flatMap(o => o),
+      flatMap((o) => o),
     )
     .subscribe();
 }
