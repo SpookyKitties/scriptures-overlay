@@ -42,19 +42,18 @@ export function reInitChapter() {
   store.chapter
     .pipe(
       take(1),
-      filter(o => o !== undefined),
-      map(chapter =>
+      filter((o) => o !== undefined),
+      map((chapter) =>
         addVersesToBody(chapter).pipe(
           map(() => buildShell(chapter, chapter.params)),
-          flatMap(o => o),
+          flatMap((o) => o),
           map(() => chapter),
         ),
       ),
-      flatMap(o => o),
+      flatMap((o) => o),
     )
-    .subscribe(chapter => {
+    .subscribe((chapter) => {
       store.chapter.next(chapter);
-      console.log(chapter);
     });
 }
 
@@ -65,11 +64,11 @@ class OithParent extends Component<{ chapter?: Chapter; lang: string }> {
     notesMode?: string;
   };
   componentDidMount() {
-    appSettings.displayNav$.subscribe(o => {
+    appSettings.displayNav$.subscribe((o) => {
       this.setState({ displayNav: o });
     });
 
-    appSettings.displayUnderline$.subscribe(o => {
+    appSettings.displayUnderline$.subscribe((o) => {
       this.setState({ displayUnderline: o });
     });
     document.cookie = `lang=${this.props.lang}; expires=${addYears(
@@ -79,7 +78,7 @@ class OithParent extends Component<{ chapter?: Chapter; lang: string }> {
     appSettings.settings.lang = this.props.lang;
     appSettings.save('settings');
 
-    appSettings.notesMode$.subscribe(o => {
+    appSettings.notesMode$.subscribe((o) => {
       this.setState({ notesMode: undefined });
       this.setState({ notesMode: o ? o : 'off' });
       // this.setMobileGridStyle();
@@ -91,28 +90,29 @@ class OithParent extends Component<{ chapter?: Chapter; lang: string }> {
 
     store.initChapter$
       .pipe(
-        filter(o => o !== undefined),
-        map(chapter => {
+        filter((o) => o !== undefined),
+        map((chapter) => {
           const addVToB = addVersesToBody(chapter).pipe(
             map(() => buildShell(chapter, chapter.params)),
-            flatMap(o => o),
+            flatMap((o) => o),
             map(() => chapter),
           );
           return forkJoin(addVToB, addNotesToVerses$(chapter));
         }),
-        flatMap(o => o),
+        flatMap((o) => o),
       )
-      .subscribe(chapter => {
+      .subscribe((chapter) => {
         store.chapter.next(chapter[0]);
       });
 
     store.chapter
-      .pipe(filter(o => o !== undefined))
-      .subscribe(async chapter => {
+      .pipe(filter((o) => o !== undefined))
+      .subscribe(async (chapter) => {
         await saveChapter().toPromise();
         if (titleService && chapter) {
           titleService.next([chapter.title, chapter.shortTitle]);
         }
+
         this.setState({ chapter: chapter });
         setTimeout(() => {
           ReactGA.pageview(window.location.pathname + window.location.search);
@@ -276,7 +276,7 @@ async function loadChapter(req: IncomingMessage, query: ParsedUrlQuery) {
     let chapter = await store
       .checkHistory$(id)
       .pipe(
-        map(c => {
+        map((c) => {
           if (c) {
             return of(c);
           }
@@ -290,7 +290,7 @@ async function loadChapter(req: IncomingMessage, query: ParsedUrlQuery) {
               `${params.lang}-${params.book}-${params.chapter}-chapter`,
             )
             .pipe(
-              map(dbItem => {
+              map((dbItem) => {
                 if (dbItem) {
                   return dbItem.doc;
                 }
@@ -298,15 +298,15 @@ async function loadChapter(req: IncomingMessage, query: ParsedUrlQuery) {
               }),
             );
         }),
-        flatMap(o => o),
-        map(c => {
+        flatMap((o) => o),
+        map((c) => {
           if (c) {
             return of(c);
           }
 
           return getChapterRemote(id, params);
         }),
-        flatMap(o => o),
+        flatMap((o) => o),
       )
       .toPromise();
 

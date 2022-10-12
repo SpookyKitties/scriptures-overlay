@@ -30,6 +30,7 @@ export function previousPage() {
   if (store) {
     checkDisabled().subscribe(() => {
       const url = parseUrl();
+
       if (url) {
         getNav().subscribe((o) => {
           const n = o.find((n) => n.href === url);
