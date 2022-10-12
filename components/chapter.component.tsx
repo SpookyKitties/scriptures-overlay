@@ -398,7 +398,7 @@ export class ChapterComponent extends Component {
 
   public render() {
     if (this.state && this.state.chapter) {
-      console.log(this.state?.chapter);
+      // console.log(this.state?.chapter);
 
       return (
         <div

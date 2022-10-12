@@ -1,4 +1,4 @@
-import { flatten, sortBy, uniqBy } from 'lodash';
+import { delay, flatten, map, sortBy, uniqBy } from 'lodash';
 import { Component, MouseEvent, CSSProperties } from 'react';
 import { Chapter } from '../../oith-lib/src/models/Chapter';
 import {
@@ -38,7 +38,7 @@ function sortNoteRefs(noteRefA: NoteRef, noteRefB: NoteRef) {
 
 class NoteGroupComponent extends Component {
   componentDidMount() {
-    store.editMode$.subscribe(o => {
+    store.editMode$.subscribe((o) => {
       this.setState({ editMode: o });
     });
   }
@@ -54,25 +54,24 @@ const sortFilterNoteRefs = (
   if (soglo) {
     return flatten(
       verseNoteGroup.notes
-        .filter(nt => nt.formatTag.visible)
-        .map(nt => refFilter(verseNoteGroup, nt.ref)),
-    ).filter(nr => !nr.delete);
+        .filter((nt) => nt.formatTag.visible)
+        .map((nt) => refFilter(verseNoteGroup, nt.ref)),
+    ).filter((nr) => !nr.delete);
   }
   return flatten(
     uniqBy(
-      verseNoteGroup.notes.filter(nt => nt.formatTag.visible),
-      n => n.id,
-    ).map(nt => nt.ref),
-  ).filter(nr => !nr.delete);
+      verseNoteGroup.notes.filter((nt) => nt.formatTag.visible),
+      (n) => n.id,
+    ).map((nt) => nt.ref),
+  ).filter((nr) => !nr.delete);
 };
 
 const refFilter = (verseNoteGroup: VerseNoteGroup, noteRefs: NoteRef[]) => {
   if (verseNoteGroup.hasMoreStill && verseNoteGroup.showMoreStill) {
-    // console.log(noteRefs.filter(noteRef => noteRef.moreStill && noteRef.vis));
-    return noteRefs.filter(noteRef => noteRef.vis && !noteRef.more);
+    return noteRefs.filter((noteRef) => noteRef.vis && !noteRef.more);
   }
 
-  return noteRefs.filter(noteRef => noteRef.vis && !noteRef.moreStill);
+  return noteRefs.filter((noteRef) => noteRef.vis && !noteRef.moreStill);
 };
 
 export class VerseNoteGroupComponent extends Component<{
@@ -149,16 +148,16 @@ export class VerseNoteGroupComponent extends Component<{
         <div
           className={`note`}
           style={{ width: '84%' }}
-          onClick={event => {
+          onClick={(event) => {
             gotoLink(event);
           }}
         >
           {sortFilterNoteRefs(this.props.noteGroup, this.props.soglo)
             .sort((a, b) => (parseSubdomain().soglo ? 1 : sortNoteRefs(a, b)))
-            .map(ref => {
+            .map((ref) => {
               return (
                 <p
-                  onClick={evt => {
+                  onClick={(evt) => {
                     if (
                       (evt.target as HTMLElement).classList.contains(
                         'ref-label',
@@ -167,11 +166,9 @@ export class VerseNoteGroupComponent extends Component<{
                       refClick(this.props.noteGroup, ref);
                     }
                   }}
-                  className={`note-reference delete-${
-                    ref.delete
-                  } ${ref.label.trim().replace('🔊', 'speaker')} ${
-                    ref.vis ? '' : 'none'
-                  }`}
+                  className={`note-reference delete-${ref.delete} ${ref.label
+                    .trim()
+                    .replace('🔊', 'speaker')} ${ref.vis ? '' : 'none'}`}
                 >
                   {/* <textarea name="" id="" cols={30} rows={10}>
                     {ref.text.replace(/\#/g, '')}
@@ -181,7 +178,7 @@ export class VerseNoteGroupComponent extends Component<{
                     dangerouslySetInnerHTML={{
                       __html: ref.text.replace(/\#/g, ''),
                     }}
-                    onClick={evt => {
+                    onClick={(evt) => {
                       const elem = evt.target as HTMLElement;
 
                       // ref.delete = true;
@@ -199,13 +196,10 @@ export class VerseNoteGroupComponent extends Component<{
                       //     store.updateNoteVisibility$.next(true);
                       //   });
                       // } catch (error) {
-                      //   console.log(error);
                       // }
                       if (elem) {
                         popupClick(elem);
                       }
-
-                      // console.log(elem);
                     }}
                   ></span>
                   {/* &nbsp; */}
@@ -232,8 +226,6 @@ export class VerseNoteGroupComponent extends Component<{
                 : 'none'
             }`}
             onClick={() => {
-              // console.log(this.props.noteGroup.notes);
-
               this.showMore(true, this.props.noteGroup);
             }}
           >
@@ -333,10 +325,32 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
   public state: VerseNoteState;
 
   componentDidMount() {
-    store.updateNoteVisibility$.subscribe(() => {
+    store.updateNoteVisibility$.subscribe((t) => {
       this.setState({ verseNote: this.props.verseNote });
     });
   }
+  componentDidUpdate(
+    prevProps: Readonly<VerseNoteState>,
+    prevState: Readonly<{}>,
+    snapshot?: any,
+  ): void {
+    this.setState({ verseNote: this.props.verseNote });
+    // this.forceUpdate();
+  }
+
+  shouldComponentUpdate(
+    nextProps: Readonly<VerseNoteState>,
+    nextState: Readonly<{}>,
+    nextContext: any,
+  ): boolean {
+    // (nextProps);
+
+    if (this.state?.verseNote !== nextProps.verseNote) {
+      return true;
+    }
+    return false;
+  }
+
   public render() {
     if (this.state && this.state.verseNote) {
       const sg = parseSubdomain().soglo;
@@ -351,9 +365,9 @@ export class VerseNoteComponent extends Component<VerseNoteState> {
             id={verseNote.id}
           >
             <p className="short-title">{shortTitle}</p>
-            {sortBy(verseNote.noteGroups, vng =>
+            {sortBy(verseNote.noteGroups, (vng) =>
               newSortVerseNoteGroups(vng),
-            ).map(noteGroup => (
+            ).map((noteGroup) => (
               <VerseNoteGroupComponent
                 noteGroup={noteGroup}
                 soglo={sg}
@@ -379,6 +393,8 @@ import { DeleteNoteComponent } from './DeleteNoteComponent';
 import { UpdateNotePhrase } from './UpdateNotePhrase';
 import { UpdateSuperscriptsComponent } from './UpdateSuperscriptsComponent';
 import { EditButtonComponent } from './EditButtonComponent';
+import { filter, map as rxjsMap } from 'rxjs';
+import { delay as delayRxjs } from 'rxjs/operators';
 export class VerseNotesShellComponent extends Component<VNProps> {
   public state: { chapter: Chapter; verseNotesHeight: string };
 
@@ -386,6 +402,22 @@ export class VerseNotesShellComponent extends Component<VNProps> {
     resetMobileNotes.subscribe(() => {
       this.setMobileGridStyle();
     });
+    store.chapter
+      .pipe(
+        filter((o) => o !== undefined),
+        delayRxjs(200),
+        rxjsMap((chapter) => {
+          this.setState({ chapter: chapter }, () => {
+            // this.forceUpdate();
+          });
+          return chapter;
+        }),
+        delayRxjs(100),
+      )
+
+      .subscribe((chapter) => {
+        // this.forceUpdate();
+      });
   }
 
   setMobileGridStyle() {
@@ -415,7 +447,7 @@ export class VerseNotesShellComponent extends Component<VNProps> {
     return <></>;
   }
   render() {
-    if (this.props.chapter) {
+    if (this.state?.chapter) {
       return (
         <div
           className={`note-pane`}
@@ -429,8 +461,8 @@ export class VerseNotesShellComponent extends Component<VNProps> {
         >
           {this.renderFuture()}
           <div className="verse-notes">
-            {this.props.chapter.verses.map(verse => {
-              const verseNote = this.props.chapter.verseNotes?.find(vN =>
+            {this.state.chapter.verses.map((verse) => {
+              const verseNote = this.state.chapter.verseNotes?.find((vN) =>
                 vN.id.includes(`-${verse.id}-verse-notes`),
               );
               if (verseNote) {
@@ -476,5 +508,5 @@ export function capitalizeFirstLetter(str: string) {
 }
 
 export function doesntInclude(strings: string[], val: string) {
-  return strings.filter(s => val.includes(s)).length === 0;
+  return strings.filter((s) => val.includes(s)).length === 0;
 }

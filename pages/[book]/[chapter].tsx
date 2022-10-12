@@ -112,6 +112,7 @@ class OithParent extends Component<{ chapter?: Chapter; lang: string }> {
         if (titleService && chapter) {
           titleService.next([chapter.title, chapter.shortTitle]);
         }
+        // console.log(chapter);
 
         this.setState({ chapter: chapter });
         setTimeout(() => {
