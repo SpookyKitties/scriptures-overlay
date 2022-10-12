@@ -14,3 +14,15 @@ const nextPwa = require('next-pwa');
 //     },
 //   }),
 // ]);
+
+module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/gen/1',
+        permanent: true,
+      },
+    ];
+  },
+};
