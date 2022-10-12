@@ -11,7 +11,7 @@ import {
   words,
 } from '../note-category-icons.json';
 import { appSettings, resetMobileNotes } from '../SettingsComponent';
-import { VerseNoteGroupComponent } from '../verse-notes/verse-notes-shell';
+import { VerseNoteGroupComponent } from '../verse-notes/VerseNoteGroupComponent';
 import { renderCloseIcon } from './renderCloseIcon';
 import { renderImageIcon } from './renderImageIcon';
 
@@ -62,7 +62,7 @@ export function renderContextIcon(flatNotes?: NoteRef[]) {
 
 export function hasNote(nums: number[], noteRefs?: NoteRef[]) {
   return noteRefs
-    ? noteRefs.find(ref => nums.includes(ref.category)) !== undefined
+    ? noteRefs.find((ref) => nums.includes(ref.category)) !== undefined
     : false;
 }
 export function renderPronunciationIcon(flatNotes?: NoteRef[]) {
@@ -116,8 +116,8 @@ export class MobileNotesComponent extends Component {
     if (verseNote) {
       return flatten(
         verseNote.notes
-          .filter(note => note.formatTag.visible)
-          .map(note => note.ref.filter(ref => ref.vis)),
+          .filter((note) => note.formatTag.visible)
+          .map((note) => note.ref.filter((ref) => ref.vis)),
       );
     }
     return [];
@@ -133,7 +133,7 @@ export class MobileNotesComponent extends Component {
         this.setState({ verse: undefined });
         this.setState({ verseNote: verse });
       });
-    syncedVerse.subscribe(verseNote => {
+    syncedVerse.subscribe((verseNote) => {
       this.setState({ flatNotes: this.flattenNotes(verseNote) });
       this.setState({ verseNote: verseNote });
     });

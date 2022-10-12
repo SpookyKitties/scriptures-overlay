@@ -22,9 +22,7 @@ function isNumVisible(verseNote: VerseNote) {
   }
 }
 
-function resetNotes(
-  chapter: Chapter, //import("c:/users/jared/source/repos/scriptures-overlay/oith-lib/src/models/Chapter").Chapter
-) {
+async function resetNotes(chapter: Chapter) {
   chapter.verseNotes?.map((verseNote) => {
     const v = verseNote.noteGroups.map((noteGroup, i) => {
       const refs = noteGroup.notes.filter(
@@ -109,8 +107,9 @@ export function resetNotes$() {
       map((chapter) => {
         return resetNotes(chapter);
       }),
+      flatMap((o) => o),
     )
-    .subscribe(() => {
+    .subscribe((chapter) => {
       store.updateFTags$.next(true);
       store.updateNoteVisibility$.next(true);
     });
