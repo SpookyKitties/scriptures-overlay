@@ -5,7 +5,7 @@ import {
   Note,
   NoteRef,
 } from '../../oith-lib/src/verse-notes/verse-note';
-import { VerseNoteGroupComponent } from './verse-notes-shell';
+import { VerseNoteGroupComponent } from './VerseNoteGroupComponent';
 import { parseSubdomain } from '../parseSubdomain';
 import { flatten } from 'lodash';
 import { refClick } from './refClick';
@@ -25,12 +25,14 @@ export class FocusedNotePane extends Component {
   };
 
   componentDidMount() {
-    openFocusNotePane.subscribe(vng => {
+    openFocusNotePane.subscribe((vng) => {
       console.log(vng);
 
       if (vng) {
         const refs = flatten(
-          vng.notes.map(note => note.ref.filter(ref => !ref.more && ref.vis)),
+          vng.notes.map((note) =>
+            note.ref.filter((ref) => !ref.more && ref.vis),
+          ),
         );
         console.log(vng);
 
@@ -71,10 +73,10 @@ export class FocusedNotePane extends Component {
                 {displayState(this.state, 'sup')}
               </div>
               <div className={'verse-note'}>
-                {this.state.refs.map(ref => {
+                {this.state.refs.map((ref) => {
                   return (
                     <p
-                      onClick={async evt => {
+                      onClick={async (evt) => {
                         if (
                           (evt.target as HTMLElement).classList.contains(
                             'ref-label',
@@ -91,7 +93,7 @@ export class FocusedNotePane extends Component {
                         dangerouslySetInnerHTML={{
                           __html: ref.text.replace(/\#/g, ''),
                         }}
-                        onClick={evt => {
+                        onClick={(evt) => {
                           // const elem = evt.target as HTMLElement;
                           // if (elem) {
                           //   popupClick(elem);

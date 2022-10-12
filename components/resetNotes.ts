@@ -12,23 +12,21 @@ import { groupBy as _groupBy } from 'lodash';
 function isNumVisible(verseNote: VerseNote) {
   if (verseNote.vis) {
     const groups = _groupBy(
-      verseNote.noteGroups.filter(vng => vng.formatTag.visible),
-      vng => vng.id,
+      verseNote.noteGroups.filter((vng) => vng.formatTag.visible),
+      (vng) => vng.id,
     );
-    Object.keys(groups).map(key => {
-      groups[key].map(g => (g.numVisible = false));
+    Object.keys(groups).map((key) => {
+      groups[key].map((g) => (g.numVisible = false));
       groups[key][0].numVisible = true;
     });
   }
 }
 
-function resetNotes(
-  chapter: Chapter, //import("c:/users/jared/source/repos/scriptures-overlay/oith-lib/src/models/Chapter").Chapter
-) {
-  chapter.verseNotes?.map(verseNote => {
+async function resetNotes(chapter: Chapter) {
+  chapter.verseNotes?.map((verseNote) => {
     const v = verseNote.noteGroups.map((noteGroup, i) => {
       const refs = noteGroup.notes.filter(
-        n => n.ref.find(r => r.text.includes('video')) !== undefined,
+        (n) => n.ref.find((r) => r.text.includes('video')) !== undefined,
       );
       noteGroup.media = false;
 
@@ -50,7 +48,7 @@ function resetNotes(
   });
 }
 function checkNoteVisiblity(noteGroup: VerseNoteGroup) {
-  return noteGroup.notes.map(note => {
+  return noteGroup.notes.map((note) => {
     // if (note.delete) {
     //   return false;
     // }
@@ -60,10 +58,10 @@ function checkNoteVisiblity(noteGroup: VerseNoteGroup) {
       ] === true;
 
     if (note.formatTag.visible) {
-      const refVis = note.ref.map(ref => {
+      const refVis = note.ref.map((ref) => {
         if (ref.label.includes('🔊')) {
           const p = appSettings.noteSettings.addSettings.find(
-            ns => ns.additionalcontent === 'pronunciation',
+            (ns) => ns.additionalcontent === 'pronunciation',
           );
           if (p && p.enabled === false) {
             return (ref.vis =
@@ -101,16 +99,17 @@ function setSogloSup(
 export function resetNotes$() {
   store.chapter
     .pipe(
-      filter(o => o !== undefined),
-      map(chapter => {
+      filter((o) => o !== undefined),
+      map((chapter) => {
         return resetNoteVisibilitySettings().pipe(map(() => chapter));
       }),
-      flatMap(o => o),
-      map(chapter => {
+      flatMap((o) => o),
+      map((chapter) => {
         return resetNotes(chapter);
       }),
+      flatMap((o) => o),
     )
-    .subscribe(() => {
+    .subscribe((chapter) => {
       store.updateFTags$.next(true);
       store.updateNoteVisibility$.next(true);
     });
@@ -120,13 +119,13 @@ export function resetNotes$() {
       map(() =>
         store.chapter.pipe(
           take(1),
-          filter(o => o !== undefined),
+          filter((o) => o !== undefined),
 
-          map(chapter => {
+          map((chapter) => {
             return resetNoteVisibilitySettings().pipe(map(() => chapter));
           }),
-          flatMap(o => o),
-          map(chapter => {
+          flatMap((o) => o),
+          map((chapter) => {
             // resetNotes(chapter);
 
             resetNotes(chapter);
@@ -134,7 +133,7 @@ export function resetNotes$() {
         ),
       ),
 
-      flatMap(o => o),
+      flatMap((o) => o),
     )
     .subscribe(() => {
       store.updateFTags$.next(true);

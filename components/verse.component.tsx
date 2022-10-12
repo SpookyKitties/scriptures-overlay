@@ -3,7 +3,7 @@ import { renderFormatGroups } from './chapter.component';
 import { Component, Fragment, CSSProperties } from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { store } from './SettingsComponent';
-import { VerseNoteGroupComponent } from './verse-notes/verse-notes-shell';
+import { VerseNoteGroupComponent } from './verse-notes/VerseNoteGroupComponent';
 import { parseSubdomain } from './parseSubdomain';
 
 type VerseProps = {

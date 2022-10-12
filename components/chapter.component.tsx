@@ -33,7 +33,7 @@ export function renderFormatGroups(
   grps?: (FormatGroup | VersePlaceholder | FormatText)[],
 ): JSX.Element {
   if (grps) {
-    return <Fragment>{grps.map(grp => renderFormatGroup(grp))}</Fragment>;
+    return <Fragment>{grps.map((grp) => renderFormatGroup(grp))}</Fragment>;
   }
   return;
 }
@@ -42,7 +42,7 @@ export function renderFormat(ft: FormatText) {
   if (ft.formatMerged) {
     return (
       <Fragment>
-        {ft.formatMerged.map(fm => {
+        {ft.formatMerged.map((fm) => {
           return <FormatTag formatMerged={fm} offsets={ft.offsets}></FormatTag>;
         })}
       </Fragment>
@@ -326,9 +326,9 @@ function detectswipe(el: string, func: (direct: string) => void) {
       if (
         (swipe_det.eX - min_x > swipe_det.sX ||
           swipe_det.eX + min_x < swipe_det.sX) &&
-        (swipe_det.eY < swipe_det.sY + max_y &&
-          swipe_det.sY > swipe_det.eY - max_y &&
-          swipe_det.eX > 0)
+        swipe_det.eY < swipe_det.sY + max_y &&
+        swipe_det.sY > swipe_det.eY - max_y &&
+        swipe_det.eX > 0
       ) {
         if (swipe_det.eX > swipe_det.sX) direc = 'r';
         else direc = 'l';
@@ -337,9 +337,9 @@ function detectswipe(el: string, func: (direct: string) => void) {
       else if (
         (swipe_det.eY - min_y > swipe_det.sY ||
           swipe_det.eY + min_y < swipe_det.sY) &&
-        (swipe_det.eX < swipe_det.sX + max_x &&
-          swipe_det.sX > swipe_det.eX - max_x &&
-          swipe_det.eY > 0)
+        swipe_det.eX < swipe_det.sX + max_x &&
+        swipe_det.sX > swipe_det.eX - max_x &&
+        swipe_det.eY > 0
       ) {
         if (swipe_det.eY > swipe_det.sY) direc = 'd';
         else direc = 'u';
@@ -365,21 +365,25 @@ export class ChapterComponent extends Component {
   componentDidMount() {
     store.chapter
       .pipe(
-        filter(o => o !== undefined),
-        map(c => {
+        filter((o) => o !== undefined),
+        map((c) => {
           this.setState({ chapter: undefined });
-          this.setState({ chapter: c });
 
           return c;
         }),
         delay(100),
-        map(c => scrollIntoView(c)),
-        flatMap(o => o),
+        map((c) => {
+          this.setState({ chapter: c });
+
+          return c;
+        }),
+        map((c) => scrollIntoView(c)),
+        flatMap((o) => o),
       )
-      .subscribe(() => { });
+      .subscribe(() => {});
 
     setTimeout(() => {
-      detectswipe('.chapter-loader', direct => {
+      detectswipe('.chapter-loader', (direct) => {
         if (direct === 'l') {
           nextPage();
         }
@@ -390,18 +394,21 @@ export class ChapterComponent extends Component {
     }, 1000);
   }
 
-  componentDidUpdate() { }
+  componentDidUpdate() {}
 
   public render() {
     if (this.state && this.state.chapter) {
+      // console.log(this.state?.chapter);
+
       return (
         <div
-          className={`chapter-content ${this.state &&
+          className={`chapter-content ${
+            this.state &&
             this.state.chapter &&
             !this.state.chapter.id.includes('-come-foll')
-            ? ' classic-scriptures'
-            : 'manual'
-            }`}
+              ? ' classic-scriptures'
+              : 'manual'
+          }`}
         >
           <span
             onClick={() => {

@@ -5,16 +5,16 @@ import { forkJoin, of, Observable, EMPTY } from 'rxjs';
 // import { filterUndefined$ } from '../oith-lib/src/process';
 import { flatMap$ } from '../oith-lib/src/rx/flatMap$';
 import { NavigationItem } from './navigation-item';
-import { getURL } from 'next/dist/next-server/lib/utils';
+// import { getURL } from 'next/dist/next-server/lib/utils';
 
 export const filterUndefined$ = filter(
   <T>(o: T) => o !== undefined && o !== null,
 );
 export function getNav() {
   return appSettings.flatNavigation$.pipe(
-    filter(o => o !== undefined),
-    map(ni => {
-      return ni.filter(n => n.href !== undefined);
+    filter((o) => o !== undefined),
+    map((ni) => {
+      return ni.filter((n) => n.href !== undefined);
     }),
   );
 }
@@ -22,7 +22,7 @@ export function getNav() {
 function checkDisabled() {
   return store.disableNav$.pipe(
     take(1),
-    filter(o => o === false),
+    filter((o) => o === false),
   );
 }
 
@@ -30,9 +30,10 @@ export function previousPage() {
   if (store) {
     checkDisabled().subscribe(() => {
       const url = parseUrl();
+
       if (url) {
-        getNav().subscribe(o => {
-          const n = o.find(n => n.href === url);
+        getNav().subscribe((o) => {
+          const n = o.find((n) => n.href === url);
           if (n) {
             store.history = false;
             const i = o[o.indexOf(n) - 1];
@@ -51,8 +52,8 @@ export function nextPage() {
     checkDisabled().subscribe(() => {
       const url = parseUrl();
       if (url) {
-        getNav().subscribe(o => {
-          const n = o.find(n => n.href === url);
+        getNav().subscribe((o) => {
+          const n = o.find((n) => n.href === url);
 
           if (n) {
             store.history = false;
@@ -80,7 +81,7 @@ function navUPdate(
   url: string,
 ): Observable<NavigationItem[]> {
   const n = navigationItem.navigationItems
-    ? navigationItem.navigationItems.find(ni => `/${ni.href}` === url)
+    ? navigationItem.navigationItems.find((ni) => `/${ni.href}` === url)
     : undefined;
 
   if (navigationItem.navigationItems !== undefined && n) {
@@ -90,7 +91,9 @@ function navUPdate(
   } else if (navigationItem.navigationItems !== undefined) {
     return of(navigationItem.navigationItems).pipe(
       flatMap$,
-      map(o => navUPdate(o, url).pipe(map(o => o.concat([navigationItem])))),
+      map((o) =>
+        navUPdate(o, url).pipe(map((o) => o.concat([navigationItem]))),
+      ),
       flatMap$,
     );
   }
@@ -104,15 +107,15 @@ export function initnav() {
       take(1),
       filterUndefined$,
       delay(10),
-      map(c => {
+      map((c) => {
         return resetNav();
       }),
       // flatMap$,
-      flatMap(o => o),
-      flatMap(o => o),
+      flatMap((o) => o),
+      flatMap((o) => o),
     )
-    .subscribe(o => {
-      o.map(i => (i.open = true));
+    .subscribe((o) => {
+      o.map((i) => (i.open = true));
 
       appSettings.updatenavigation$.next(true);
     });
@@ -122,15 +125,15 @@ export function setCurrentNav() {
     .pipe(
       filterUndefined$,
       delay(10),
-      map(c => {
+      map((c) => {
         return resetNav();
       }),
       // flatMap$,
-      flatMap(o => o),
-      flatMap(o => o),
+      flatMap((o) => o),
+      flatMap((o) => o),
     )
-    .subscribe(o => {
-      o.map(i => (i.open = true));
+    .subscribe((o) => {
+      o.map((i) => (i.open = true));
 
       appSettings.updatenavigation$.next(true);
     });
@@ -139,18 +142,18 @@ export function resetNav(): Observable<Observable<NavigationItem[]>> {
   const resetFlatNav = () => {
     return appSettings.flatNavigation$.pipe(
       take(1),
-      map(nav => {
-        return nav.map(n => (n.open = false));
+      map((nav) => {
+        return nav.map((n) => (n.open = false));
       }),
     );
   };
   return forkJoin(
     appSettings.navigation$.pipe(
       take(1),
-      filter(o => o !== undefined),
+      filter((o) => o !== undefined),
     ),
     resetFlatNav(),
-  ).pipe(map(o => navUPdate(o[0], `/${parseUrl()}`)));
+  ).pipe(map((o) => navUPdate(o[0], `/${parseUrl()}`)));
 }
 
 export function urlFromID(
