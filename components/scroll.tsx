@@ -4,7 +4,7 @@ import { syncedVerse } from './mobile-notes.tsx/MobileNotesComponent';
 import { Subject, EMPTY } from 'rxjs';
 
 function resetVerseFocus() {
-  Array.from(document.querySelectorAll('.verse.focused')).map(v =>
+  Array.from(document.querySelectorAll('.verse.focused')).map((v) =>
     v.classList.remove('focused'),
   );
 }
@@ -34,19 +34,19 @@ syncScrolling
       if (chapterElement) {
         const y = chapterElement.getBoundingClientRect().top;
         const verse = verses.find(
-          e => e.getBoundingClientRect().bottom - 45 >= y === true,
+          (e) => e.getBoundingClientRect().bottom - 35 >= y === true,
         ) as Element;
 
         if (verse) {
           return store.chapter.pipe(
             take(1),
-            filter(o => o !== undefined),
-            map(chapter => {
+            filter((o) => o !== undefined),
+            map((chapter) => {
               resetVerseFocus();
               const tempID = /^(p)(.+)$/g.exec(verse.id);
               const id = tempID ? tempID[2] : verse.id;
 
-              const vn = chapter.verseNotes?.find(vn =>
+              const vn = chapter.verseNotes?.find((vn) =>
                 vn.id.includes(`-${id}-verse-note`),
               );
               if (syncedVerse) {
@@ -61,9 +61,9 @@ syncScrolling
       }
       return EMPTY;
     }),
-    flatMap(o => o),
+    flatMap((o) => o),
   )
-  .subscribe(id => {
+  .subscribe((id) => {
     const verseNote = document.querySelector(`[id*='-${id}-verse-note']`);
     if (verseNote) {
       verseNote.scrollIntoView();

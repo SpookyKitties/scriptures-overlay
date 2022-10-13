@@ -377,6 +377,7 @@ export class ChapterComponent extends Component {
 
           return c;
         }),
+        delay(500),
         map((c) => scrollIntoView(c)),
         flatMap((o) => o),
       )

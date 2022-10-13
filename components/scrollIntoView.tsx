@@ -27,7 +27,9 @@ export function scrollIntoView(chapter?: Chapter) {
           ),
         ).pipe(
           filter((o) => o !== null),
-          map((o) => (o as Element).scrollIntoView()),
+          map((o) => {
+            (o as Element).scrollIntoView();
+          }),
         );
       }
 
