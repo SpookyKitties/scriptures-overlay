@@ -6,6 +6,7 @@ export function parseCookieLang(cookie: string) {
 export function parseLangFromUrl() {
   const cookieLang = parseCookieLang(document.cookie);
 
+
   const urlLangReg = /lang\=(.+?)(\;|$)/g.exec(window.location.href);
   const urlLang = urlLangReg ? urlLangReg[1] : cookieLang;
 
