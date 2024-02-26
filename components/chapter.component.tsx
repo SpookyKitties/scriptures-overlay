@@ -40,13 +40,19 @@ export function renderFormatGroups(
 
 export function renderFormat(ft: FormatText) {
   if (ft.formatMerged) {
-    return (
-      <Fragment>
-        {ft.formatMerged.map((fm) => {
-          return <FormatTag formatMerged={fm} offsets={ft.offsets}></FormatTag>;
-        })}
-      </Fragment>
-    );
+    try {
+      return (
+        <Fragment>
+          {ft.formatMerged.map((fm) => {
+            return (
+              <FormatTag formatMerged={fm} offsets={ft.offsets}></FormatTag>
+            );
+          })}
+        </Fragment>
+      );
+    } catch (error) {
+      return <h1>error</h1>;
+    }
   }
 
   return <div>bbbhh</div>;
@@ -79,7 +85,6 @@ function renderFormatGroup(grp: FormatGroup | VersePlaceholder | FormatText) {
               {renderFormatGroups(formatGroup.grps)}
             </div>
           );
-          break;
         }
         case 'header': {
           return (
@@ -87,7 +92,6 @@ function renderFormatGroup(grp: FormatGroup | VersePlaceholder | FormatText) {
               {renderFormatGroups(formatGroup.grps)}
             </header>
           );
-          break;
         }
         case 'span': {
           return (
@@ -95,7 +99,6 @@ function renderFormatGroup(grp: FormatGroup | VersePlaceholder | FormatText) {
               {renderFormatGroups(formatGroup.grps)}
             </span>
           );
-          break;
         }
         case 'small': {
           return (
@@ -103,7 +106,6 @@ function renderFormatGroup(grp: FormatGroup | VersePlaceholder | FormatText) {
               {renderFormatGroups(formatGroup.grps)}
             </small>
           );
-          break;
         }
         case 'br': {
           return <br />;
@@ -261,16 +263,11 @@ function renderFormatGroup(grp: FormatGroup | VersePlaceholder | FormatText) {
               {renderFormatGroups(formatGroup.grps)}
             </Fragment>
           );
-          break;
         }
       }
-
-      break;
     }
     case 5: {
       return renderFormat(grp as FormatText);
-      return <div>{(grp as FormatText).docType}</div>;
-      break;
     }
     default: {
       return (
@@ -280,7 +277,6 @@ function renderFormatGroup(grp: FormatGroup | VersePlaceholder | FormatText) {
       );
     }
   }
-  return <></>;
 }
 
 function detectswipe(el: string, func: (direct: string) => void) {

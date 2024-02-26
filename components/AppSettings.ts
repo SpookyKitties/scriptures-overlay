@@ -1,6 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import Fuse from 'fuse.js';
-import { cloneDeep, flatten } from 'lodash';
 import { BehaviorSubject, forkJoin, of } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
 import { NoteSettings } from '../oith-lib/src/processors/NoteSettings';
@@ -9,11 +7,11 @@ import {
   NoteCategories,
   NoteTypes,
 } from '../oith-lib/src/verse-notes/settings/note-gorup-settings';
+import { Settings } from './Settings';
 import { flattenPrimaryManifest } from './flattenPrimaryManifest';
 import { NavigationItem } from './navigation-item';
 import { parseSubdomain } from './parseSubdomain';
 import { resetNotes$ } from './resetNotes';
-import { Settings } from './Settings';
 
 // const flattenPrimaryManifest = (navItem: NavigationItem): NavigationItem[] => {
 //   if (Array.isArray(navItem.navigationItems)) {
@@ -70,8 +68,12 @@ export class AppSettings {
       const subD = parseSubdomain();
       let data: AxiosResponse | undefined = undefined;
       try {
+        console.log(fileName);
+
         if (fileName === 'noteSettings') {
           try {
+
+
             const noteSettings = JSON.parse(
               localStorage.getItem(
                 `${this.settings.lang}-scriptures-overlay-${subD.settings}${fileName}`,
@@ -84,6 +86,8 @@ export class AppSettings {
 
             this[key] = noteSettings;
           } catch (error) {
+            console.log(error);
+
             data = await this.getNoteSettings(subD, fileName);
 
             this[key] = data.data;
@@ -112,6 +116,7 @@ export class AppSettings {
     },
     fileName: string,
   ) {
+
     return await axios.get(
       `${subD.storageURL}${this.settings.lang}-${subD.settings}${fileName}.json`,
       {

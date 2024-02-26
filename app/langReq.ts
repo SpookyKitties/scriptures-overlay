@@ -14,6 +14,7 @@ export const validLangs = [
   'tha',
   'pes',
   'deu',
+  'bp',
 ];
 
 export function langReq(req: IncomingMessage, query: ParsedUrlQuery) {
