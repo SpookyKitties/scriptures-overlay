@@ -156,9 +156,6 @@ export async function buildVerseFMerged(chapter: Chapter, verse: Verse) {
     vN.id.includes(`-${verse.id}-verse-note`),
   );
 
-  const clone = structuredClone(verse);
-  console.log(clone);
-
   await firstValueFrom(
     expandNoteOffsets(verseNote).pipe(
       toArray(),
@@ -166,14 +163,10 @@ export async function buildVerseFMerged(chapter: Chapter, verse: Verse) {
       flatMap$,
     ),
   );
-  console.log(verse);
-  console.log(verse === clone);
 }
 
 export function buildFMerged(chapter: Chapter) {
   const t = chapter.verses.map(async (verse) => {
-    console.log(verse);
-
     await buildVerseFMerged(chapter, verse);
     if (chapter.verseNotes) {
     }
