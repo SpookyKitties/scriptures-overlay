@@ -296,7 +296,7 @@ function detectswipe(el: string, func: (direct: string) => void) {
   var max_y = 200; //max y difference for horizontal swipe
   var direc = '';
   const ele = document.querySelector(el);
-  ele.addEventListener(
+  ele?.addEventListener(
     'touchstart',
     function (e) {
       var t = (e as any).touches[0];
@@ -305,7 +305,7 @@ function detectswipe(el: string, func: (direct: string) => void) {
     },
     false,
   );
-  ele.addEventListener(
+  ele?.addEventListener(
     'touchmove',
     function (e) {
       // e.preventDefault();
@@ -315,7 +315,7 @@ function detectswipe(el: string, func: (direct: string) => void) {
     },
     false,
   );
-  ele.addEventListener(
+  ele?.addEventListener(
     'touchend',
     function (e) {
       //horizontal detection

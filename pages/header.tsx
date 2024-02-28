@@ -1,19 +1,19 @@
-import Link from 'next/link';
 import { NextPage } from 'next';
+import Link from 'next/link';
 
 const linkStyle = {
   marginRight: 15,
   backgroundColor: 'blue',
-  color: 'green'
+  color: 'green',
 };
 
 const Header: NextPage<{ t?: string }> = ({ t }) => (
   <header>
     {t}
-    <Link href="/">
+    <Link href="/" legacyBehavior>
       <a style={linkStyle}>Home</a>
     </Link>
-    <Link href="/about">
+    <Link href="/about" legacyBehavior>
       <a style={linkStyle}>About</a>
     </Link>
   </header>

@@ -1,10 +1,8 @@
+import { CSSProperties, Component } from 'react';
+import { Subscription } from 'rxjs';
 import { Verse } from '../oith-lib/src/models/Chapter';
-import { renderFormatGroups } from './chapter.component';
-import { Component, Fragment, CSSProperties } from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
 import { store } from './SettingsComponent';
-import { VerseNoteGroupComponent } from './verse-notes/VerseNoteGroupComponent';
-import { parseSubdomain } from './parseSubdomain';
+import { renderFormatGroups } from './chapter.component';
 
 type VerseProps = {
   verse?: Verse;
@@ -28,7 +26,7 @@ const inlineNotes: CSSProperties = {
 };
 
 export class VerseComponent extends Component<VerseProps> {
-  public state: { verse?: Verse; highlight?: boolean };
+  public state: { verse_old?: Verse; highlight?: boolean };
   updateVerseSub: Subscription;
   componentWillUnmount() {
     if (this.updateVerseSub) {
@@ -37,12 +35,15 @@ export class VerseComponent extends Component<VerseProps> {
   }
   componentDidMount() {
     const verse = this.props.verse;
-    this.setState({ verse: verse });
+    // this.setState({ verse: verse });
 
     this.updateVerseSub = store.updateVerses.subscribe(() => {
+      this.forceUpdate(() => {
+        store.updateFTags$.next(true);
+      });
       // const verse = this.state.verse; //;
-      this.setState({ verse: undefined });
-      this.setState({ verse: verse });
+      // this.setState({ verse: undefined });
+      // this.setState({ verse: verse });
     });
   }
   public constructor(props: VerseProps) {
@@ -50,8 +51,8 @@ export class VerseComponent extends Component<VerseProps> {
   }
   public render() {
     let elem: JSX.Element = <></>;
-    if (this.state) {
-      const verse = this.state.verse;
+    if (this.props.verse) {
+      const verse = this.props.verse;
 
       if (verse) {
         const elementName = verse.n.toLowerCase();
@@ -67,24 +68,6 @@ export class VerseComponent extends Component<VerseProps> {
               <p id={verse.id} className={` ${classList}`} {...verse.attrs}>
                 {renderFormatGroups(verse.grps)}
               </p>
-              // <Fragment>
-              //   {verse.verseNote && parseSubdomain().beta ? (
-              //     <div style={{ display: 'grid' }} className={`inline-notes`}>
-              //       <div style={inlineNotes}>
-              //         {verse.verseNote && parseSubdomain().beta ? (
-              //           verse.verseNote.noteGroups.map(vNG => (
-              //             <VerseNoteGroupComponent noteGroup={vNG} />
-              //           ))
-              //         ) : (
-              //           <></>
-              //         )}
-              //         <div className={`note-whitespace`}></div>
-              //       </div>
-              //     </div>
-              //   ) : (
-              //     <></>
-              //   )}
-              // </Fragment>
             );
             break;
           }
@@ -155,19 +138,7 @@ export class VerseComponent extends Component<VerseProps> {
         }}
       >
         {elem}
-        {/* <span
-          className={'test-test-test'}
-          style={{
-            display: 'grid',
-            justifyContent: 'center',
-            alignContent: 'center',
-            transform: 'translateX(24px)',
-          }}
-        >
-          📽
-        </span> */}
       </div>
     );
-    // return elem;
   }
 }

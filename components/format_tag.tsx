@@ -1,33 +1,32 @@
 import { flatten, uniq } from 'lodash';
-import { Component, CSSProperties } from 'react';
-import { forkJoin, of } from 'rxjs';
+import { CSSProperties, Component } from 'react';
+import { Subscription, forkJoin, of } from 'rxjs';
 import { delay, filter, map, take } from 'rxjs/operators';
 import { FormatMerged } from '../oith-lib/src/models/Chapter';
 import { flatMap$ } from '../oith-lib/src/rx/flatMap$';
 import {
   FormatTagNoteOffsets,
-  VerseNote,
   Note,
 } from '../oith-lib/src/verse-notes/verse-note';
-import { parseSubdomain } from './parseSubdomain';
 import {
   appSettings,
   formatTagService,
-  store,
   resetMobileNotes,
+  store,
 } from './SettingsComponent';
+import { parseSubdomain } from './parseSubdomain';
 
 export function displayStateKey<T, T2 extends keyof T>(state: T, key: T2) {
   return state ? state[key] : '';
 }
 
 export function calcClassList(formatMerged: FormatMerged) {
-  const fts = formatMerged.formatTags.filter(f => {
+  const fts = formatMerged.formatTags.filter((f) => {
     return [55, 56].includes(f.fType) && f.visible;
   });
 
   const all = fts.find(
-    ft =>
+    (ft) =>
       ft.offsets === 'all' ||
       (ft.uncompressedOffsets && ft.uncompressedOffsets.includes(0)),
   )
@@ -58,24 +57,25 @@ export class FormatTag extends Component<{
     backgroundColor: 'inherit',
   };
   public className = '';
+  updateFTagSub: Subscription | undefined;
 
   constructor(props) {
     super(props);
     // this.state = { formatMerged: this.props.formatMerged };
     const fm = this.props.formatMerged;
 
-    fm.all = fm.formatTags.find(f => f.offsets === 'all') !== null;
+    fm.all = fm.formatTags.find((f) => f.offsets === 'all') !== null;
     if (fm.all) {
       this.className = 'all';
     }
   }
 
   componentDidMount() {
-    this.setState({ text: this.props.formatMerged.text });
-    this.setState({ formatMerged: this.props.formatMerged });
-    this.setState({ offset: this.props.formatMerged.offset });
+    // this.setState({ text: this.props.formatMerged.text });
+    // this.setState({ formatMerged: this.props.formatMerged });
+    // this.setState({ offset: this.props.formatMerged.offset });
 
-    store.updateFTags$
+    this.updateFTagSub = store.updateFTags$
       .pipe(
         map(() => {
           this.setState({
@@ -86,13 +86,18 @@ export class FormatTag extends Component<{
       .subscribe();
   }
 
+  componentWillUnmount(): void {
+    console.log('unmount');
+    this.updateFTagSub?.unsubscribe();
+  }
+
   public click(fm: FormatMerged) {
     // this.style = { backgroundColor: "black" };
 
     const setNotesMode = () => {
       return appSettings.notesMode$.pipe(
         take(1),
-        map(o => {
+        map((o) => {
           if (o === 'off') {
             appSettings.notesMode$.next('small');
             appSettings.displayNotes();
@@ -103,9 +108,9 @@ export class FormatTag extends Component<{
     };
     const fm$ = of(fm).pipe(
       filter(
-        o => o.formatTags && o.formatTags.filter(o => o.visible).length > 0,
+        (o) => o.formatTags && o.formatTags.filter((o) => o.visible).length > 0,
       ),
-      map(o => formatTagService.fMergedClick(o)),
+      map((o) => formatTagService.fMergedClick(o)),
       flatMap$,
       map(() => {
         store.updateFTags$.next(true);
@@ -158,7 +163,7 @@ export class FormatTag extends Component<{
     //   });
 
     // this.setState({ style: this.style });
-    // this.state.formatMerged.text = "lkasdf";
+    // this.props.formatMerged.text = "lkasdf";
     // this.setState((state, props) => {
     //
     // });
@@ -166,28 +171,28 @@ export class FormatTag extends Component<{
   public renderSpeaker() {
     if (this.state) {
       const flatNotes = flatten(
-        (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
-          .filter(n => Array.isArray(n.notes))
+        (this.props.formatMerged.formatTags as FormatTagNoteOffsets[])
+          .filter((n) => Array.isArray(n.notes))
           .filter(
-            n =>
-              n.notes.filter(note =>
-                note.ref.find(ref => ref.label.includes(`🔊`)),
+            (n) =>
+              n.notes.filter((note) =>
+                note.ref.find((ref) => ref.label.includes(`🔊`)),
               ).length > 0,
           ),
       );
       const hasPronunciation = () => {
         return flatten(
           flatten(
-            (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
-              .filter(n => Array.isArray(n.notes))
-              .map(n => n.notes),
-          ).map(n => n.ref),
-        ).find(ref => ref.label.includes(`🔊`));
+            (this.props.formatMerged.formatTags as FormatTagNoteOffsets[])
+              .filter((n) => Array.isArray(n.notes))
+              .map((n) => n.notes),
+          ).map((n) => n.ref),
+        ).find((ref) => ref.label.includes(`🔊`));
       };
       const ref = hasPronunciation();
-      if (this.state.formatMerged && ref) {
+      if (this.props.formatMerged && ref) {
         if (
-          flatNotes[0].uncompressedOffsets[0] === this.state.formatMerged.offset
+          flatNotes[0].uncompressedOffsets[0] === this.props.formatMerged.offset
         ) {
           return (
             <span
@@ -195,10 +200,12 @@ export class FormatTag extends Component<{
               onClick={() => {
                 try {
                   const fileName = `${parseSubdomain().audioURL}${flatten(
-                    (this.state.formatMerged
-                      .formatTags as FormatTagNoteOffsets[])
-                      .filter(n => Array.isArray(n.notes))
-                      .map(n => n.notes),
+                    (
+                      this.props.formatMerged
+                        .formatTags as FormatTagNoteOffsets[]
+                    )
+                      .filter((n) => Array.isArray(n.notes))
+                      .map((n) => n.notes),
                   )[0]
                     .phrase?.toLowerCase()
                     .replace('“', '')
@@ -215,31 +222,31 @@ export class FormatTag extends Component<{
   }
   hasLetters() {
     const hasVis = (note: Note[]) => {
-      return note.filter(n => n.formatTag.visible);
+      return note.filter((n) => n.formatTag.visible);
     };
     return flatten(
       flatten(
-        (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
-          .filter(n => Array.isArray(n.notes))
-          .map(n => hasVis(n.notes)),
-      ).map(n => n.sup),
+        (this.props.formatMerged.formatTags as FormatTagNoteOffsets[])
+          .filter((n) => Array.isArray(n.notes))
+          .map((n) => hasVis(n.notes)),
+      ).map((n) => n.sup),
     );
   }
 
   hasLSup() {
     if (this.state && !parseSubdomain().soglo) {
       const hasVis = (note: Note[]) => {
-        return note.filter(n => n.formatTag.visible);
+        return note.filter((n) => n.formatTag.visible);
       };
       const l =
         flatten(
           flatten(
-            (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
-              .filter(n => Array.isArray(n.notes))
-              .map(n => hasVis(n.notes)),
+            (this.props.formatMerged.formatTags as FormatTagNoteOffsets[])
+              .filter((n) => Array.isArray(n.notes))
+              .map((n) => hasVis(n.notes)),
           )
-            .filter(n => n.lSup !== undefined)
-            .map(n => n.lSup),
+            .filter((n) => n.lSup !== undefined)
+            .map((n) => n.lSup),
         ).length > 0;
 
       return l ? 'has-lsup' : '';
@@ -249,17 +256,17 @@ export class FormatTag extends Component<{
   getLetters() {
     if (this.state) {
       const hasVis = (note: Note[]) => {
-        return note.filter(n => n.formatTag.visible && n.sup !== undefined);
+        return note.filter((n) => n.formatTag.visible && n.sup !== undefined);
       };
       // console.log(this.state);
 
       return uniq(
         flatten(
           flatten(
-            (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
-              .filter(n => Array.isArray(n.notes))
-              .map(n => hasVis(n.notes)),
-          ).map(n => n.sup),
+            (this.props.formatMerged.formatTags as FormatTagNoteOffsets[])
+              .filter((n) => Array.isArray(n.notes))
+              .map((n) => hasVis(n.notes)),
+          ).map((n) => n.sup),
         ),
       );
     }
@@ -273,7 +280,7 @@ export class FormatTag extends Component<{
       //   };
       //   return flatten(
       //     flatten(
-      //       (this.state.formatMerged.formatTags as FormatTagNoteOffsets[])
+      //       (this.props.formatMerged.formatTags as FormatTagNoteOffsets[])
       //         .filter(n => Array.isArray(n.notes))
       //         .map(n => hasVis(n.notes)),
       //     ).map(n => n.sup),
@@ -283,9 +290,8 @@ export class FormatTag extends Component<{
 
       /// This does a check to see if the offset for this format tag
       /// is in the first offset grouping. If not, no superscript is shown
-      const offsets = this.state.formatMerged?.formatTags[0]?.offsets?.split(
-        ',',
-      );
+      const offsets =
+        this.props.formatMerged?.formatTags[0]?.offsets?.split(',');
       if (
         offsets &&
         offsets[0].startsWith(this.state?.formatMerged?.offset.toString())
@@ -304,27 +310,33 @@ export class FormatTag extends Component<{
   }
   public render() {
     const letters = this.renderLetters();
-    return (
-      <span
-        className={`${displayStateKey(
-          this.state,
-          'classList',
-        )} ${this.hasLSup()} ${this.getLetters().map(
-          letter => `sup-elm-${letter} `,
-        )}`}
-        style={this.style}
-        data-offset={`${this.state ? this.state['offset'] : ''}`}
-        onClick={evt => {
-          const elem = evt.target as HTMLElement;
-          if (elem && !elem.classList.contains('ftag-speaker')) {
-            this.click(this.state.formatMerged);
-          }
-        }}
-      >
-        {this.renderSpeaker()}
-        {this.renderLetters()}
-        {displayStateKey(this.state, 'text')}
-      </span>
-    );
+    try {
+      return (
+        <span
+          className={`${displayStateKey(
+            this.state,
+            'classList',
+          )} ${this.hasLSup()} ${this.getLetters().map(
+            (letter) => `sup-elm-${letter} `,
+          )}`}
+          style={this.style}
+          data-offset={`${
+            this.props.formatMerged ? this.props.formatMerged['offset'] : ''
+          }`}
+          onClick={(evt) => {
+            const elem = evt.target as HTMLElement;
+            if (elem && !elem.classList.contains('ftag-speaker')) {
+              this.click(this.props.formatMerged);
+            }
+          }}
+        >
+          {this.renderSpeaker()}
+          {this.renderLetters()}
+          {this.props.formatMerged.text}
+        </span>
+      );
+    } catch (error) {
+      return <span>ERRORR</span>;
+    }
   }
 }

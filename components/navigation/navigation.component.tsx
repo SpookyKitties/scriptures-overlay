@@ -1,21 +1,23 @@
-import { Component } from 'react';
-import { NavigationItem } from '../navigation-item';
-import { SearchBoxComponent } from './searchbox.component';
-import { appSettings } from '../SettingsComponent';
 import Link from 'next/link';
-import { initnav } from '../nextPage';
-import { map, take, delay } from 'rxjs/operators';
-import { flatMap$ } from '../../oith-lib/src/rx/flatMap$';
-import { stat } from 'fs';
 import Router from 'next/router';
+import { Component } from 'react';
+import { delay, map } from 'rxjs/operators';
+import { appSettings } from '../SettingsComponent';
+import { NavigationItem } from '../navigation-item';
+import { initnav } from '../nextPage';
 import { NavItem } from './NavItem';
+import { SearchBoxComponent } from './searchbox.component';
 export class OithLink extends Component<{ href: string; active: boolean }> {
   public render() {
     if (this.props.href.includes('churchofjesuschrist.')) {
-      return <Link href={`${this.props.href}`}>{this.props.children}</Link>;
+      return (
+        <Link href={`${this.props.href}`} legacyBehavior>
+          {this.props.children}
+        </Link>
+      );
     }
     return (
-      <Link as={`/${this.props.href}`} href="/[book]/[chapter]">
+      <Link as={`/${this.props.href}`} href="/[book]/[chapter]" legacyBehavior>
         {this.props.children}
       </Link>
     );
@@ -29,7 +31,7 @@ export class NavigationComponenet extends Component {
   public state: { navigation: NavigationItem };
 
   componentDidMount() {
-    appSettings.navigation$.subscribe(o => {
+    appSettings.navigation$.subscribe((o) => {
       this.setState({ navigation: o });
       initnav();
     });
@@ -54,7 +56,7 @@ export class NavigationComponenet extends Component {
           // console.log(document.querySelector('.nav-items-holder').scrollHeight);
         }),
       )
-      .subscribe(o => {
+      .subscribe((o) => {
         // this.setState({ navigation: undefined });
         // this.setState({ navigation: o });
         // setTimeout(() => {}, 100);
@@ -81,7 +83,7 @@ export class NavigationComponenet extends Component {
           </div>
           <hr />
           <div className={`nav-items-holder`}>
-            {this.state.navigation.navigationItems.map(ni => {
+            {this.state.navigation.navigationItems.map((ni) => {
               return <NavItem navItem={ni} />;
             })}
             <div className={`white-space`}></div>
