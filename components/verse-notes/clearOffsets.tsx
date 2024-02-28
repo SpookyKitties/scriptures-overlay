@@ -45,19 +45,17 @@ export function clearOffsets(
               return resetLiveVerse(
                 parseVerseNumfromVerseNoteID(verseNoteID),
                 verseNoteID,
-              ).pipe(
-                map(() => {
-                  store.updateVerses.next(true);
-                  store.updateNoteVisibility$.next(true);
-                }),
-              );
+              ).pipe(map(() => {}));
             }),
             flatMap$,
           );
         }),
         flatMap$,
       )
-      .subscribe((o) => {});
+      .subscribe((o) => {
+        store.updateVerses.next(true);
+        store.updateNoteVisibility$.next(true);
+      });
     // store.updateNoteVisibility$.next(true);
   }
 }

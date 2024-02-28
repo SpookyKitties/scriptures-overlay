@@ -74,6 +74,7 @@ export function addOffsets(element: Element, formatTag: FormatTagNoteOffsets) {
                 map(() => {
                   store.updateVerses.next(true);
                   store.updateNoteVisibility$.next(true);
+                  store.updateFTags$.next(true);
                   return false;
                 }),
               );

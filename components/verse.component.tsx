@@ -26,7 +26,7 @@ const inlineNotes: CSSProperties = {
 };
 
 export class VerseComponent extends Component<VerseProps> {
-  public state: { verse?: Verse; highlight?: boolean };
+  public state: { verse_old?: Verse; highlight?: boolean };
   updateVerseSub: Subscription;
   componentWillUnmount() {
     if (this.updateVerseSub) {
@@ -35,10 +35,12 @@ export class VerseComponent extends Component<VerseProps> {
   }
   componentDidMount() {
     const verse = this.props.verse;
-    this.setState({ verse: verse });
+    // this.setState({ verse: verse });
 
     this.updateVerseSub = store.updateVerses.subscribe(() => {
-      this.forceUpdate();
+      this.forceUpdate(() => {
+        store.updateFTags$.next(true);
+      });
       // const verse = this.state.verse; //;
       // this.setState({ verse: undefined });
       // this.setState({ verse: verse });
@@ -49,8 +51,8 @@ export class VerseComponent extends Component<VerseProps> {
   }
   public render() {
     let elem: JSX.Element = <></>;
-    if (this.state) {
-      const verse = this.state.verse;
+    if (this.props.verse) {
+      const verse = this.props.verse;
 
       if (verse) {
         const elementName = verse.n.toLowerCase();
