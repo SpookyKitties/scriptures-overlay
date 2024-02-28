@@ -7,6 +7,7 @@ import {
   FormatText,
   VersePlaceholder,
 } from '../oith-lib/src/models/Chapter';
+import { highlightVerses } from '../oith-lib/src/shells/build-shells';
 import { FormatTag } from './format_tag';
 import { nextPage, previousPage } from './nextPage';
 import { parseSubdomain } from './parseSubdomain';
@@ -369,8 +370,8 @@ export class ChapterComponent extends Component {
         }),
         delay(100),
         map((c) => {
+          highlightVerses(c.verses, c.params);
           this.setState({ chapter: c });
-
           return c;
         }),
         delay(500),
