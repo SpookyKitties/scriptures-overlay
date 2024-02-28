@@ -147,6 +147,8 @@ function highlightContext(
 }
 
 export function highlightVerses(verses: Verse[], chapterParams: ChapterParams) {
+  verses.map((v) => (v.highlight = false));
+
   if (chapterParams.highlight) {
     highlightContext(verses, chapterParams, 'highlight');
   }
