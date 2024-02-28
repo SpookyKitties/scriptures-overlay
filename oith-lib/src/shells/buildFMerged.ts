@@ -1,26 +1,26 @@
+import { isEqual } from 'lodash';
+import { EMPTY, Observable, firstValueFrom, forkJoin, of } from 'rxjs';
+import { flatMap, map, toArray } from 'rxjs/operators';
 import {
   Chapter,
   FormatGroup,
+  FormatMerged,
   FormatText,
   Verse,
-  FormatMerged,
 } from '../models/Chapter';
-import { of, EMPTY, forkJoin, Observable } from 'rxjs';
-import { flatMap$ } from '../rx/flatMap$';
-import { map, toArray, flatMap } from 'rxjs/operators';
-import { VerseNote, FormatTag, FormatTagType } from '../verse-notes/verse-note';
 import { expandOffsets$ } from '../offsets/expandOffsets';
-import { isEqual } from 'lodash';
+import { flatMap$ } from '../rx/flatMap$';
+import { FormatTag, VerseNote } from '../verse-notes/verse-note';
 
 export function expandNoteOffsets(verseNote?: VerseNote) {
   if (verseNote && verseNote.notes) {
     if (verseNote.noteGroups) {
       return of(
         verseNote.noteGroups
-          .filter(ng => !ng.delete)
-          .map(ng =>
+          .filter((ng) => !ng.delete)
+          .map((ng) =>
             forkJoin(expandOffsets$(ng.formatTag), of(ng.formatTag)).pipe(
-              map(o => o[1]),
+              map((o) => o[1]),
             ),
           ),
       ).pipe(flatMap$, flatMap$);
@@ -40,7 +40,7 @@ export function extractFormatText(
       (verse as FormatGroup | Verse).grps as (FormatGroup | FormatText)[],
     ).pipe(
       flatMap$,
-      map(o => extractFormatText(o)),
+      map((o) => extractFormatText(o)),
       flatMap$,
     );
   } else if ((verse as FormatText).docType === 5) {
@@ -84,9 +84,9 @@ export function addTextToFormatText(
     const fMerged: { i: number[]; formatTags: FormatTag[] }[] = [];
     let last: { i: number[]; formatTags: FormatTag[] } | undefined = undefined;
 
-    formatText.uncompressedOffsets.map(u => {
+    formatText.uncompressedOffsets.map((u) => {
       const ft = formatTags.filter(
-        o =>
+        (o) =>
           (o.uncompressedOffsets && o.uncompressedOffsets.includes(u)) ||
           o.offsets === 'all',
       );
@@ -107,16 +107,14 @@ export function addTextToFormatText(
         }
       }
     });
-
-    return of(
-      (formatText.formatMerged = fMerged.map(f => {
-        return new FormatMerged(
-          verse.text.slice(f.i[0], f.i[f.i.length - 1] + 1),
-          f.formatTags,
-          f.i[0],
-        );
-      })),
-    );
+    const s = (formatText.formatMerged = fMerged.map((f) => {
+      return new FormatMerged(
+        verse.text.slice(f.i[0], f.i[f.i.length - 1] + 1),
+        f.formatTags,
+        f.i[0],
+      );
+    }));
+    return of(s);
   }
 
   return EMPTY;
@@ -148,47 +146,37 @@ export function resetVerse(verse: Verse, formatTags?: FormatTag[]) {
         flatMap$,
       );
     }),
-    flatMap(o => o),
+    flatMap((o) => o),
     toArray(),
   );
 }
+
+export async function buildVerseFMerged(chapter: Chapter, verse: Verse) {
+  const verseNote = chapter.verseNotes?.find((vN) =>
+    vN.id.includes(`-${verse.id}-verse-note`),
+  );
+
+  const clone = structuredClone(verse);
+  console.log(clone);
+
+  await firstValueFrom(
+    expandNoteOffsets(verseNote).pipe(
+      toArray(),
+      map((formatTags) => resetVerse(verse, formatTags)),
+      flatMap$,
+    ),
+  );
+  console.log(verse);
+  console.log(verse === clone);
+}
+
 export function buildFMerged(chapter: Chapter) {
-  const t = chapter.verses.map(async verse => {
-    // console.log(verse);
+  const t = chapter.verses.map(async (verse) => {
+    console.log(verse);
 
-    const verseNote = chapter.verseNotes?.find(vN =>
-      vN.id.includes(`-${verse.id}-verse-note`),
-    );
-
-    await expandNoteOffsets(verseNote)
-      .pipe(
-        toArray(),
-        map(formatTags => resetVerse(verse, formatTags)),
-        flatMap$,
-      )
-      .toPromise();
+    await buildVerseFMerged(chapter, verse);
     if (chapter.verseNotes) {
     }
   });
-  return of(Promise.all(t)).pipe(flatMap(o => o));
-  // return of(chapter.verses).pipe(
-  //   flatMap$,
-  //   map(async verse => {
-  //     if (chapter.verseNotes) {
-  //       const verseNote = chapter.verseNotes.find(vN =>
-  //         vN.id.includes(`-${verse.id}-verse-note`),
-  //       );
-
-  //       return expandNoteOffsets(verseNote).pipe(
-  //         toArray(),
-  //         map(formatTags => resetVerse(verse, formatTags)),
-  //         flatMap$,
-  //       );
-  //     }
-  //     return EMPTY;
-  //   }),
-  //   flatMap(o => o),
-  //   flatMap(o => o),
-  //   toArray(),
-  // );
+  return of(Promise.all(t)).pipe(flatMap((o) => o));
 }

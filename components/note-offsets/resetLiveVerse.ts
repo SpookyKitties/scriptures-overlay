@@ -1,30 +1,24 @@
 import { EMPTY } from 'rxjs';
-import { map, toArray, filter } from 'rxjs/operators';
-import { flatMap$ } from '../../oith-lib/src/rx/flatMap$';
-import {
-  expandNoteOffsets,
-  resetVerse,
-} from '../../oith-lib/src/shells/buildFMerged';
+import { filter, flatMap, map } from 'rxjs/operators';
+import { buildVerseFMerged } from '../../oith-lib/src/shells/buildFMerged';
 import { store } from '../SettingsComponent';
 
 export function resetLiveVerse(verseid: string, noteID: string) {
   console.log(verseid);
 
   return store.chapter.pipe(
-    filter(o => o !== undefined),
-    map(chapter => {
-      const verse = chapter.verses.find(v => v.id === verseid);
+    filter((o) => o !== undefined),
+    map((chapter) => {
+      const verse = chapter.verses.find((v) => v.id === verseid);
 
-      const verseNote = chapter.verseNotes.find(v => v.id === noteID);
+      const verseNote = chapter.verseNotes.find((v) => v.id === noteID);
       if (verse) {
-        return expandNoteOffsets(verseNote).pipe(
-          toArray(),
-          map(formatTags => resetVerse(verse, formatTags)),
-          flatMap$,
-        );
+        (verse as any).testRandom = Math.random().toString(36).slice(2);
+
+        return buildVerseFMerged(chapter, verse);
       }
       return EMPTY;
     }),
-    flatMap$,
+    flatMap((o) => o),
   );
 }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Dictionary, groupBy as _groupBy, flatten } from 'lodash';
+import { flatten } from 'lodash';
 import { EMPTY, Observable, forkJoin, of } from 'rxjs';
 import { filter, find, flatMap, map, toArray } from 'rxjs/operators';
 import { appSettings } from '../../../components/SettingsComponent';
@@ -14,8 +14,9 @@ import {
 } from '../models/Chapter';
 import { flatMap$ } from '../rx/flatMap$';
 import { NoteCategories } from '../verse-notes/settings/note-gorup-settings';
-import { Note, VerseNote, VerseNoteGroup } from '../verse-notes/verse-note';
+import { Note, VerseNote } from '../verse-notes/verse-note';
 import { buildFMerged } from './buildFMerged';
+import { generateVerseNoteGroup } from './generateVerseNoteGroup';
 
 function findFormatGroupsWithVerseIDs(
   formatGroup: FormatGroup,
@@ -153,7 +154,7 @@ export function highlightVerses(verses: Verse[], chapterParams: ChapterParams) {
     highlightContext(verses, chapterParams, 'context');
   }
 }
-function getSup(note: Note) {
+export function getSup(note: Note) {
   console.log(note.sup);
 
   if (note.sup) {
@@ -165,7 +166,7 @@ function getSup(note: Note) {
   return 'undefined';
 }
 
-const hasMoreStillNotes = (notes: Note[]) => {
+export const hasMoreStillNotes = (notes: Note[]) => {
   return (
     notes.filter(
       (note) => note.ref.filter((ref) => ref.moreStill === true).length > 0,
@@ -173,67 +174,9 @@ const hasMoreStillNotes = (notes: Note[]) => {
   );
 };
 
-function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
+export function generateVerseNoteGroups(verseNotea?: VerseNote[]) {
   const s = verseNotea?.map((vN) => {
-    if (vN.notes) {
-      let sortedNotes: Dictionary<Note[]>;
-      if (parseSubdomain().soglo) {
-        sortedNotes = _groupBy(vN.notes, (note) => {
-          if (
-            note.formatTag.offsets === '' ||
-            note.formatTag.offsets === undefined
-          ) {
-            return note.id;
-          }
-
-          return `${getSup(note)}-${note.formatTag.offsets}`;
-        });
-
-        vN.noteGroups = Array.from(Object.keys(sortedNotes)).map((key) => {
-          const notes = sortedNotes[key];
-
-          const firstNoteWithASup =
-            notes.length > 0
-              ? notes.find((n) => n.sup !== undefined)
-              : undefined;
-
-          const sup = firstNoteWithASup ? firstNoteWithASup.sup : '';
-          const lSup =
-            notes.length > 0 && notes[0].lSup !== undefined
-              ? notes[0].lSup
-              : '';
-
-          return new VerseNoteGroup(
-            notes,
-            '',
-            sup,
-            lSup,
-            hasMoreStillNotes(notes),
-          );
-        });
-      } else {
-        sortedNotes = _groupBy(vN.notes, (note) => {
-          if (
-            note.formatTag.offsets === '' ||
-            note.formatTag.offsets === undefined
-          ) {
-            return note.id;
-          }
-
-          return note.formatTag.offsets;
-        });
-
-        vN.noteGroups = Array.from(Object.keys(sortedNotes)).map((key) => {
-          const notes = sortedNotes[key].sort(
-            (a, b) => a.noteType - b.noteType,
-          );
-          const sup =
-            notes.length > 0 && notes[0].sup !== undefined ? notes[0].sup : '';
-
-          return new VerseNoteGroup(notes, '', sup);
-        });
-      }
-    }
+    generateVerseNoteGroup(vN);
   });
 
   return of(s);

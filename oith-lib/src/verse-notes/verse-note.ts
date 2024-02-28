@@ -1,6 +1,6 @@
 import cuid from 'cuid';
+import { Subject } from 'rxjs';
 import { expandOffsets$ } from '../offsets/expandOffsets';
-import { Observable, Subject } from 'rxjs';
 // import { NoteCategory } from './settings/note-gorup-settings';
 
 export enum DocType {
@@ -118,7 +118,7 @@ export class VerseNoteGroup {
     this.lSup = lSup;
 
     this.hasMoreStill = hasMoreStill;
-    notes.filter(n => n.formatTag.url);
+    notes.filter((n) => n.formatTag.url);
 
     // this.notePhrase = note.phrase ? note.phrase : '';
     this.notes = notes;
@@ -554,7 +554,7 @@ export class FormatTagNoteOffsets extends FormatTag {
     if (fType) {
       this.fType = fType;
     }
-    this.h = new Subject();
+    // this.h = new Subject();
 
     expandOffsets$(this);
   }
@@ -572,7 +572,7 @@ export class FormatTagNotePronunciation extends FormatTagNoteOffsets {
     super(offsets, _id, offsets, notes, FormatTagType.NOTEOFFSETSPRONUNCIATION);
     this.noteGroupID = noteGroupID;
     this.id = _id;
-    const note = notes.find(note => note.href !== undefined);
+    const note = notes.find((note) => note.href !== undefined);
     if (note) {
       this.href = note.href;
     }

@@ -38,9 +38,10 @@ export class VerseComponent extends Component<VerseProps> {
     this.setState({ verse: verse });
 
     this.updateVerseSub = store.updateVerses.subscribe(() => {
+      this.forceUpdate();
       // const verse = this.state.verse; //;
-      this.setState({ verse: undefined });
-      this.setState({ verse: verse });
+      // this.setState({ verse: undefined });
+      // this.setState({ verse: verse });
     });
   }
   public constructor(props: VerseProps) {
@@ -65,24 +66,6 @@ export class VerseComponent extends Component<VerseProps> {
               <p id={verse.id} className={` ${classList}`} {...verse.attrs}>
                 {renderFormatGroups(verse.grps)}
               </p>
-              // <Fragment>
-              //   {verse.verseNote && parseSubdomain().beta ? (
-              //     <div style={{ display: 'grid' }} className={`inline-notes`}>
-              //       <div style={inlineNotes}>
-              //         {verse.verseNote && parseSubdomain().beta ? (
-              //           verse.verseNote.noteGroups.map(vNG => (
-              //             <VerseNoteGroupComponent noteGroup={vNG} />
-              //           ))
-              //         ) : (
-              //           <></>
-              //         )}
-              //         <div className={`note-whitespace`}></div>
-              //       </div>
-              //     </div>
-              //   ) : (
-              //     <></>
-              //   )}
-              // </Fragment>
             );
             break;
           }
@@ -144,7 +127,6 @@ export class VerseComponent extends Component<VerseProps> {
         }
       }
     }
-
     return (
       <div
         style={{
@@ -154,19 +136,7 @@ export class VerseComponent extends Component<VerseProps> {
         }}
       >
         {elem}
-        {/* <span
-          className={'test-test-test'}
-          style={{
-            display: 'grid',
-            justifyContent: 'center',
-            alignContent: 'center',
-            transform: 'translateX(24px)',
-          }}
-        >
-          📽
-        </span> */}
       </div>
     );
-    // return elem;
   }
 }
