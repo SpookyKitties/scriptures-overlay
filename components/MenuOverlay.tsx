@@ -16,13 +16,13 @@ export class MenuOverlay extends Component {
 
   constructor(props) {
     super(props);
-
-    this.setState({ display: false, closeMenu$: undefined });
   }
   public closeMenu$?: Subject<boolean>;
   componentDidMount() {
     menuOverlay$ = new Subject();
-    menuOverlay$.subscribe(s => {
+    this.setState({ display: false, closeMenu$: undefined });
+
+    menuOverlay$.subscribe((s) => {
       this.setState({ display: true, closeMenu$: s });
     });
   }

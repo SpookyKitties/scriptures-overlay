@@ -1,10 +1,8 @@
+import { CSSProperties, Component } from 'react';
+import { Subscription } from 'rxjs';
 import { Verse } from '../oith-lib/src/models/Chapter';
-import { renderFormatGroups } from './chapter.component';
-import { Component, Fragment, CSSProperties } from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
 import { store } from './SettingsComponent';
-import { VerseNoteGroupComponent } from './verse-notes/VerseNoteGroupComponent';
-import { parseSubdomain } from './parseSubdomain';
+import { renderFormatGroups } from './chapter.component';
 
 type VerseProps = {
   verse?: Verse;
@@ -146,6 +144,7 @@ export class VerseComponent extends Component<VerseProps> {
         }
       }
     }
+
     return (
       <div
         style={{
